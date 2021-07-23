@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { createTheme, MuiThemeProvider } from "@material-ui/core";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CentroCrecerScreen from "./components/CentrosCrecer/CentroCrecerScreen";
+import HomepageScreen from "./components/Homepage/HomepageScreen";
+import Navbar from "./components/Navigation/Navbar";
 
 function App() {
+  // Cambiar color primario y secundario
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#24395b',
+      },
+      secondary: {
+        main: '#f67f1c'
+      }
+    }
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <Router>
+        <Navbar />
+
+        <Switch>
+          <Route exact path='/'>
+            <HomepageScreen />
+          </Route>
+
+          <Route path='/centrosContigo/:centroContigo'>
+            <CentroCrecerScreen />
+          </Route>
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
   );
 }
 

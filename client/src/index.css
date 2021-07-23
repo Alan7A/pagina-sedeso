@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.subtitulo {
+  font-size: 28px;
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+
+.subtitulo::after {
+  content: '';
+  display: block;
+  width: 15rem;
+  height: 5px;
+  background-color: #f67f1c;
+  margin: 1rem auto 0 auto;
+  border-radius: 10px;
+}
