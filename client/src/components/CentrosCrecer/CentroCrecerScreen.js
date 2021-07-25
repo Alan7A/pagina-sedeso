@@ -1,11 +1,12 @@
-import { Card, CardActionArea, CardContent, Container, Grid, Paper, Typography } from '@material-ui/core'
+import { Breadcrumbs, Card, CardActionArea, CardContent, Container, Grid, Link, Paper, Typography } from '@material-ui/core'
 import { AddCircle, LocationOn, Phone } from '@material-ui/icons'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Course from './Course'
 import './styles.css'
 
 function CentroCrecerScreen() {
+    const history = useHistory();
     const { centroContigo } = useParams();
 
     const cursos = [
@@ -45,14 +46,24 @@ function CentroCrecerScreen() {
                 </Paper>
             </Container>
 
+            <Breadcrumbs style={{marginTop: 30}}>
+                <Link color="inherit" href="/" onClick={() => history.push('/')}>
+                    Inicio
+                </Link>
+                <Link color="inherit" href="/getting-started/installation/" onClick={() => history.push('/centrosContigo')}>
+                    Centros Contigo
+                </Link>
+                <Typography color="textPrimary">{centroContigo}</Typography>
+            </Breadcrumbs>
+
             <h2 className="subtitulo">Cursos</h2>
             <Grid container spacing={3}>
-                {cursos.map((course, i) => <Course course={course} />)}
+                {cursos.map((course, i) => <Course course={course} centroContigo={centroContigo} key={i} />)}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card elevation={3} style={{backgroundColor:'#4caf50', color:'white'}}>
+                    <Card elevation={3} style={{ backgroundColor: '#4caf50', color: 'white' }}>
                         <CardActionArea>
-                            <CardContent style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                                <AddCircle style={{fontSize:45, color:'white', marginBottom:10}} />
+                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <AddCircle style={{ fontSize: 45, color: 'white', marginBottom: 10 }} />
                                 <Typography>Crear nuevo curso</Typography>
                             </CardContent>
                         </CardActionArea>

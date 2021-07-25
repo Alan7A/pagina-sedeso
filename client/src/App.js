@@ -1,6 +1,7 @@
 import { createTheme, MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CentroCrecerScreen from "./components/CentrosCrecer/CentroCrecerScreen";
+import CourseScreen from "./components/Course/CourseScreen";
 import HomepageScreen from "./components/Homepage/HomepageScreen";
 import Navbar from "./components/Navigation/Navbar";
 
@@ -27,8 +28,12 @@ function App() {
             <HomepageScreen />
           </Route>
 
-          <Route path='/centrosContigo/:centroContigo'>
+          <Route exact path='/centrosContigo/:centroContigo'>
             <CentroCrecerScreen />
+          </Route>
+
+          <Route exact path='/centrosContigo/:centroContigo/cursos/:course'>
+            <CourseScreen />
           </Route>
         </Switch>
       </Router>

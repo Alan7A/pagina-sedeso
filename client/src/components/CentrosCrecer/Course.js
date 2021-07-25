@@ -1,7 +1,10 @@
 import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button, Chip } from '@material-ui/core'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 
-function Course({ course }) {
+function Course({ course, centroContigo }) {
+    const history = useHistory();
+
     return (
         <Grid item xs={12} sm={6} md={4}>
             <Card>
@@ -31,7 +34,7 @@ function Course({ course }) {
                     </div>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" color="primary">
+                    <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${course.name}`)}>
                         Ver Más
                     </Button>
                     <Button size="small" color="secondary">
