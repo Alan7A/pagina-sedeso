@@ -1,6 +1,7 @@
-import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button, Chip } from '@material-ui/core'
+import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button, Chip, IconButton } from '@material-ui/core'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { Edit, Delete } from '@material-ui/icons';
 
 function Course({ course, centroContigo }) {
     const history = useHistory();
@@ -19,7 +20,7 @@ function Course({ course, centroContigo }) {
                     <Typography gutterBottom variant="h5" component="h2">
                         {course.name}
                     </Typography>
-                    <div style={{ display: 'flex', flexWrap:'wrap' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                         <Typography>Horarios: </Typography>
                         <Chip size='small' label='Lunes 7:00-10:00' style={{ marginLeft: 5 }} />
                         <Chip size='small' label='Jueves 18:00-21:00' style={{ marginLeft: 5 }} />
@@ -37,10 +38,16 @@ function Course({ course, centroContigo }) {
                     <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${course.name}`)}>
                         Ver Más
                     </Button>
-                    <Button size="small" color="secondary">
+                    {/* <IconButton size='small' color='secondary'>
+                        <Edit />
+                    </IconButton>
+                    <IconButton size='small' style={{ color: 'red' }}>
+                        <Delete />
+                    </IconButton> */}
+                    <Button size="small" color="secondary" startIcon={<Edit />}>
                         Editar
                     </Button>
-                    <Button size="small" style={{ color: 'red' }}>
+                     <Button size="small" style={{ color: 'red' }} startIcon={<Delete />}>
                         Eliminar
                     </Button>
                 </CardActions>
