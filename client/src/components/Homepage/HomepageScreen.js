@@ -18,6 +18,8 @@ function HomepageScreen() {
                 <Map />
 
                 <h2 className="subtitulo">Contacto</h2>
+                <center>Información </center>
+                <br /><br />
             </Container>
         </div>
     )
