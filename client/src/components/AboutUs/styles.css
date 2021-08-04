@@ -1,0 +1,17 @@
+.aboutUs h2 {
+    color: #2473b0;
+    font-size: 45px;
+}
+
+.imagen {
+    height: auto;
+    width: 100%;
+}
+
+.blueDiv {
+    background: #2473b0; 
+    color: white;
+    color: 'white'; 
+    margin-top: 15px;
+    padding-bottom: 20px;
+}

@@ -1,9 +1,11 @@
 import { createTheme, MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CentrosCrecerScreen from "./components/CentrosCrecer/CentrosCrecerScreen";
 import CentroCrecerScreen from "./components/CentrosCrecer/CentroCrecerScreen";
 import CourseScreen from "./components/Course/CourseScreen";
 import HomepageScreen from "./components/Homepage/HomepageScreen";
 import Navbar from "./components/Navigation/Navbar";
+import AboutUsScreen from "./components/AboutUs/AboutUsScreen";
 
 function App() {
   // Cambiar color primario y secundario
@@ -28,12 +30,20 @@ function App() {
             <HomepageScreen />
           </Route>
 
+          <Route exact path='/centrosContigo'>
+            <CentrosCrecerScreen />
+          </Route>
+
           <Route exact path='/centrosContigo/:centroContigo'>
             <CentroCrecerScreen />
           </Route>
 
           <Route exact path='/centrosContigo/:centroContigo/cursos/:course'>
             <CourseScreen />
+          </Route>
+
+          <Route exact path='/sobreNosotros'>
+            <AboutUsScreen />
           </Route>
         </Switch>
       </Router>

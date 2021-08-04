@@ -26,7 +26,7 @@ const navLinks = [
     },
     {
         title: 'Sobre Nosotros',
-        path: '/aboutUs',
+        path: '/sobreNosotros',
         icon: <HelpOutline />
     }
 ];

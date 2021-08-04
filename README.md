@@ -9,6 +9,8 @@ Sitio web en el que se pueden consultar los centros contigo que hay en Aguascali
     ```sh
     git pull
     npm install
+    cd client
+    npm install
     ```
 - El backend está en la carpeta raíz y el frontend en la carpeta client, para iniciar el backend:
     ```sh
