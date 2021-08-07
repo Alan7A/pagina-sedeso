@@ -13,6 +13,7 @@ const PORT = process.env.PORT;
 
 // Rutas
 app.use('/api/usuarios', require('./routes/usuarios.routes'));
+app.use('/api/auth', require('./routes/auth.routes'));
 
 // Inicializar el servidor
 app.listen(PORT, () => {
