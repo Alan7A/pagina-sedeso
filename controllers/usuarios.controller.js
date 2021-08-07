@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require('../database/connection');
 
-const getUsuarios = async (req, res) => {
+const getUsers = async (req, res) => {
     try {
         const [results] = await db.query('SELECT * FROM Usuarios');
         res.json(results);
@@ -9,12 +9,13 @@ const getUsuarios = async (req, res) => {
         console.error(error);
         res.status(500).json({
             msg: 'Error con la base de datos',
-            query: error.sql
+            query: error.sql,
+            sqlMessage: error.sqlMessage
         })
     }
 }
 
-const getUsuario = async (req, res) => {
+const getUser = async (req, res) => {
     try {
         const { id } = req.params;
         const [results] = await db.query('CALL getUser(?)', [id]);
@@ -32,12 +33,13 @@ const getUsuario = async (req, res) => {
         console.error(error);
         res.status(500).json({
             msg: 'Error con la base de datos',
-            query: error.sql
+            query: error.sql,
+            sqlMessage: error.sqlMessage
         })
     }
 }
 
-const createUsuario = async (req, res) => {
+const createUser = async (req, res) => {
     let { idCentro, coordinador, email, contra } = req.body;
 
     try {
@@ -46,28 +48,100 @@ const createUsuario = async (req, res) => {
         contra = bcrypt.hashSync(contra, salt);
 
         // Insertar usuario a la DB
-        const [results] = await db.query('CALL setUser(?, ?, ?, ?)', [idCentro, coordinador, email, contra]);
+        await db.query('CALL setUser(?, ?, ?, ?)', [idCentro, coordinador, email, contra]);
         res.status(201).json({
             msg: 'Usuario creado correctamente',
         })
     } catch (error) {
         // Si el correo ya existe, se manda el error
-        if(error.code === 'ER_DUP_ENTRY') {
+        if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
-                error: 'Ese correo ya está registrado'
+                errors: [{
+                    msg: 'Ese correo ya está registrado'
+                }]
             })
         }
 
         console.error(error);
         return res.status(500).json({
             msg: 'Error con la base de datos',
-            query: error.sql
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        })
+    }
+}
+
+const modifyUser = async (req, res) => {
+    const { id } = req.params;
+    let { idCentro, coordinador, email, contra } = req.body;
+
+    try {
+        // Encriptar contraseña
+        salt = bcrypt.genSaltSync();
+        contra = bcrypt.hashSync(contra, salt);
+
+        const [results] = await db.query('CALL updateUser(?, ?, ?, ?, ?)', [id, idCentro, coordinador, email, contra]);
+
+        // Si no se modificó ninguna fila, significa que el usuario no existe
+        if (results.affectedRows === 0) {
+            return res.status(400).json({
+                msg: 'El usuario a modificar no existe'
+            })
+        }
+
+        res.status(201).json({
+            msg: 'Usuario modificado correctamente',
+        })
+
+    } catch (error) {
+        // Si el correo ya existe, se manda el error
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({
+                errors: [{
+                    msg: 'Ese correo ya está registrado'
+                }]
+            })
+        }
+
+        console.error(error);
+        return res.status(500).json({
+            msg: 'Error con la base de datos',
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        })
+    }
+}
+
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [results] = await db.query('CALL deleteUser(?)', [id]);
+
+        // Si no se modificó ninguna fila, significa que el usuario no existe
+        if (results.affectedRows === 0) {
+            return res.status(400).json({
+                msg: 'El usuario a eliminar no existe'
+            })
+        }
+
+        res.json({
+            msg: 'Usuario eliminado correctamente'
+        })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            msg: 'Error con la base de datos',
+            query: error.sql,
+            sqlMessage: error.sqlMessage
         })
     }
 }
 
 module.exports = {
-    getUsuarios,
-    getUsuario,
-    createUsuario
+    getUsers,
+    getUser,
+    createUser,
+    modifyUser,
+    deleteUser
 }
