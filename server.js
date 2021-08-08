@@ -1,4 +1,5 @@
 const express = require('express');
+const validarJwt = require('./middlewares/validar-jwt');
 require('dotenv').config();
 // const cors = require('cors')
 
@@ -12,7 +13,7 @@ app.use(express.json());
 const PORT = process.env.PORT;
 
 // Rutas
-app.use('/api/usuarios', require('./routes/usuarios.routes'));
+app.use('/api/usuarios', validarJwt, require('./routes/usuarios.routes'));
 app.use('/api/auth', require('./routes/auth.routes'));
 
 // Inicializar el servidor
