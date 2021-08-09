@@ -1,13 +1,13 @@
 const express = require('express');
 const validarJwt = require('./middlewares/validar-jwt');
+const cors = require('cors');
 require('dotenv').config();
-// const cors = require('cors')
 
 // Inicializar express
 const app = express();
 
 // Midddlewares
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT;

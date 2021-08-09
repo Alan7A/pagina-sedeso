@@ -1,23 +1,18 @@
-import * as React from "react";
+import React from "react";
 import {
-    AppBar,
-    Toolbar,
-    Container,
-    List,
-    ListItem,
-    ListItemText,
-    Hidden,
-    ListItemIcon,
+    AppBar, Toolbar, Container, List, ListItem, ListItemText, Hidden, ListItemIcon, Link
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import SideDrawer from "./SideDrawer";
-import { Business, Home, HelpOutline } from "@material-ui/icons";
+import { Business, Home, HelpOutline, ExitToApp } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/actions/auth";
 
 const navLinks = [
     {
         title: `Inicio`,
         path: '/',
-        icon: <Home/>
+        icon: <Home />
     },
     {
         title: `Centros Contigo`,
@@ -33,14 +28,16 @@ const navLinks = [
 
 const Navbar = () => {
     const classes = useStyles();
+    const { usuario } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     return (
         <AppBar position="sticky">
             <Toolbar>
                 <Container maxWidth="lg" className={classes.navbarDisplayFlex}>
-                    <a href="/">
+                    <Link href="/">
                         <img src="/images/logoAGS.png" alt="logo" height='70px' />
-                    </a>
+                    </Link>
                     <Hidden xsDown>
                         <List
                             component="nav"
@@ -48,15 +45,25 @@ const Navbar = () => {
                             className={classes.navDisplayFlex}
                         >
                             {navLinks.map(({ title, path, icon }) => (
-                                <a href={path} key={title} className={classes.linkText}>
+                                <Link underline='none' href={path} key={title} className={classes.linkText}>
                                     <ListItem button>
                                         <ListItemIcon className={classes.icon}>
                                             {icon}
                                         </ListItemIcon>
                                         <ListItemText primary={title} />
                                     </ListItem>
-                                </a>
+                                </Link>
                             ))}
+                            {usuario && (
+                                <Link underline='none' key='logout' className={classes.linkText}>
+                                    <ListItem className={classes.linkText} onClick={() => dispatch(logout())}>
+                                        <ListItemIcon className={classes.icon}>
+                                            <ExitToApp />
+                                        </ListItemIcon>
+                                        <ListItemText primary='Cerrar Sesión' />
+                                    </ListItem>
+                                </Link>
+                            )}
                         </List>
                     </Hidden>
                     <Hidden smUp>
@@ -72,11 +79,11 @@ const useStyles = makeStyles({
     navbarDisplayFlex: {
         display: `flex`,
         justifyContent: `space-between`,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     navDisplayFlex: {
         display: `flex`,
-        justifyContent: `space-between`
+        justifyContent: `space-between`,
     },
     linkText: {
         textDecoration: `none`,
@@ -84,7 +91,7 @@ const useStyles = makeStyles({
         transition: 'linear .3s',
         "&:hover": {
             background: '#1f304d'
-        }
+        },
     },
     icon: {
         color: 'white',

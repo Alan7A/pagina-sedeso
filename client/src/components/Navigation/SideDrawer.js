@@ -1,15 +1,18 @@
 import {
     Drawer,
     IconButton,
+    Link,
     List,
     ListItem,
     ListItemIcon,
     ListItemText
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Menu } from "@material-ui/icons";
+import { ExitToApp, Menu } from "@material-ui/icons";
 import * as React from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/actions/auth";
 
 const useStyles = makeStyles({
     list: {
@@ -25,6 +28,9 @@ const useStyles = makeStyles({
 const SideDrawer = ({ navLinks }) => {
     const classes = useStyles();
     const [state, setState] = useState({ right: false });
+
+    const { usuario } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     const toggleDrawer = (anchor, open) => event => {
         if (
@@ -55,6 +61,16 @@ const SideDrawer = ({ navLinks }) => {
                         </ListItem>
                     </a>
                 ))}
+                {usuario && (
+                    <Link underline='none' key='logout' className={classes.linkText}>
+                        <ListItem className={classes.linkText} onClick={() => dispatch(logout())}>
+                            <ListItemIcon className={classes.icon}>
+                                <ExitToApp />
+                            </ListItemIcon>
+                            <ListItemText primary='Cerrar Sesión' />
+                        </ListItem>
+                    </Link>
+                )}
             </List>
         </div>
     );
