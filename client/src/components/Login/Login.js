@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Container, InputAdornment, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import { Email, Lock } from '@material-ui/icons';
 import { useDispatch } from 'react-redux'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from '../../utils/axios';
 import Loading from '../Loading';
@@ -77,7 +77,6 @@ function Login() {
 
     return (
         <Container maxWidth="sm" style={{ display: 'grid', placeItems: 'center' }}>
-            <ToastContainer />
             <Paper className={classes.paper} elevation={3}>
                 <img src="/images/login.jpg" className={classes.image} alt="sedeso_login" />
                 <Typography variant="h5">
@@ -131,7 +130,7 @@ function Login() {
                             </Button>
                         )}
                 </form>
-            </Paper>            
+            </Paper>
         </Container>
     )
 }

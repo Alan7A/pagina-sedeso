@@ -12,9 +12,10 @@ module.exports = validarJWT = (req, res, next) => {
     }
 
     try {
-        const datosToken = jwt.verify(token, process.env.JWT_SECRET);
-        if (datosToken) {
+        const { uid } = jwt.verify(token, process.env.JWT_SECRET);
+        if (uid) {
             // Todo bien con el token        
+            req.uid = uid;
             next();
         }
 

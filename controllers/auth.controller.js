@@ -51,6 +51,25 @@ const login = async (req, res) => {
     }
 }
 
+const renovarToken = async (req, res) => {
+    //Extraer uid de la req (se puso ahí en el middleware validar-kwt)
+    const uid = req.uid;
+
+    // Generar nuevo JWT
+    const token = await generarJWT(uid)
+
+    // Consultar el usuario
+    const [results] = await db.query('SELECT idUsuario, coordinador, correo, idCentro  FROM Usuarios WHERE idUsuario = ?', [uid]);
+    const usuario = results;
+
+    res.json({
+        usuario,
+        token,
+        msg: 'Token renovado correctamente'
+    })
+}
+
 module.exports = {
-    login
+    login,
+    renovarToken
 }

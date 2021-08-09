@@ -8,9 +8,15 @@ import CourseScreen from "./components/Course/CourseScreen";
 import HomepageScreen from "./components/Homepage/HomepageScreen";
 import Navbar from "./components/Navigation/Navbar";
 import AboutUsScreen from "./components/AboutUs/AboutUsScreen";
-import Login from "./components/Login/Login";
+import { useEffect, useState } from "react";
+import axios from './utils/axios';
+import { useDispatch } from "react-redux";
+import { login } from "./redux/actions/auth";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
+
   // Cambiar color primario y secundario
   const theme = createTheme({
     palette: {
@@ -22,6 +28,24 @@ function App() {
       }
     }
   });
+
+  // Obtener el usuario del token, si es que hay
+  useEffect(() => {
+    const obtenerUsuario = async () => {
+      const token = localStorage.getItem('token') || '';
+      try {
+        const response = await axios.get('/auth/renovarToken', { headers: { 'x-token': token } })
+        const usuario = response.data.usuario;
+        dispatch(login(usuario));
+        setIsAuthenticated(true);
+      } catch (error) {
+        // Token no valido, no ha iniciado sesión
+        setIsAuthenticated(false);
+        console.log(error.response);
+      }
+    }
+    obtenerUsuario();
+  }, [dispatch])
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -48,11 +72,7 @@ function App() {
 
           <Route exact path='/sobreNosotros'>
             <AboutUsScreen />
-          </Route>
-
-          <Route exact path='/login'>
-            <Login />
-          </Route>
+          </Route>            
         </Switch>
       </Router>
     </MuiThemeProvider>
