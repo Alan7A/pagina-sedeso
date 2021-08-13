@@ -6,28 +6,36 @@ import { Business, Home, HelpOutline, ExitToApp } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/auth";
 
-const navLinks = [
-    {
-        title: `Inicio`,
-        path: '/',
-        icon: <Home />
-    },
-    {
-        title: `Centros Contigo`,
-        path: '/centrosContigo',
-        icon: <Business />
-    },
-    {
-        title: 'Sobre Nosotros',
-        path: '/sobreNosotros',
-        icon: <HelpOutline />
-    }
-];
+
 
 const Navbar = () => {
     const classes = useStyles();
     const { usuario } = useSelector(state => state.auth);
     const dispatch = useDispatch();
+
+    const navLinks = [
+        {
+            title: `Inicio`,
+            path: '/',
+            icon: <Home />
+        },
+        {
+            title: `Centros Contigo`,
+            path: '/centrosContigo',
+            icon: <Business />
+        },
+        {
+            title: 'Sobre Nosotros',
+            path: '/sobreNosotros',
+            icon: <HelpOutline />
+        },
+        {
+            title: usuario && 'Cerrar Sesión',
+            action: () => dispatch(logout()),
+            icon: usuario && <ExitToApp />
+    
+        }
+    ];
 
     return (
         <AppBar position="sticky">
@@ -42,9 +50,9 @@ const Navbar = () => {
                             aria-labelledby="main navigation"
                             className={classes.navDisplayFlex}
                         >
-                            {navLinks.map(({ title, path, icon }) => (
+                            {navLinks.map(({ title, path, icon, action }) => (
                                 <Link underline='none' href={path} key={title} className={classes.linkText}>
-                                    <ListItem button>
+                                    <ListItem button onClick={action}>
                                         <ListItemIcon className={classes.icon}>
                                             {icon}
                                         </ListItemIcon>
@@ -52,7 +60,7 @@ const Navbar = () => {
                                     </ListItem>
                                 </Link>
                             ))}
-                            {usuario && (
+                            {/* {usuario && (
                                 <Link underline='none' key='logout' className={classes.linkText}>
                                     <ListItem className={classes.linkText} onClick={() => dispatch(logout())}>
                                         <ListItemIcon className={classes.icon}>
@@ -61,7 +69,7 @@ const Navbar = () => {
                                         <ListItemText primary='Cerrar Sesión' />
                                     </ListItem>
                                 </Link>
-                            )}
+                            )} */}
                         </List>
                     </Hidden>
                     <Hidden smUp>

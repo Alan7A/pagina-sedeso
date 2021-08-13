@@ -60,7 +60,7 @@ const renovarToken = async (req, res) => {
 
     // Consultar el usuario
     const [results] = await db.query('SELECT idUsuario, coordinador, correo, idCentro  FROM Usuarios WHERE idUsuario = ?', [uid]);
-    const usuario = results;
+    const usuario = results[0];
 
     res.json({
         usuario,

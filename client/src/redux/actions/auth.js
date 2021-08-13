@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const startLogin = (formValues) => {
     return async (dispatch) => {
         try {
-            dispatch(startLoading())
+            dispatch(startLoading());
 
             const response = await axios.post('/auth/login', formValues);
             console.log(response.data);
@@ -49,6 +49,8 @@ export const renovarToken = () => {
     return async (dispatch) => {
         const token = localStorage.getItem('token') || '';
         try {
+            dispatch(startLoading());
+
             const response = await axios.get('/auth/renovarToken', { headers: { 'x-token': token } })
             const usuario = response.data.usuario;
             localStorage.setItem('token', response.data.token);
@@ -56,6 +58,7 @@ export const renovarToken = () => {
         } catch (error) {
             // Token no valido, no ha iniciado sesión
             console.log(error.response);
+            dispatch(errorFound(error.response.data.errors));
         }
     }
 }

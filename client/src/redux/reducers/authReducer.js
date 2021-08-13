@@ -1,8 +1,8 @@
 import { types } from "../types";
 
 const initialState = {
-    isLoading: false,
-    usuario: {},
+    isLoading: true,
+    usuario: null,
     error: null
 }
 

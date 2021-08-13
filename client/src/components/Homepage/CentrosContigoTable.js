@@ -2,8 +2,6 @@ import { Paper, Table, TableContainer, TableHead, TableRow, TableBody, TableCell
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 
-
-
 function CentrosContigoTable() {
     const history = useHistory()
 
