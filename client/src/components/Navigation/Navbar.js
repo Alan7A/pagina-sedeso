@@ -1,7 +1,5 @@
 import React from "react";
-import {
-    AppBar, Toolbar, Container, List, ListItem, ListItemText, Hidden, ListItemIcon, Link
-} from "@material-ui/core";
+import { AppBar, Toolbar, Container, List, ListItem, ListItemText, Hidden, ListItemIcon, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import SideDrawer from "./SideDrawer";
 import { Business, Home, HelpOutline, ExitToApp } from "@material-ui/icons";
@@ -90,7 +88,8 @@ const useStyles = makeStyles({
         color: `white`,
         transition: 'linear .3s',
         "&:hover": {
-            background: '#1f304d'
+            background: '#1f304d',
+            cursor: 'pointer'
         },
     },
     icon: {
