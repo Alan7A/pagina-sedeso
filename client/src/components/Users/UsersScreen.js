@@ -10,7 +10,7 @@ import DeleteUserDialog from './DeleteUserDialog';
 import { loadUsers } from '../../redux/actions/users';
 
 function UsersScreen() {
-    const { isLoading, users, error } = useSelector(state => state.users);
+    const { isLoading, users } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -34,8 +34,6 @@ function UsersScreen() {
                     <UsersTable usuarios={users} />
                 )
             }
-
-            {error && (<Typography variant='h6'>{error}</Typography>)}
 
             <CreateUserModal />
             <DeleteUserDialog />

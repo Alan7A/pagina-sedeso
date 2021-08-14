@@ -8,7 +8,7 @@ const login = async (req, res) => {
 
     try {
         // Consultar el usuario
-        const [results] = await db.query('SELECT * FROM Usuarios WHERE correo = ?', [email]);
+        const [results] = await db.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
         let usuario = results[0];
 
         // Verificar si existe el usuario/email
@@ -59,7 +59,7 @@ const renovarToken = async (req, res) => {
     const token = await generarJWT(uid)
 
     // Consultar el usuario
-    const [results] = await db.query('SELECT idUsuario, coordinador, correo, idCentro  FROM Usuarios WHERE idUsuario = ?', [uid]);
+    const [results] = await db.query('SELECT idUsuario, coordinador, email, idCentro  FROM Usuarios WHERE idUsuario = ?', [uid]);
     const usuario = results[0];
 
     res.json({

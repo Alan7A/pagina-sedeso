@@ -32,9 +32,9 @@ function UsersTable({ usuarios }) {
                 </TableHead>
                 <TableBody>
                     {usuarios.map((usuario) => (
-                        <TableRow key={usuario.correo}>
+                        <TableRow key={usuario.email}>
                             <TableCell>{usuario.coordinador}</TableCell>
-                            <TableCell>{usuario.correo}</TableCell>
+                            <TableCell>{usuario.email}</TableCell>
                             <TableCell>
                                 <Tooltip title='Editar' onClick={() => handleEdit(usuario)}>
                                     <IconButton color='secondary'>

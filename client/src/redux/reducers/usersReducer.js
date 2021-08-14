@@ -34,7 +34,7 @@ export const usersReducer = (state=initialState, action) => {
         case types.userUpdated:
             return {
                 ...state,
-                users: state.users.map((user) => (user.id === action.payload.id) ? action.payload : user),
+                users: state.users.map((user) => (user.idUsuario === action.payload.idUsuario) ? action.payload : user),
                 isLoading: false,
                 error: null
             }

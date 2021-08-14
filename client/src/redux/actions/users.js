@@ -1,7 +1,7 @@
 import axios from '../../utils/axios';
 import { toast } from 'react-toastify';
 import { types } from "../types"
-import { closeCreateUserModal, closeDeleteUserDialog } from './ui';
+import { closeCreateUserModal, closeDeleteUserDialog, closeEditUserModal } from './ui';
 
 export const setActiveUser = (user) => ({
     type: types.setActiveUser,
@@ -66,6 +66,54 @@ const userCreated = (user) => ({
     payload: user
 });
 
+export const updateUser = (user) => {
+    return async (dispatch) => {
+        dispatch(startLoading());
+
+        try {
+            const response = await axios.put(`/usuarios/modificarUsuario/${user.idUsuario}`, user, { headers: { 'x-token': localStorage.getItem('token') } });
+            toast.success(response.data.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                progress: undefined,
+            });
+
+            dispatch(userUpdated(user));
+            // Cerrar el modal
+            dispatch(closeEditUserModal());
+        } catch (error) {
+            console.log(error.response.data.errors);
+            if(error.response.data.errors) {
+                error.response.data.errors.forEach(err => {
+                    toast.error(err.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        progress: undefined,
+                    });
+                });
+                
+                dispatch(errorFound(error.response.data.errors));
+            } else {
+                console.error(error.response);
+                toast.error('No se pudo eliminar el usuario, error en el servidor', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    progress: undefined,
+                });
+            }
+        }
+    }
+}
+
 const userUpdated = (user) => ({
     type: types.userUpdated,
     payload: user
@@ -85,11 +133,13 @@ export const deleteUser = (userId) => {
                 pauseOnHover: true,
                 progress: undefined,
             });
+
             dispatch(userDeleted());
             // Cerrar el modal
             dispatch(closeDeleteUserDialog());
         } catch (error) {
             if(error.response.data.errors) {
+                dispatch(errorFound(error.response.data.errors));
                 error.response.data.errors.forEach(error => {
                     toast.error(error.msg, {
                         position: "top-right",
@@ -101,7 +151,6 @@ export const deleteUser = (userId) => {
                     });
                 });
     
-                dispatch(errorFound(error.response.data.errors));
             } else {
                 console.error(error.response);
                 toast.error('No se pudo eliminar el usuario, error en el servidor', {
@@ -112,6 +161,7 @@ export const deleteUser = (userId) => {
                     pauseOnHover: true,
                     progress: undefined,
                 });
+                dispatch(errorFound(error.response.data));
             }
         }
     }

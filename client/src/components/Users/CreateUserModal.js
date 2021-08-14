@@ -12,7 +12,7 @@ import { startCreatingUser } from '../../redux/actions/users';
 const initialFormValues = {
     coordinador: '',
     idCentro: 1,
-    correo: '',
+    emailcorremaieo: '',
     contra: ''
 }
 
