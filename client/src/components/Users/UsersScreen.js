@@ -7,6 +7,7 @@ import UsersTable from './UsersTable';
 import Loading from '../Loading';
 import CreateUserModal from './CreateUserModal';
 import { openCreateUserModal } from '../../redux/actions/ui';
+import DeleteUserDialog from './DeleteUserDialog';
 
 function UsersScreen() {
     const [usuarios, setUsuarios] = useState([]);
@@ -50,6 +51,7 @@ function UsersScreen() {
             {error && (<Typography variant='h6'>{error}</Typography>)}
 
             <CreateUserModal />
+            <DeleteUserDialog />
         </Container>
     )
 }

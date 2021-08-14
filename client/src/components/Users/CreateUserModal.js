@@ -107,11 +107,11 @@ export default function CreateUserModal() {
                             type='password'
                         />
                         <div className='botones'>
-                            <Button variant='contained' color='primary' type='submit'>
-                                Guardar
-                            </Button>
                             <Button variant='contained' className='boton-cancelar' onClick={() => dispatch(closeCreateUserModal())} >
                                 Cancelar
+                            </Button>
+                            <Button variant='contained' color='primary' type='submit'>
+                                Guardar
                             </Button>
                         </div>
                     </form>

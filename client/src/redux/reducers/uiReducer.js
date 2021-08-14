@@ -2,7 +2,8 @@ import { types } from "../types";
 
 const initialState = {
     isCreateUserModalOpen: false,
-    isEditUserModalOpen: false
+    isEditUserModalOpen: false,
+    isDeleteUserDialogOpen: false
 }
 
 export const uiReducer = (state = initialState, action) => {
@@ -29,6 +30,18 @@ export const uiReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isEditUserModalOpen: false
+            }
+
+        case types.openDeleteUserDialog:
+            return {
+                ...state,
+                isDeleteUserDialogOpen: true
+            }
+
+        case types.closeDeleteUserDialog:
+            return {
+                ...state,
+                isDeleteUserDialogOpen: false
             }
 
         default:

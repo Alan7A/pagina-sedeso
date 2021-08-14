@@ -3,7 +3,7 @@ import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHe
 import { Edit, Delete } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import EditUserModal from './EditUserModal';
-import { openEditUserModal } from '../../redux/actions/ui';
+import { openDeleteUserDialog, openEditUserModal } from '../../redux/actions/ui';
 
 function UsersTable({ usuarios }) {
     const [selectedUser, setSelectedUser] = useState(null);
@@ -36,8 +36,8 @@ function UsersTable({ usuarios }) {
                                         <Edit />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title='Eliminar'>
-                                    <IconButton style={{ color: 'red' }}>
+                                <Tooltip title='Eliminar' onClick={() => dispatch(openDeleteUserDialog())} >
+                                    <IconButton style={{ color: '#b00020' }}>
                                         <Delete />
                                     </IconButton>
                                 </Tooltip>
