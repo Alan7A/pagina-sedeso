@@ -2,15 +2,17 @@ import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeDeleteUserDialog } from '../../redux/actions/ui';
+import { deleteUser } from '../../redux/actions/users';
+import Loading from '../Loading';
 
 
-export default function DeleteUserDialog({ usuario = 'Alan' }) {
+export default function DeleteUserDialog() {
     const { isDeleteUserDialogOpen } = useSelector(state => state.ui);
+    const { activeUser, isLoading } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     const handleDelete = () => {
-        console.log('Usuario eliminado');
-        dispatch(closeDeleteUserDialog());
+        dispatch(deleteUser(activeUser.idUsuario))
     }
 
     return (
@@ -21,16 +23,20 @@ export default function DeleteUserDialog({ usuario = 'Alan' }) {
             <DialogTitle>{"Eliminar usuario"}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    ¿Estás seguro que quieres eliminar el usuario de <b>{usuario}</b>?
+                    ¿Estás seguro que quieres eliminar el usuario de <b>{activeUser?.coordinador}</b>?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button variant='contained' color="primary" onClick={() => dispatch(closeDeleteUserDialog())}>
-                    Cancelar
-                </Button>
-                <Button onClick={handleDelete} className='boton-cancelar'>
-                    Eliminar
-                </Button>
+                {isLoading ? (<Loading />) : (
+                    <div>
+                        <Button variant='contained' color="primary" onClick={() => dispatch(closeDeleteUserDialog())}>
+                            Cancelar
+                        </Button>
+                        <Button onClick={handleDelete} style={{ color: 'white', background: '#b00020', marginLeft: 10 }}>
+                            Eliminar
+                        </Button>
+                    </div>
+                )}
             </DialogActions>
         </Dialog>
     );

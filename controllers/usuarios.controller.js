@@ -3,7 +3,7 @@ const db = require('../database/connection');
 
 const getUsers = async (req, res) => {
     try {
-        const [results] = await db.query('SELECT * FROM Usuarios');
+        const [results] = await db.query('SELECT idUsuario, coordinador, correo, idCentro FROM Usuarios');
         res.json(results);
     } catch (error) {
         console.error(error);

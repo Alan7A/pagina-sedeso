@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, withStyles } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import EditUserModal from './EditUserModal';
 import { openDeleteUserDialog, openEditUserModal } from '../../redux/actions/ui';
+import { setActiveUser } from '../../redux/actions/users';
 
 function UsersTable({ usuarios }) {
-    const [selectedUser, setSelectedUser] = useState(null);
-
+    
     const dispatch = useDispatch();
 
     const handleEdit = (user) => {
-        setSelectedUser(user);
+        dispatch(setActiveUser(user));
         dispatch(openEditUserModal())
+    }
+
+    const handleDelete = (user) => {
+        dispatch(setActiveUser(user));
+        dispatch(openDeleteUserDialog())
     }
 
     return (
@@ -36,7 +41,7 @@ function UsersTable({ usuarios }) {
                                         <Edit />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title='Eliminar' onClick={() => dispatch(openDeleteUserDialog())} >
+                                <Tooltip title='Eliminar' onClick={() => handleDelete(usuario)}>
                                     <IconButton style={{ color: '#b00020' }}>
                                         <Delete />
                                     </IconButton>
@@ -46,7 +51,7 @@ function UsersTable({ usuarios }) {
                     ))}
                 </TableBody>
             </Table>
-            <EditUserModal usuario={selectedUser} setUsuario={setSelectedUser} />
+            <EditUserModal />
         </TableContainer>
     )
 }

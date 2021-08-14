@@ -1,34 +1,21 @@
 import { Button, Container, Typography } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import { useDispatch } from 'react-redux'
-import axios from '../../utils/axios';
+import { useDispatch, useSelector } from 'react-redux'
 import UsersTable from './UsersTable';
 import Loading from '../Loading';
 import CreateUserModal from './CreateUserModal';
 import { openCreateUserModal } from '../../redux/actions/ui';
 import DeleteUserDialog from './DeleteUserDialog';
+import { loadUsers } from '../../redux/actions/users';
 
 function UsersScreen() {
-    const [usuarios, setUsuarios] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-
+    const { isLoading, users, error } = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const getUsuarios = async () => {
-            try {
-                const result = await axios.get('/usuarios', { headers: { 'x-token': localStorage.getItem('token') } });
-                setUsuarios(result.data);
-            } catch (error) {
-                console.error(error.response.data)
-                setError(error.response.data.msg);
-            }
-            setIsLoading(false);
-        }
-        getUsuarios();
-    }, [])
+        dispatch(loadUsers())
+    }, [dispatch])
 
     return (
         <Container maxWidth='md'>
@@ -44,7 +31,7 @@ function UsersScreen() {
 
             {isLoading ? (<Loading />)
                 : (
-                    <UsersTable usuarios={usuarios} />
+                    <UsersTable usuarios={users} />
                 )
             }
 
