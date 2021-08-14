@@ -38,7 +38,7 @@ export const startLogin = (formValues) => {
                     pauseOnHover: true,
                     progress: undefined,
                 });
-            })
+            });
 
             dispatch(errorFound(error.response.data.errors));
         }

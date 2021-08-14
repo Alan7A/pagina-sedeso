@@ -1,0 +1,31 @@
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* min-width: 400px; */
+}
+
+.paper {
+    background-color: white;
+    padding: 15px
+}
+
+.modal-title {
+    padding-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+
+.form-input {
+    margin-bottom: 25px !important;
+}
+
+.botones {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.boton-cancelar {
+    color: white !important;
+    background-color: #b00020 !important;
+    margin-left: 10px !important;
+}
