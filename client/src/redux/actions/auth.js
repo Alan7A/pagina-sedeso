@@ -57,8 +57,10 @@ export const renovarToken = () => {
             dispatch(login(usuario));
         } catch (error) {
             // Token no valido, no ha iniciado sesión
-            console.log(error.response);
-            dispatch(errorFound(error.response.data.errors));
+            console.log(error);
+            if(error.response) {
+                dispatch(errorFound(error.response.data.errors));
+            }
         }
     }
 }

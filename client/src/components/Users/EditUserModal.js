@@ -3,11 +3,16 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Typography, TextField, Button } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import './styles.css'
 import axios from '../../utils/axios'
+import { closeEditUserModal } from '../../redux/actions/ui';
 
-export default function EditUserModal({ isOpen, setIsOpen, usuario, setUsuario }) {
+export default function EditUserModal({ usuario, setUsuario }) {
+    const { isEditUserModalOpen } = useSelector(state => state.ui);
+    const dispatch = useDispatch();
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUsuario({ ...usuario, [name]: value })
@@ -33,7 +38,7 @@ export default function EditUserModal({ isOpen, setIsOpen, usuario, setUsuario }
                 pauseOnHover: true,
                 progress: undefined,
             });
-            setIsOpen(false);
+            dispatch(closeEditUserModal())
         } catch (error) {
             console.log(error.response.data);
             error.response.data.errors.forEach(error => {
@@ -53,15 +58,15 @@ export default function EditUserModal({ isOpen, setIsOpen, usuario, setUsuario }
     return (
         <Modal
             className='modal'
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
+            open={isEditUserModalOpen}
+            onClose={() => dispatch(closeEditUserModal())}
             closeAfterTransition
             BackdropComponent={Backdrop}
             BackdropProps={{
                 timeout: 500,
             }}
         >
-            <Fade in={isOpen}>
+            <Fade in={isEditUserModalOpen}>
                 <div className='paper'>
                     <Typography variant='h6' className='modal-title' >Editar usuario</Typography>
                     <form onSubmit={handleSubmit}>
@@ -89,7 +94,7 @@ export default function EditUserModal({ isOpen, setIsOpen, usuario, setUsuario }
                             <Button variant='contained' color='primary' type='submit'>
                                 Guardar
                             </Button>
-                            <Button variant='contained' className='boton-cancelar' onClick={() => setIsOpen(false)} >
+                            <Button variant='contained' className='boton-cancelar' onClick={() => dispatch(closeEditUserModal())} >
                                 Cancelar
                             </Button>
                         </div>

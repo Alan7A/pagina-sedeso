@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, withStyles } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 import EditUserModal from './EditUserModal';
+import { openEditUserModal } from '../../redux/actions/ui';
 
 function UsersTable({ usuarios }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+
+    const dispatch = useDispatch();
 
     const handleEdit = (user) => {
         setSelectedUser(user);
-        setIsModalOpen(true);
+        dispatch(openEditUserModal())
     }
 
     return (
@@ -43,7 +46,7 @@ function UsersTable({ usuarios }) {
                     ))}
                 </TableBody>
             </Table>
-            <EditUserModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} usuario={selectedUser} setUsuario={setSelectedUser} />
+            <EditUserModal usuario={selectedUser} setUsuario={setSelectedUser} />
         </TableContainer>
     )
 }
