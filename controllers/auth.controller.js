@@ -44,7 +44,9 @@ const login = async (req, res) => {
     } catch (error) {
         console.error(error);
         return res.status(500).json({
-            msg: 'Error con la base de datos o el servidor',
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
             query: error.sql,
             sqlMessage: error.sqlMessage
         })
@@ -55,18 +57,29 @@ const renovarToken = async (req, res) => {
     //Extraer uid de la req (se puso ahí en el middleware validar-kwt)
     const uid = req.uid;
 
-    // Generar nuevo JWT
-    const token = await generarJWT(uid)
+    try {
+        // Generar nuevo JWT
+        const token = await generarJWT(uid)
 
-    // Consultar el usuario
-    const [results] = await db.query('SELECT idUsuario, coordinador, email, idCentro  FROM Usuarios WHERE idUsuario = ?', [uid]);
-    const usuario = results[0];
+        // Consultar el usuario
+        const [results] = await db.query('SELECT idUsuario, coordinador, email, idCentro  FROM Usuarios WHERE idUsuario = ?', [uid]);
+        const usuario = results[0];
 
-    res.json({
-        usuario,
-        token,
-        msg: 'Token renovado correctamente'
-    })
+        res.json({
+            usuario,
+            token,
+            msg: 'Token renovado correctamente'
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
 }
 
 module.exports = {

@@ -12,7 +12,7 @@ pool.getConnection((error, connection) => {
             console.error("Hay demasiadas conexiones en la base de datos");
     
         else if (error.code === 'ECONNREFUSED')
-            console.error("Conexión rechazada");
+            console.error("No se puedo conectar a la base de datos");
         
         else
             console.error("Error al conectar a la base de datos: ", error);

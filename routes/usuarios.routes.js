@@ -30,4 +30,4 @@ router.put('/modificarUsuario/:id',
 
 router.delete('/eliminarUsuario/:id', deleteUser);
 
-module.exports = router
+module.exports = router;

@@ -14,4 +14,4 @@ router.post('/login', [
 
 router.get('/renovarToken', validarJwt, renovarToken);
 
-module.exports = router
+module.exports = router;

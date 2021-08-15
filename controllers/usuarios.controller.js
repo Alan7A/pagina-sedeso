@@ -7,11 +7,13 @@ const getUsers = async (req, res) => {
         res.json(results);
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            msg: 'Error con la base de datos',
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
             query: error.sql,
             sqlMessage: error.sqlMessage
-        })
+        });
     }
 }
 
@@ -27,15 +29,17 @@ const getUser = async (req, res) => {
         } else {
             res.status(404).json({
                 msg: 'Usuario no encontrado'
-            })
+            });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            msg: 'Error con la base de datos',
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
             query: error.sql,
             sqlMessage: error.sqlMessage
-        })
+        });
     }
 }
 
@@ -59,15 +63,17 @@ const createUser = async (req, res) => {
                 errors: [{
                     msg: 'Ese email ya está registrado'
                 }]
-            })
+            });
         }
 
         console.error(error);
         return res.status(500).json({
-            msg: 'Error con la base de datos',
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
             query: error.sql,
             sqlMessage: error.sqlMessage
-        })
+        });
     }
 }
 
@@ -86,7 +92,7 @@ const modifyUser = async (req, res) => {
         if (results.affectedRows === 0) {
             return res.status(400).json({
                 msg: 'El usuario a modificar no existe'
-            })
+            });
         }
 
         res.status(201).json({
@@ -100,15 +106,17 @@ const modifyUser = async (req, res) => {
                 errors: [{
                     msg: 'Ese email ya está registrado'
                 }]
-            })
+            });
         }
 
         console.error(error);
         return res.status(500).json({
-            msg: 'Error con la base de datos',
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
             query: error.sql,
             sqlMessage: error.sqlMessage
-        })
+        });
     }
 }
 
@@ -122,7 +130,7 @@ const deleteUser = async (req, res) => {
         if (results.affectedRows === 0) {
             return res.status(400).json({
                 msg: 'El usuario a eliminar no existe'
-            })
+            });
         }
 
         res.json({
@@ -131,10 +139,12 @@ const deleteUser = async (req, res) => {
     } catch (error) {
         console.error(error);
         return res.status(500).json({
-            msg: 'Error con la base de datos',
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
             query: error.sql,
             sqlMessage: error.sqlMessage
-        })
+        });
     }
 }
 
