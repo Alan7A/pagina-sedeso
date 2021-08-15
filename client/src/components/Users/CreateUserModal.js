@@ -12,7 +12,7 @@ import { startCreatingUser } from '../../redux/actions/users';
 const initialFormValues = {
     coordinador: '',
     idCentro: 1,
-    emailcorremaieo: '',
+    email: '',
     contra: ''
 }
 
@@ -55,7 +55,7 @@ export default function CreateUserModal() {
                             value={formValues.coordinador}
                             onChange={handleChange}
                             label='Nombre'
-                            fullWidth
+                            
                             color='secondary'
                             className='form-input'
                         />
@@ -65,7 +65,7 @@ export default function CreateUserModal() {
                             value={formValues.email}
                             onChange={handleChange}
                             label='Email'
-                            fullWidth
+                            
                             color='secondary'
                             className='form-input'
                         />
@@ -74,8 +74,8 @@ export default function CreateUserModal() {
                             name='contra'
                             value={formValues.contra}
                             onChange={handleChange}
-                            label='Email'
-                            fullWidth
+                            label='Contraseña'
+                            
                             color='secondary'
                             className='form-input'
                             type='password'

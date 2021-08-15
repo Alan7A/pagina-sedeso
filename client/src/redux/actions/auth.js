@@ -1,6 +1,5 @@
 import axios from '../../utils/axios';
 import { types } from "../types"
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { mostrarErrores, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles';
 
@@ -40,8 +39,8 @@ export const renovarToken = () => {
             dispatch(login(usuario));
         } catch (error) {
             // Token no valido, no ha iniciado sesión
-            console.log(error.response);
-            dispatch(errorFound(error.response.data.error));
+            console.log(error.response.data);
+            dispatch(errorFound(error.response.data));
         }
     }
 }

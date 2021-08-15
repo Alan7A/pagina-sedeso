@@ -63,7 +63,7 @@ function Login() {
                         name="email"
                         autoFocus
                         InputProps={{
-                            endAdornment: (
+                            startAdornment: (
                                 <InputAdornment position="start">
                                     <Email color='primary' />
                                 </InputAdornment>
@@ -80,7 +80,7 @@ function Login() {
                         label="Contraseña"
                         type="password"
                         InputProps={{
-                            endAdornment: (
+                            startAdornment: (
                                 <InputAdornment position="start">
                                     <Lock color='primary' />
                                 </InputAdornment>

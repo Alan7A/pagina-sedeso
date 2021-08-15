@@ -1,9 +1,19 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+
 .modal {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 400px;
+
 }
+@media (min-width: 600px) {
+    form {
+      min-width: 500px;
+    }
+  }
 
 .paper {
     background-color: white;
