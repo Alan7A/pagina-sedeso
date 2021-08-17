@@ -39,7 +39,7 @@ const login = async (req, res) => {
         res.json({
             usuario,
             token,
-            msg: 'Usuario logueado correctamente'
+            msg: 'Iniciaste sesión correctamente'
         })
     } catch (error) {
         console.error(error);

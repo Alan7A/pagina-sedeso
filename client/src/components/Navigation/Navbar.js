@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Container, List, ListItem, ListItemText, Hidden, ListItemIcon, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import SideDrawer from "./SideDrawer";
-import { Business, Home, HelpOutline, ExitToApp } from "@material-ui/icons";
+import { School, Home, HelpOutline, ExitToApp, Event } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/auth";
 
@@ -20,9 +20,14 @@ const Navbar = () => {
             icon: <Home />
         },
         {
-            title: `Centros Contigo`,
-            path: '/centrosContigo',
-            icon: <Business />
+            title: `Cursos`,
+            path: '/cursos',
+            icon: <School />
+        },
+        {
+            title: `Eventos`,
+            path: '/eventos',
+            icon: <Event />
         },
         {
             title: 'Sobre Nosotros',

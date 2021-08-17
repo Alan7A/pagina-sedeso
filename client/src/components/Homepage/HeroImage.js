@@ -7,7 +7,6 @@ function HeroImage() {
         <div style={image} className='image'>
             <div className='text'>
                 <Typography variant='h4' component='h1'>Secretaría de Desarrollo Social</Typography>
-                <a href='/centrosContigo' className='button'>Ver Centros Contigo</a>
             </div>
         </div>
     )

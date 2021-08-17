@@ -15,7 +15,7 @@ export const startLogin = (formValues) => {
             localStorage.setItem('token', response.data.token);
 
             // Mostrar mensaje de success
-            mostrarNotificacionSuccess(response.data.msg, 'top-left');
+            mostrarNotificacionSuccess(response.data.msg);
 
             // Guardar el usuario en el estado global (Redux)
             dispatch(login(response.data.usuario));
