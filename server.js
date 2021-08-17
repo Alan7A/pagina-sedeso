@@ -13,8 +13,9 @@ app.use(express.json());
 const PORT = process.env.PORT;
 
 // Rutas
-app.use('/api/usuarios', validarJwt, require('./routes/usuarios.routes'));
+app.use('/api/usuarios', validarJwt , require('./routes/usuarios.routes'));
 app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/cursos', validarJwt, require('./routes/cursos.routes'));
 
 // Inicializar el servidor
 app.listen(PORT, () => {
