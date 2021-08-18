@@ -1,44 +1,12 @@
 const db = require('../database/connection');
 
-const getCursosPorCentro = async (req, res) => {
+const getImgsPorCurso = async(req, res) => {
 
-    try{
+    const { idpc } = req.params; // id del Curso
+    try {
 
-        const { idc } = req.params; // idc = idCentroCrecer
-        const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
+        const [results] = await db.query('CALL ListImgCurso(?)', [idpc]);
         res.json(results);
-    } catch ( error ){
-
-        console.error(error);
-        return res.status(500).json({
-            errors: [{
-                msg: 'Error con la base de datos o el servidor'
-            }],
-            query: error.sql,
-            sqlMessage: error.sqlMessage
-        });
-    }
-
-}
-
-const getCurso = async (req, res) => {
-
-    try {
-        
-        const { idcp } = req.params; 
-        const [results] = await db.query('CALL getCurso(?)', [idcp]);
-        const curso = results[0][0];
-
-        if(curso){
-        
-            res.json(curso);
-        } else {
-
-            res.status(404).json({
-                msg:'Curso no encontrado'
-            });
-        }
-
     } catch (error) {
 
         console.error(error);
@@ -49,22 +17,44 @@ const getCurso = async (req, res) => {
             query: error.sql,
             sqlMessage: error.sqlMessage
         });
-        
     }
 }
 
-const createCurso = async(req, res) => {
+const getImgDeCurso = async(req, res) => {
 
-    const { idc, nom, hor } = req.body;
-    
+    const { id } = req.body; // id de la img
+
     try {
 
-        await db.query('CALL setCurso(?,?,?)', [idc, nom, hor]);
+        const [img] = await db.query('CALL getImgCurso(?)', [id]);
+        res.json(img[0]);
+        
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
+const createImgCurso = async(req, res) => {
+
+    const { idpc } = req.params;
+    const { img } = req.body;
+
+    try {
+        
+        await db.query('CALL setImgCurso(?,?)', [idpc, img]);
         res.status(201).json({
-            msg: 'Curso creado exitosamente'
+            msg: "Imagen guardada exitosamente"
         });
     } catch (error) {
-
+        
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -73,30 +63,30 @@ const createCurso = async(req, res) => {
             query: error.sql,
             sqlMessage: error.sqlMessage
         });
-    } 
+    }
+
 }
 
-const modifyCurso = async(req, res) => {
+const modifyImgCurso = async(req, res) => {
 
-    const { idcp } = req.params;
-    const { idc, nom, hor } = req.body; // idcp = idCurso, idc = idCentroCrecer
+    const { idpc } = req.params;
+    const { id, imagen } = req.body;
 
     try {
+        
+        const [results] = await db.query('CALL updateImgCurso(?,?,?)', [id, idpc, imagen]);
 
-        const [results] = await db.query('CALL updateCurso(?,?,?,?)', [idcp, idc, nom, hor])
         if (results.affectedRows === 0) {
-
             return res.status(400).json({
-                msg: 'El curso a editar no existe'
+                msg: `La imagen con id: ${ id } no existe`
             });
         }
 
         res.status(202).json({
-            msg: 'El curso se ha editado correctamente',
-        })
-
+            msg:"La imagen se ha editado exitosamente"
+        });
     } catch (error) {
-        
+
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -108,26 +98,24 @@ const modifyCurso = async(req, res) => {
     }
 }
 
-const deleteCurso = async (req, res) => {
+const deleteImgCurso = async(req, res) => {
 
-    const { idcp } = req.params;
+    const { id } = req.params; //id de la img
+
     try {
-
-        const [results] = await db.query('CALL deleteCurso(?)', [idcp]);
-
+  
+        const [results] = await db.query('CALL deleteImgCurso(?)', [id]);
         if (results.affectedRows === 0) {
-
             return res.status(400).json({
-                msg: 'El curso a eliminar no existe'
+                msg: `La imagen con id: ${ id } no existe`
             });
         }
 
-        res.json({
-            msg:'El curso se ha eliminado exitosamente'
-        })
-
+        res.status(202).json({
+            msg:"La imagen se ha eliminado exitosamente"
+        });
     } catch (error) {
-
+        
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -141,10 +129,10 @@ const deleteCurso = async (req, res) => {
 
 module.exports = {
 
-    getCurso,
-    getCursosPorCentro,
-    modifyCurso,
-    deleteCurso,
-    createCurso
+    getImgsPorCurso,
+    getImgDeCurso,
+    createImgCurso,
+    modifyImgCurso,
+    deleteImgCurso
 
 }

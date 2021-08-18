@@ -3,7 +3,7 @@ const db = require('../database/connection');
 
 const getUsers = async (req, res) => {
     try {
-        const [results] = await db.query('SELECT idUsuario, coordinador, email, idCentro FROM Usuarios');
+        const [results] = await db.query('CALL getUsers()');
         res.json(results);
     } catch (error) {
         console.error(error);
@@ -20,7 +20,8 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const [results] = await db.query('CALL getUser(?)', [id]);
+        const { email } = req.body;
+        const [results] = await db.query('CALL getUser(?)', [email]);
 
         const usuario = results[0][0];
 
