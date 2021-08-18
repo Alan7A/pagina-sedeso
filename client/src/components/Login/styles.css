@@ -1,20 +1,22 @@
-.container {
+.container-login {
     display: grid;
     place-items: center;
 }
 
-.paper {
+.paper-login {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 60px;
+    background-color: white;
+    padding: 15px;
 }
 
-.img {
+.img-login {
     height: 250px;
     margin-bottom: 35px;
 }
 
-.btn {
+.btn-login {
     margin-top: 20px !important;
 }

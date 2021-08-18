@@ -25,9 +25,9 @@ function Login() {
     }
 
     return (
-        <Container maxWidth="sm" className='container'>
-            <Paper elevation={3} className='paper'>
-                <img src="/images/login.jpg" alt="sedeso_login" className='img' />
+        <Container maxWidth="xs" className='container-login'>
+            <Paper elevation={3} className='paper-login'>
+                <img src="/images/login.jpg" alt="sedeso_login" className='img-login' />
                 <Typography variant="h5">
                     Iniciar Sesión
                 </Typography>
@@ -73,7 +73,7 @@ function Login() {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                className='btn'
+                                className='btn-login'
                             >
                                 Iniciar Sesión
                             </Button>

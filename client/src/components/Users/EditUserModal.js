@@ -79,7 +79,7 @@ export default function EditUserModal() {
                             className='form-input'
                         />
                         {isLoading ? (<Loading />) : (
-                            <div className='botones'>
+                            <div className='botones-modal'>
                                 <Button variant='contained' className='boton-cancelar' onClick={() => dispatch(closeEditUserModal())} >
                                     Cancelar
                                 </Button>

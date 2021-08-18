@@ -29,3 +29,10 @@ code {
   margin: 1rem auto 0 auto;
   border-radius: 10px;
 }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}

@@ -1,4 +1,4 @@
-form {
+.modal form {
     display: flex;
     flex-direction: column;
 }
@@ -10,14 +10,14 @@ form {
 
 }
 @media (min-width: 600px) {
-    form {
+    .modal form {
       min-width: 500px;
     }
   }
 
 .paper {
     background-color: white;
-    padding: 15px
+    padding: 15px;
 }
 
 .modal-title {
@@ -29,7 +29,7 @@ form {
     margin-bottom: 25px !important;
 }
 
-.botones {
+.botones-modal {
     display: flex;
     justify-content: flex-end;
 }

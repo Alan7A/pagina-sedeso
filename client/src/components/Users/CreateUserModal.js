@@ -55,7 +55,6 @@ export default function CreateUserModal() {
                             value={formValues.coordinador}
                             onChange={handleChange}
                             label='Nombre'
-                            
                             color='secondary'
                             className='form-input'
                         />
@@ -65,7 +64,6 @@ export default function CreateUserModal() {
                             value={formValues.email}
                             onChange={handleChange}
                             label='Email'
-                            
                             color='secondary'
                             className='form-input'
                         />
@@ -75,13 +73,12 @@ export default function CreateUserModal() {
                             value={formValues.contra}
                             onChange={handleChange}
                             label='Contraseña'
-                            
                             color='secondary'
-                            className='form-input'
                             type='password'
+                            className='form-input'
                         />
                         {isLoading ? (<Loading />) : (
-                            <div className='botones'>
+                            <div className='botones-modal'>
                                 <Button variant='contained' className='boton-cancelar' onClick={() => dispatch(closeCreateUserModal())} >
                                     Cancelar
                                 </Button>

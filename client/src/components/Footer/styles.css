@@ -1,0 +1,38 @@
+.footer {
+    background: black;
+    color: #807777;
+    padding: 20px;
+    font-size: small;
+    position: relative;
+    left: 0;
+    bottom: 0;
+  }
+
+.titulo-seccion {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #c3c3c3;
+}
+
+.titulo-seccion::after {
+    content: '';
+    display: block;
+    width: 70px;
+    height: 2px;
+    background: rgb(65, 65, 65);
+    margin: 8px 0 12px 0;
+}
+
+footer li {
+list-style: none;
+margin-bottom: 15px;
+}
+
+footer a {
+text-decoration: none;
+color: #7c7c7c;
+}
+
+footer a:hover {
+color: #2473b0
+}

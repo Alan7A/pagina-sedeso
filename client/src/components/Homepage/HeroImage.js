@@ -4,8 +4,8 @@ import portada from './portada.jpg'
 
 function HeroImage() {
     return (
-        <div style={image} className='image'>
-            <div className='text'>
+        <div style={image} className='hero-image'>
+            <div className='hero-text'>
                 <Typography variant='h4' component='h1'>Secretaría de Desarrollo Social</Typography>
             </div>
         </div>
