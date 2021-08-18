@@ -1,6 +1,6 @@
 import { createTheme, MuiThemeProvider } from "@material-ui/core";
 import 'react-toastify/dist/ReactToastify.css';
-import AppRouter from "./components/Routes/AppRouter";
+import AppRouter from "./components/Router/AppRouter";
 
 function App() {
   // Cambiar color primario y secundario

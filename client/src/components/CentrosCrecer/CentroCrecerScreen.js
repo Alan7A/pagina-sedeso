@@ -24,6 +24,8 @@ function CentroCrecerScreen() {
     return (
         <Container maxWidth='lg' style={{ marginTop: 35 }}>
             <Container maxWidth='md'>
+
+                {/* No me gustó como quedó esto, estaría bien cambiarlo */}
                 <Paper elevation={3} >
                     <Grid container>
                         <Grid item xs={6} className='leftPanel'>

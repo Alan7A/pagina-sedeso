@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CentrosCrecerScreen from "../CentrosCrecer/CentrosCrecerScreen";
 import CentroCrecerScreen from "../CentrosCrecer/CentroCrecerScreen";
-import CourseScreen from "../Course/CourseScreen";
+import CourseScreen from "../Courses/CourseScreen";
 import HomepageScreen from "../Homepage/HomepageScreen";
 import Navbar from "../Navigation/Navbar";
 import AboutUsScreen from "../AboutUs/AboutUsScreen";
@@ -15,6 +15,8 @@ import UsersScreen from '../Users/UsersScreen';
 import { useEffect } from 'react';
 import { renovarToken } from '../../redux/actions/auth';
 import Loading from '../Loading';
+import UpdateCentroCrecerForm from '../CentrosCrecer/UpdateCentroCrecerForm';
+import CoursesScreen from '../Courses/CoursesScreen';
 
 function AppRouter() {
     const dispatch = useDispatch();
@@ -39,7 +41,6 @@ function AppRouter() {
                     <HomepageScreen />
                 </Route>
 
-
                 <Route exact path='/centrosContigo'>
                     <CentrosCrecerScreen />
                 </Route>
@@ -52,8 +53,16 @@ function AppRouter() {
                     <CourseScreen />
                 </Route>
 
+                <Route exact path='/cursos'>
+                    <CoursesScreen />
+                </Route>
+
                 <Route exact path='/sobreNosotros'>
                     <AboutUsScreen />
+                </Route>
+
+                <Route exact path='/actualizarCentroContigo'>
+                    <UpdateCentroCrecerForm />
                 </Route>
 
                 <PublicRoute exact path='/login' component={LoginScreen} isAuthenticated={ !!usuario } />

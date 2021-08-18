@@ -38,12 +38,6 @@ function Course({ course, centroContigo }) {
                     <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${course.name}`)}>
                         Ver Más
                     </Button>
-                    {/* <IconButton size='small' color='secondary'>
-                        <Edit />
-                    </IconButton>
-                    <IconButton size='small' style={{ color: 'red' }}>
-                        <Delete />
-                    </IconButton> */}
                     <Button size="small" color="secondary" startIcon={<Edit />}>
                         Editar
                     </Button>
