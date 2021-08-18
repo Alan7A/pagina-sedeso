@@ -26,7 +26,7 @@ const getCurso = async (req, res) => {
     try {
         
         const { idcp } = req.params; 
-        const [results] = await db.query('CALL getCurso(?)', [idcp]);
+        const [results] = await db.query('CALL getCursoCompleto(?)', [idcp]);
         const curso = results[0][0];
 
         if(curso){
@@ -55,11 +55,11 @@ const getCurso = async (req, res) => {
 
 const createCurso = async(req, res) => {
 
-    const { idc, nom, hor } = req.body;
+    const { idc, nom, lug, alu } = req.body;
     
     try {
 
-        await db.query('CALL setCurso(?,?,?)', [idc, nom, hor]);
+        await db.query('CALL setCurso(?,?,?,?)', [idc, nom, lug, alu]);
         res.status(201).json({
             msg: 'Curso creado exitosamente'
         });
@@ -79,11 +79,11 @@ const createCurso = async(req, res) => {
 const modifyCurso = async(req, res) => {
 
     const { idcp } = req.params;
-    const { idc, nom, hor } = req.body; // idcp = idCurso, idc = idCentroCrecer
+    const { idc, nom, lug, alu } = req.body; // idcp = idCurso, idc = idCentroCrecer
 
     try {
 
-        const [results] = await db.query('CALL updateCurso(?,?,?,?)', [idcp, idc, nom, hor])
+        const [results] = await db.query('CALL updateCurso(?,?,?,?, ?)', [idcp, idc, nom, lug, alu])
         if (results.affectedRows === 0) {
 
             return res.status(400).json({
