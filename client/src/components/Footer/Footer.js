@@ -27,6 +27,13 @@ function Footer() {
                     <Grid container justify='center'>
                         Copyright
                     </Grid>
+                    
+                    <Grid container justify='center'>
+                        Telefono: 449 910 21 21
+                        Blvd. José María Chávez No.3205,
+                        Cd. Industrial C.P. 20290
+                    </Grid>
+
                 </Grid>
             </Container>
         </footer>
