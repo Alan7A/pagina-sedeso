@@ -1,13 +1,14 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
+const validarJwt = require('../middlewares/validar-jwt');
 const { createCentro, modifyCentro, deleteCentro, getCentroContigo } = require('../controllers/centros.controller');
 
 const router = Router();
 
 router.get('/:idp', getCentroContigo); // id del centro
 
-router.post('/agregarCentro', 
+router.post('/agregarCentro', validarJwt, 
     [
         check('nom', 'El nombre no puede estar vacio').notEmpty(),
         check('ub', 'Debes de agregar la ubicación del centro').notEmpty(),
@@ -15,7 +16,7 @@ router.post('/agregarCentro',
         validarCampos
     ], createCentro);
 
-router.put('/editar/:idp', 
+router.put('/editar/:idp', validarJwt, 
     [
         check('nom', 'El nombre no puede estar vacio').notEmpty(),
         check('ub', 'Debes de agregar la ubicación del centro').notEmpty(),
@@ -23,6 +24,6 @@ router.put('/editar/:idp',
         validarCampos
     ], modifyCentro);
 
-router.delete('/eliminar/:idp', deleteCentro);
+router.delete('/eliminar/:idp', validarJwt, deleteCentro);
 
 module.exports = router;
