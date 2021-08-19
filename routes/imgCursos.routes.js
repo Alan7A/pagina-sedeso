@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/imagenes/:idpc', getImgsPorCurso); // id del Curso
 
-router.get('/', getImgDeCurso); // id de la Imagen
+router.get('/:id', getImgDeCurso); // id de la Imagen
 
 router.post('/agregarImg/:idpc', validarJwt, 
     [

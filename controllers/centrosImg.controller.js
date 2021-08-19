@@ -1,34 +1,13 @@
 const db = require('../database/connection');
 
-const getImgsPorCurso = async(req, res) => {
+const getImgCentro = async(req, res) => {
 
-    const { idpc } = req.params; // id del Curso
-    try {
-
-        const [results] = await db.query('CALL ListImgCurso(?)', [idpc]);
-        res.json(results);
-    } catch (error) {
-
-        console.error(error);
-        return res.status(500).json({
-            errors: [{
-                msg: 'Error con la base de datos o el servidor'
-            }],
-            query: error.sql,
-            sqlMessage: error.sqlMessage
-        });
-    }
-}
-
-const getImgDeCurso = async(req, res) => {
-
-    const { id } = req.params; // id de la img
+    const { id } = req.params; // id de la Imagen
 
     try {
-
-        const [img] = await db.query('CALL getImgCurso(?)', [id]);
+        
+        const [img] = await db.query('CALL getImgCentro(?)', [id]);
         res.json(img[0]);
-        
     } catch (error) {
         
         console.error(error);
@@ -42,17 +21,15 @@ const getImgDeCurso = async(req, res) => {
     }
 }
 
-const createImgCurso = async(req, res) => {
+const getImgsPorCentro = async(req, res) => {
 
-    const { idpc } = req.params;
-    const { img } = req.body;
+    const { idc } = req.params; // id del Centro
 
     try {
         
-        await db.query('CALL setImgCurso(?,?)', [idpc, img]);
-        res.status(201).json({
-            msg: "Imagen guardada exitosamente"
-        });
+        const [results] = await db.query('CALL ListImgCentro(?)', [idc]);
+        res.json(results[0]);
+
     } catch (error) {
         
         console.error(error);
@@ -64,17 +41,16 @@ const createImgCurso = async(req, res) => {
             sqlMessage: error.sqlMessage
         });
     }
-
 }
 
-const modifyImgCurso = async(req, res) => {
+const modifyImgCentro = async(req, res) => {
 
-    const { idpc } = req.params;
-    const { id, imagen } = req.body;
+    const { idc } = req.params;
+    const { id, img } = req.body;
 
     try {
         
-        const [results] = await db.query('CALL updateImgCurso(?,?,?)', [id, idpc, imagen]);
+        const [results] = await db.query('CALL updateImgCentro(?,?,?)', [id, idc, img]);
 
         if (results.affectedRows === 0) {
             return res.status(400).json({
@@ -86,7 +62,7 @@ const modifyImgCurso = async(req, res) => {
             msg:"La imagen se ha editado exitosamente"
         });
     } catch (error) {
-
+     
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -98,13 +74,38 @@ const modifyImgCurso = async(req, res) => {
     }
 }
 
-const deleteImgCurso = async(req, res) => {
+const createImgCentro = async(req, res) => {
 
-    const { id } = req.params; //id de la img
+    const { idc } = req.params; // id del Centro
+    const { img } = req.body;
 
     try {
-  
-        const [results] = await db.query('CALL deleteImgCurso(?)', [id]);
+        
+        await db.query('CALL setImgCentro(?,?)', [idc, img]);
+
+        res.status(201).json({
+            msg:"La imagen se ha agregado exitosamente"
+        });
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
+const deleteImgCentro = async(req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        
+        const [results] = await db.query('CALL deleteImgCentro(?)', [id]);
         if (results.affectedRows === 0) {
             return res.status(400).json({
                 msg: `La imagen con id: ${ id } no existe`
@@ -128,11 +129,10 @@ const deleteImgCurso = async(req, res) => {
 }
 
 module.exports = {
-
-    getImgsPorCurso,
-    getImgDeCurso,
-    createImgCurso,
-    modifyImgCurso,
-    deleteImgCurso
-
+    
+    getImgCentro,
+    getImgsPorCentro,
+    modifyImgCentro,
+    createImgCentro,
+    deleteImgCentro
 }
