@@ -14,10 +14,10 @@ const PORT = process.env.PORT;
 
 // Rutas
 app.use('/api/usuarios', validarJwt , require('./routes/usuarios.routes'));
-app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/cursos',   validarJwt, require('./routes/cursos.routes'));
-app.use('/api/imgCursos', validarJwt, require('./routes/imgCursos.routes'));
-app.use('/api/CentrosContigo', validarJwt, require('./routes/centros.routes'));
+app.use('/api/auth',           require('./routes/auth.routes'));
+app.use('/api/cursos',         require('./routes/cursos.routes'));
+app.use('/api/imgCursos',      require('./routes/imgCursos.routes'));
+app.use('/api/CentrosContigo', require('./routes/centros.routes'));
 
 // Inicializar el servidor
 app.listen(PORT, () => {
