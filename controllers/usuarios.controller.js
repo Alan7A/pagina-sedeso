@@ -4,7 +4,7 @@ const db = require('../database/connection');
 const getUsers = async (req, res) => {
     try {
         const [results] = await db.query('CALL getUsers()');
-        res.json(results[0]);
+        res.json(results);
     } catch (error) {
         console.error(error);
         return res.status(500).json({

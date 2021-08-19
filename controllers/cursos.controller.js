@@ -6,7 +6,7 @@ const getCursosPorCentro = async (req, res) => {
 
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
-        res.json(results[0]);
+        res.json(results);
     } catch ( error ){
 
         console.error(error);
@@ -26,7 +26,7 @@ const getCurso = async (req, res) => {
     try {
         
         const { idcp } = req.params; 
-        const [results] = await db.query('CALL getCursoCompleto(?)', [idcp]);
+        const [results] = await db.query('CALL getCurso(?)', [idcp]);
         const curso = results[0][0];
 
         if(curso){

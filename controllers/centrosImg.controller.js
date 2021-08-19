@@ -28,7 +28,7 @@ const getImgsPorCentro = async(req, res) => {
     try {
         
         const [results] = await db.query('CALL ListImgCentro(?)', [idc]);
-        res.json(results[0]);
+        res.json(results);
 
     } catch (error) {
         
