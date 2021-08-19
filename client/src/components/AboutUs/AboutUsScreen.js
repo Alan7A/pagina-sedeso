@@ -6,7 +6,7 @@ function AboutUsScreen() {
     return (
         <div className='aboutUs'>
             <Container maxWidth='md'>
-                <h2>¿Quiénes somos?</h2>
+                <h2><center>¿Quiénes somos?</center></h2>
                 <Typography paragraph align='justify'>
                     La Secretaría de Desarrollo Social es la dependencia encargada de impulsar y consolidar mediante un modelo social de vertebración,
                     las acciones enfocadas a asegurar el disfrute de los derechos sociales, garantizando el acceso a los programas de desarrollo social,
@@ -16,24 +16,25 @@ function AboutUsScreen() {
                 <img src="https://www.aguascalientes.gob.mx/sedeso/images/febrero2021/Portadapaginaprincipal.jpg" alt="imagen" className="imagen" />
 
                 <Grid container>
-                    <Grid item xs={10}>
-                        <h2>Visión</h2>
-                        <Typography paragraph>
+                    <Grid item xs={20}>
+                        <h2><center>Visión</center></h2>
+                        <Typography paragraph >
                             La Secretaría de Desarrollo Social es reconocida por su trabajo en la vertebración e innovación en términos de participación ciudadana
                             y fortalecimiento de las competencias ciudadanas logrando comunidades vivas y proactivas, como protagonistas de su propio desarrollo,
                             mediante la formación de intermediarios sociales que generan una cultura de inclusión y respeto a los derechos humanos.
                         </Typography>
                     </Grid>
                 </Grid>
+                <img src="https://www.liderempresarial.com/wp-content/uploads/2019/11/200533-Aguascalientes.jpg"  alt="imagen" className="imagen"  />
 
-                <Grid container style={{textAlign:'right'}}>
+                <Grid container style={{textAlign:'center'}}>
                     <Grid item xs />
-                    <Grid item xs={10}>
-                        <h2>Misión</h2>
-                        <Typography paragraph>
+                    <Grid item xs={20}>
+                        <h2><center>Misión</center></h2>
+                        <Typography paragraph><center>
                             Instrumentar programas que fomenten la participación ciudadana a través de capacitaciones, desarrollo de habilidades
                             y capacidades de la población con la finalidad de construir y consolidar el tejido y movilidad social.
-                        </Typography>
+                        </center></Typography>
                     </Grid>
                 </Grid>
             </Container>
@@ -41,8 +42,8 @@ function AboutUsScreen() {
             <div className='blueDiv'>
                 <Container maxWidth='md'>
                     <Grid container>
-                        <Grid item xs={10}>
-                            <h2 style={{ color: 'white' }}>Objetivos</h2>
+                        <Grid item xs={20}>
+                            <h2 style={{ color: 'white' }}><center>Objetivos</center></h2>
                             <Typography paragraph>
                                 Contribuir al desarrollo humano y de sus capacidades básicas de educación, salud y nutrición, garantizando el acceso a los programas
                                 sociales que permitan una mayor igualdad de oportunidades de ingreso y superación, mejorando las condiciones de familias que se encuentren

@@ -6,7 +6,7 @@ function Contact() {
             <h6><link href="style/style_about.css" rel="stylesheet" type="text/css"></link>
             <center>Oficinas SEDESO</center>
             <center>Telefono (Conmutador)</center>
-            <center>(449 910 21 21)</center>
+            <center>449 910 21 21</center>
             <center>Ubicación</center>
             <center>Blvd. José María Chávez No.3205,</center>
             <center>Cd. Industrial C.P. 20290</center>
