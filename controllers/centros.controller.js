@@ -20,6 +20,35 @@ const getCentroContigo = async(req, res) => {
         }
     } catch (error) {
         
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+
+}
+
+const getAllCentros = async(req, res) => {
+
+    try {
+        
+        const [centros] = await db.query('CALL ListCentros()');
+        res.json(centros);
+
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
     }
 
 }
@@ -56,7 +85,7 @@ const modifyCentro = async(req, res) => {
 
     try {
         
-        const [results] = await db.query('CALL updateCentro(?,?,?,?)', [idp, nom, tel, ub]);
+        const [results] = await db.query('CALL updateCentro(?,?,?,?)', [idp, nom, ub, tel]);
         if (results.affectedRows === 0) {
 
             return res.status(400).json({
@@ -118,5 +147,5 @@ module.exports = {
     createCentro,
     modifyCentro,
     deleteCentro,
-
+    getAllCentros
 }
