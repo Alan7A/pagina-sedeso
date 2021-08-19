@@ -18,6 +18,7 @@ import Loading from '../Loading';
 import UpdateCentroCrecerForm from '../CentrosCrecer/UpdateCentroCrecerForm';
 import CoursesScreen from '../Courses/CoursesScreen';
 import Footer from '../Footer/Footer';
+import CoursesForm from '../Courses/CoursesForm';
 
 function AppRouter() {
     const dispatch = useDispatch();
@@ -58,6 +59,8 @@ function AppRouter() {
                     <Route exact path='/cursos'>
                         <CoursesScreen />
                     </Route>
+
+                    <PrivateRoute exact path='/cursos/crearCurso' component={CoursesForm} isAuthenticated={!!usuario} />
 
                     <Route exact path='/sobreNosotros'>
                         <AboutUsScreen />

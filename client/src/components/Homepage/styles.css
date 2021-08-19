@@ -5,7 +5,7 @@
     background-size: cover;
     position: relative;
   }
-  h6 { /* Usado para creacion del marco en contacto*/
+  .contacto { /* Usado para creacion del marco en contacto*/
     font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; 
     color: #ffffff; 
     font-size: 18px; 
