@@ -1,6 +1,7 @@
 import { Button, Grid, MenuItem, TextField } from '@material-ui/core'
 import { Add } from '@material-ui/icons';
-import React from 'react'
+import React, { useState } from 'react'
+import { isTimeValid } from '../utils/funcionesUtiles';
 
 const dias = [
     'Lunes',
@@ -10,24 +11,40 @@ const dias = [
     'Viernes',
     'Sábado',
     'Domingo'
-]
+];
 
-function DaySelector({ horario, setHorario, horarios }) {
+const initialFormValues = {
+    dia: 'Lunes',
+    horaInicio: '09:00',
+    horaFin: '10:00'
+}
+
+function DaySelector({ horarios, setHorarios }) {
+    const [formValues, setFormValues] = useState(initialFormValues);
+    const [error, setError] = useState(null)
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        setHorario({
-            ...horario,
+        setFormValues({
+            ...formValues,
             [name]: value
-        })
+        });
     }
 
-    const agregarHorario = (e) => {
-        const nuevoHorario = {
-            d: horario.dia,
-            h: `${horario.horaInicio} a ${horario.horaFin}`
+    const agregarHorario = () => {
+        if(!isTimeValid(formValues.horaInicio, formValues.horaFin)) {
+            setError('Revisa que las fechas sean correctas');
+        } else {
+            setError(null);
+            
+            const nuevoHorario = {
+                d: formValues.dia,
+                h: `${formValues.horaInicio} a ${formValues.horaFin}`
+            }
+            console.log(nuevoHorario);
+    
+            setHorarios([...horarios, nuevoHorario]);
         }
-        console.log(nuevoHorario);
     }
 
     return (
@@ -38,7 +55,7 @@ function DaySelector({ horario, setHorario, horarios }) {
                         select
                         name='dia'
                         label='Día'
-                        value={horario.dia}
+                        value={formValues.dia}
                         onChange={handleChange}
                         variant='outlined'
                         color='secondary'
@@ -57,12 +74,14 @@ function DaySelector({ horario, setHorario, horarios }) {
                         name='horaInicio'
                         label='Hora de inicio'
                         type='time'
-                        value={horario.horaInicio}
+                        value={formValues.horaInicio}
                         onChange={handleChange}
                         variant='outlined'
                         color='secondary'
                         fullWidth
                         size='small'
+                        error={!!error}
+                        helperText={error}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -70,12 +89,13 @@ function DaySelector({ horario, setHorario, horarios }) {
                         name='horaFin'
                         label='Hora fin'
                         type='time'
-                        value={horario.horaFin}
+                        value={formValues.horaFin}
                         onChange={handleChange}
                         variant='outlined'
                         color='secondary'
                         fullWidth
                         size='small'
+                        error={!!error}
                     />
                 </Grid>
                 <Grid item >
@@ -83,7 +103,7 @@ function DaySelector({ horario, setHorario, horarios }) {
                         variant='contained'
                         color='primary'
                         startIcon={<Add />}
-                        onClick={agregarHorario}
+                        onClick={() => agregarHorario()}
                     >
                         Agregar horario
                     </Button>

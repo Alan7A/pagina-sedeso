@@ -3,29 +3,15 @@ import { CardContent, Divider, Grid, IconButton, List, ListItem, ListItemSeconda
 import { Delete } from '@material-ui/icons';
 import DaySelector from '../DaySelector';
 
-let horarios = [
-    {
-        dia: 'Miércoles',
-        hora: '9:00 a 10:00'
-    },
-    {
-        dia: 'Lunes',
-        hora: '9:00 a 11:00'
+function ListaHorarios({ horarios, setHorarios }) {
+    const deleteHorario = (item) => {
+        setHorarios(horarios.filter(horario => horario !== item));
     }
-
-]
-
-function ListaHorarios() {
-    const [horario, setHorario] = useState({
-        dia: 'Lunes',
-        horaInicio: '09:00',
-        horaFin: '10:00'
-    });
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-                <DaySelector horario={horario} setHorario={setHorario} horarios={horarios} />
+                <DaySelector horarios={horarios} setHorarios={setHorarios} />
             </Grid>
 
             <Grid item xs={12} sm={6}>
@@ -34,14 +20,14 @@ function ListaHorarios() {
                         <Typography color='textSecondary' gutterBottom>Lista de horarios del curso</Typography>
                         <Divider />
                         <List>
-                            {horarios.map(horario => (
-                                <ListItem divider className='list-item'>
+                            {horarios.map((horario, i) => (
+                                <ListItem divider className='list-item' key={i}>
                                     <ListItemText
-                                        primary={`${horario.dia} de ${horario.hora}`}
+                                        primary={`${horario.d} de ${horario.h}`}
                                     />
                                     <ListItemSecondaryAction>
                                         <Tooltip title="Eliminar horario">
-                                            <IconButton edge='end' onClick={() => console.log('Borrar horario')}>
+                                            <IconButton edge='end' onClick={() => deleteHorario(horario)}>
                                                 <Delete />
                                             </IconButton>
                                         </Tooltip>
