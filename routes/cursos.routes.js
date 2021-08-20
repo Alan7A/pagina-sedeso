@@ -2,9 +2,11 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const validarJwt = require('../middlewares/validar-jwt');
-const { getCursosPorCentro, getCurso, createCurso, deleteCurso, modifyCurso } = require('../controllers/cursos.controller');
+const { getCursosPorCentro, getCurso, createCurso, deleteCurso, modifyCurso, getCursosGeneral } = require('../controllers/cursos.controller');
 
 const router = Router();
+
+router.get('/todos', getCursosGeneral);
 
 router.get('/Cursos/:idc', getCursosPorCentro); // idc = idCentroCrecer
 

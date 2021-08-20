@@ -1,5 +1,26 @@
 const db = require('../database/connection');
 
+const getCursosGeneral = async (req, res) => {
+
+    try {
+        
+        const [results] = await db.query('CALL ListCursosGeneral()');
+        const [cursos] = results.slice(0, results.length);
+        res.status(201).json(cursos);
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
+
 const getCursosPorCentro = async (req, res) => {
 
     try{
@@ -147,6 +168,7 @@ module.exports = {
 
     getCurso,
     getCursosPorCentro,
+    getCursosGeneral,
     modifyCurso,
     deleteCurso,
     createCurso

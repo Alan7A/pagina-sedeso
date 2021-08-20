@@ -8,6 +8,7 @@ const router = Router();
 
 router.get('/:idp', getCentroContigo); // id del centro
 
+
 router.get('/', getAllCentros);
 
 router.post('/agregarCentro', validarJwt, 
