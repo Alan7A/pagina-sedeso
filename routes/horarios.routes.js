@@ -2,11 +2,13 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const validarJwt = require('../middlewares/validar-jwt');
-const { createHorario, modifyHorario, deleteHorario, getHorario, updateHorarios } = require('../controllers/horarios.controller');
+const { createHorario, modifyHorario, deleteHorario, getHorario, getAllHorarios, updateHorarios } = require('../controllers/horarios.controller');
 
 const router = Router();
 
 router.get('/:idh', getHorario); // id del Horario
+
+router.get('/todos/:idcp', getAllHorarios); //id del Curso
 
 router.delete('/eliminar/:idh', validarJwt, deleteHorario);
 

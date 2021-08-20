@@ -11,7 +11,7 @@ const getHorario = async (req, res) => {
 
         if (hor) {
 
-            res.json(hor);
+            res.status(202).json(hor);
         } else {
 
             res.status(404).json({
@@ -31,7 +31,29 @@ const getHorario = async (req, res) => {
     }
 }
 
-const deleteHorario = async (req, res) => {
+const getAllHorarios = async(req, res) => {
+
+    const { idcp } = req.params; // id del Curso
+
+    try {
+
+        const [results]= await db.query('CALL getAllHorarios(?)', [idcp]);
+        const [horarios] = results.slice(0, results.length);
+        res.status(202).json(horarios);
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
+const deleteHorario = async(req, res) => {
 
     const { idh } = req.params;
 
@@ -148,5 +170,7 @@ module.exports = {
     modifyHorario,
     deleteHorario,
     createHorario,
-    updateHorarios
+    updateHorarios,
+    getAllHorarios
 }
+
