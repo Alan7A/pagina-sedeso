@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const validarJwt = require('../middlewares/validar-jwt');
-const { createHorario, modifyHorario, deleteHorario, getHorario } = require('../controllers/horarios.controller');
+const { createHorario, modifyHorario, deleteHorario, getHorario, updateHorarios } = require('../controllers/horarios.controller');
 
 const router = Router();
 
@@ -24,5 +24,7 @@ router.put('/editar/:idcp', validarJwt,
        check('h', 'Deben de especificarse las horas').notEmpty(),
        validarCampos
     ], modifyHorario);
+
+router.post('/actualizar/:idCurso', validarJwt, updateHorarios);
 
 module.exports = router;
