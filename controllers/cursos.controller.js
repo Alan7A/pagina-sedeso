@@ -29,7 +29,7 @@ const getCurso = async (req, res) => {
         
         const { idcp } = req.params; 
         const [results] = await db.query('CALL getCurso(?)', [idcp]);
-        const [horarios] = await db.query('SELECT * FROM Horarios WHERE idCurso = ?', [idcp]);
+        const [horarios] = await db.query('CALL getAllHorarios(?)', [idcp]);
         const curso = results[0][0];
         curso.horarios = horarios;
 
@@ -62,7 +62,7 @@ const createCurso = async(req, res) => {
     
     try {
 
-        const [results] = await db.query('INSERT INTO Cursos(idCentro, nombre, lugar, alumnos) VALUES (?,?,?,?)', [idc, nom, lug, alu]);
+        const [results] = await db.query('CALL setCurso(?,?,?,?)', [idc, nom, lug, alu]);
         res.status(201).json({
             msg: 'Curso creado exitosamente',
             idCurso: results.insertId
