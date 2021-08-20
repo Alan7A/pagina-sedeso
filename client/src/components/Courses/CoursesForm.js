@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Container, Grid, Typography, TextField, Paper } from '@material-ui/core'
 import { useHistory, useParams } from 'react-router-dom'
+import { DropzoneArea } from 'material-ui-dropzone'
 import Loading from '../Loading';
 import './styles.css'
 import ListaHorarios from './ListaHorarios';
 import axios from '../../utils/axios';
-import { headers, mostrarErrores, mostrarNotificacionError, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles';
+import { fileToBase64, headers, mostrarErrores, mostrarNotificacionError, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles';
 
 const initialFormValues = {
     idc: 2,
@@ -17,7 +18,9 @@ const initialFormValues = {
 function CoursesForm({ editar }) {
     const [formValues, setFormValues] = useState(initialFormValues);
     const [horarios, setHorarios] = useState([]);
+    const [imagenes, setImagenes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingInfo, setIsLoadingInfo] = useState(true);
 
     const history = useHistory();
     const { idCurso } = useParams();
@@ -37,13 +40,18 @@ function CoursesForm({ editar }) {
 
                     const horariosCurso = response.data.horarios.map((horario) => ({ d: horario.dia, h: horario.horas, idHorario: horario.idHorario }));
                     setHorarios(horariosCurso);
+
+                    const imagenesCurso = response.data.imagenes.map(img => img.imagen)
+                    setImagenes(imagenesCurso);
+                    setIsLoadingInfo(false);
                 } catch (error) {
                     mostrarErrores(error);
+                    setIsLoadingInfo(false);
                 }
             }
             getDatosCurso();
         }
-    }, [])
+    }, [idCurso, editar])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -55,8 +63,7 @@ function CoursesForm({ editar }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Datos generales>>>', formValues);
-        console.log('Horarios del curso>>>', horarios);
+
 
         if (horarios.length === 0) {
             return mostrarNotificacionError('Agrega al menos un horario');
@@ -69,8 +76,13 @@ function CoursesForm({ editar }) {
                 // Actualizar horarios del curso (se borran y se vuelven a insertar)
                 const horariosConFormato = horarios.map((horario) => ({ dia: horario.d, horas: horario.h, idCurso }));
                 const nuevosHorarios = horariosConFormato.map(horario => (Object.values(horario)));
-                console.log(Object.values(nuevosHorarios));
-                await axios.post(`/horarios/actualizar/${idCurso}`, nuevosHorarios, headers)
+                await axios.post(`/horarios/actualizar/${idCurso}`, nuevosHorarios, headers);
+
+                // Convertir files a base64 para poder subir a la bd
+                const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)))
+                // Actualizar imágenes del curso (se borran y se vuelven a insertar)
+                const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ idCurso, imagen })))
+                await axios.post(`/imgCursos/actualizar/${idCurso}`, nuevasImagenes, headers);
 
                 mostrarNotificacionSuccess('Curso actualizado correctamente');
                 history.push('/cursos');
@@ -106,65 +118,89 @@ function CoursesForm({ editar }) {
                     {editar ? 'Editar Curso' : 'Crear Curso'}
                 </Typography>
 
-                <form onSubmit={handleSubmit}>
-                    <Typography variant='h6'>Datos generales</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                variant='outlined'
-                                name='nom'
-                                value={formValues.nom}
-                                onChange={handleChange}
-                                label='Nombre del curso'
-                                fullWidth
-                                color='secondary'
-                                margin='normal'
-                                required
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant='outlined'
-                                name='lug'
-                                value={formValues.lug}
-                                onChange={handleChange}
-                                label='Lugar'
-                                fullWidth
-                                color='secondary'
-                                margin='normal'
-                                required
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={2}>
-                            <TextField
-                                variant='outlined'
-                                name='alu'
-                                value={formValues.alu}
-                                onChange={handleChange}
-                                label='Alumnos'
-                                fullWidth
-                                color='secondary'
-                                margin='normal'
-                                required
-                                type='number'
-                            />
-                        </Grid>
-                    </Grid>
+                {editar && isLoadingInfo ? (<Loading texto='Cargando información del curso' />)
+                    : (
+                        <form onSubmit={handleSubmit}>
+                            <Typography variant='h6'>Datos generales</Typography>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={4}>
+                                    <TextField
+                                        variant='outlined'
+                                        name='nom'
+                                        value={formValues.nom}
+                                        onChange={handleChange}
+                                        label='Nombre del curso'
+                                        fullWidth
+                                        color='secondary'
+                                        margin='normal'
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        variant='outlined'
+                                        name='lug'
+                                        value={formValues.lug}
+                                        onChange={handleChange}
+                                        label='Lugar'
+                                        fullWidth
+                                        color='secondary'
+                                        margin='normal'
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={2}>
+                                    <TextField
+                                        variant='outlined'
+                                        name='alu'
+                                        value={formValues.alu}
+                                        onChange={handleChange}
+                                        label='Alumnos'
+                                        fullWidth
+                                        color='secondary'
+                                        margin='normal'
+                                        required
+                                        type='number'
+                                    />
+                                </Grid>
+                            </Grid>
 
-                    <Typography variant='h6' paragraph>Horarios del curso</Typography>
-                    <ListaHorarios horarios={horarios} setHorarios={setHorarios} />
+                            <Typography variant='h6' paragraph>Horarios del curso</Typography>
+                            <ListaHorarios horarios={horarios} setHorarios={setHorarios} />
 
-                    {isLoading ? (<Loading />) : (
-                        <div className='botones-modal'>
-                            <Button variant='contained' className='boton-cancelar' onClick={() => history.push('/cursos')} >
-                                Cancelar
-                            </Button>
-                            <Button variant='contained' color='primary' type='submit'>
-                                {editar ? 'Guardar cambios' : 'Crear curso'}
-                            </Button>
-                        </div>
+                            <DropzoneArea
+                                acceptedFiles={['image/*']}
+                                initialFiles={imagenes}
+                                dropzoneText={"Arrastra tus imágenes o da clic aquí para subir imágenes (máximo 9)"}
+                                onChange={(files) => setImagenes(files)}
+                                filesLimit={9}
+                                getFileLimitExceedMessage={(filesLimit) => `Solo se permiten ${filesLimit} imágenes como máximo`}
+                                getFileAddedMessage={(fileName) => `Imagen ${fileName} agregada`}
+                                getFileRemovedMessage={(fileName) => `Imagen ${fileName} eliminada`}
+                                getDropRejectMessage={(rejectedFile, acceptedFiles, maxFileSize) => {
+                                    let message = `No Se pudo subir ${rejectedFile.name}. `;
+                                    if (acceptedFiles.includes(rejectedFile.type)) {
+                                        message += 'Solo puedes subir imagenes. ';
+                                    }
+                                    if (rejectedFile.size > maxFileSize) {
+                                        message += 'La imagen es demasiado pesada, el tamaño máximo es 3MB.';
+                                    }
+                                    return message;
+                                }}
+                            />
+
+                            {isLoading ? (<Loading texto='Actualizando información del curso' />) : (
+                                <div className='botones-modal' style={{ marginTop: 20 }}>
+                                    <Button variant='contained' className='boton-cancelar' onClick={() => history.push('/cursos')} >
+                                        Cancelar
+                                    </Button>
+                                    <Button variant='contained' color='primary' type='submit'>
+                                        {editar ? 'Guardar cambios' : 'Crear curso'}
+                                    </Button>
+                                </div>
+                            )}
+                        </form>
                     )}
-                </form>
             </Paper>
         </Container>
     )

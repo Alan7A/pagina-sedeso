@@ -40,6 +40,13 @@ export function mostrarErrores(errores) {
     }
 }
 
+export const fileToBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
 export const isTimeValid = (horaInicio, horaFin) => {
     const horaI = Number(horaInicio.substr(0, 2));
     const minutoI = Number(horaInicio.substr(3, 2));
@@ -49,9 +56,9 @@ export const isTimeValid = (horaInicio, horaFin) => {
 
     if (horaI === horaF) {
         if (minutoI >= minutoF) return false
-    } else if(horaI >= horaF) {
+    } else if (horaI >= horaF) {
         return false
-    } else return true    
+    } else return true
 }
 
 export const headers = { headers: { 'x-token': localStorage.getItem('token') } }

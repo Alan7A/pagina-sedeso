@@ -1,3 +1,7 @@
 .list-item:hover {
     background-color: #f3f3f3;
 }
+
+.MuiDropzonePreviewList-removeButton {
+    margin-right: 45px !important;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CardContent, Divider, Grid, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Paper, Typography, Tooltip } from '@material-ui/core'
 import { Delete } from '@material-ui/icons';
 import DaySelector from '../DaySelector';
