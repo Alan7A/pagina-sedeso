@@ -6,7 +6,8 @@ const getImgsPorCurso = async(req, res) => {
     try {
 
         const [results] = await db.query('CALL ListImgCurso(?)', [idpc]);
-        res.json(results);
+        const [imgs] = results.slice(0, results.length);
+        res.status(202).json(imgs);
     } catch (error) {
 
         console.error(error);
@@ -22,12 +23,12 @@ const getImgsPorCurso = async(req, res) => {
 
 const getImgDeCurso = async(req, res) => {
 
-    const { id } = req.body; // id de la img
+    const { id } = req.params; // id de la img
 
     try {
 
         const [img] = await db.query('CALL getImgCurso(?)', [id]);
-        res.json(img[0]);
+        res.status(202).json(img[0]);
         
     } catch (error) {
         

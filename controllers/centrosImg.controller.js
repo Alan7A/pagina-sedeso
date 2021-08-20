@@ -1,25 +1,69 @@
 const db = require('../database/connection');
 
-const getCentroContigo = async(req, res) => {
+const getImgCentro = async(req, res) => {
 
-    const { idp } = req.params; // idp = idCentro
+    const { id } = req.params; // id de la Imagen
 
     try {
         
-        const [results] = await db.query('CALL getCentro(?)', [idp]);
-        const centro = results[0][0];
+        const [img] = await db.query('CALL getImgCentro(?)', [id]);
+        res.status(202).json(img[0]);
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
 
-        if(centro){
+const getImgsPorCentro = async(req, res) => {
 
-            res.status(200).json(centro);
-        }else{
+    const { idc } = req.params; // id del Centro
 
-            res.status(404).json({
-                msg:'Centro Contigo no encontrado'
+    try {
+        
+        const [results] = await db.query('CALL ListImgCentro(?)', [idc]);
+        const [imgs] = results.slice(0, results.length);
+        res.status(202).json(imgs);
+
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
+const modifyImgCentro = async(req, res) => {
+
+    const { idc } = req.params;
+    const { id, img } = req.body;
+
+    try {
+        
+        const [results] = await db.query('CALL updateImgCentro(?,?,?)', [id, idc, img]);
+
+        if (results.affectedRows === 0) {
+            return res.status(400).json({
+                msg: `La imagen con id: ${ id } no existe`
             });
         }
+
+        res.status(202).json({
+            msg:"La imagen se ha editado exitosamente"
+        });
     } catch (error) {
-        
+     
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -29,40 +73,19 @@ const getCentroContigo = async(req, res) => {
             sqlMessage: error.sqlMessage
         });
     }
-
 }
 
-const getAllCentros = async(req, res) => {
+const createImgCentro = async(req, res) => {
+
+    const { idc } = req.params; // id del Centro
+    const { img } = req.body;
 
     try {
         
-        const [results] = await db.query('CALL ListCentros()');
-        const [centros] = results.slice(0, results.length);
-        res.status(202).json(centros);
+        await db.query('CALL setImgCentro(?,?)', [idc, img]);
 
-    } catch (error) {
-        
-        console.error(error);
-        return res.status(500).json({
-            errors: [{
-                msg: 'Error con la base de datos o el servidor'
-            }],
-            query: error.sql,
-            sqlMessage: error.sqlMessage
-        });
-    }
-
-}
-
-const createCentro = async(req, res) => {
-
-    const { nom, ub, tel } = req.body;
-
-    try {
-
-        await db.query('CALL setCentro(?,?,?)', [nom, ub, tel]);
         res.status(201).json({
-            msg:"Centro agregado exitosamente"
+            msg:"La imagen se ha agregado exitosamente"
         });
     } catch (error) {
         
@@ -75,27 +98,23 @@ const createCentro = async(req, res) => {
             sqlMessage: error.sqlMessage
         });
     }
-    
-
 }
 
-const modifyCentro = async(req, res) => {
+const deleteImgCentro = async(req, res) => {
 
-    const { idp } = req.params; // idp = idCentro
-    const { nom, tel, ub } = req.body;
+    const { id } = req.params;
 
     try {
         
-        const [results] = await db.query('CALL updateCentro(?,?,?,?)', [idp, nom, ub, tel]);
+        const [results] = await db.query('CALL deleteImgCentro(?)', [id]);
         if (results.affectedRows === 0) {
-
             return res.status(400).json({
-                msg: 'El Centro Contigo a editar no existe'
+                msg: `La imagen con id: ${ id } no existe`
             });
         }
 
         res.status(202).json({
-            msg: 'El Centro Contigo se ha editado correctamente',
+            msg:"La imagen se ha eliminado exitosamente"
         });
     } catch (error) {
         
@@ -109,44 +128,12 @@ const modifyCentro = async(req, res) => {
         });
     }
 }
-
-const deleteCentro = async(req, res) => {
-
-    const { idp } = req.params;
-
-    try {
-        
-        const [results] = await db.query('CALL deleteCentro(?)', [idp]);
-
-        if (results.affectedRows === 0) {
-
-            return res.status(400).json({
-                msg: 'El Centro a eliminar no existe'
-            });
-        }
-
-        res.status(202).json({
-            msg:'El Centro Contigo se ha eliminado exitosamente'
-        })
-    } catch (error) {
-        
-        console.error(error);
-        return res.status(500).json({
-            errors: [{
-                msg: 'Error con la base de datos o el servidor'
-            }],
-            query: error.sql,
-            sqlMessage: error.sqlMessage
-        });
-    }
-}
-
 
 module.exports = {
-
-    getCentroContigo,
-    createCentro,
-    modifyCentro,
-    deleteCentro,
-    getAllCentros
+    
+    getImgCentro,
+    getImgsPorCentro,
+    modifyImgCentro,
+    createImgCentro,
+    deleteImgCentro
 }

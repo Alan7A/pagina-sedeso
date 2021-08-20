@@ -6,7 +6,9 @@ const getCursosPorCentro = async (req, res) => {
 
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
-        res.json(results[0]);
+        const [cursos] = results.slice(0, results.length);
+        res.status(202).json(cursos);
+
     } catch ( error ){
 
         console.error(error);
@@ -26,12 +28,13 @@ const getCurso = async (req, res) => {
     try {
         
         const { idcp } = req.params; 
-        const [results] = await db.query('CALL getCursoCompleto(?)', [idcp]);
+        const [results] = await db.query('CALL getCurso(?)', [idcp]);
+        const [horarios] = await db.query('CALL getAllHorarios(?)', [idcp]);
         const curso = results[0][0];
+        curso.horarios = horarios;
 
-        if(curso){
-        
-            res.json(curso);
+        if(curso){        
+            res.status(202).json(curso);
         } else {
 
             res.status(404).json({
@@ -59,9 +62,10 @@ const createCurso = async(req, res) => {
     
     try {
 
-        await db.query('CALL setCurso(?,?,?,?)', [idc, nom, lug, alu]);
+        const [results] = await db.query('CALL setCurso(?,?,?,?)', [idc, nom, lug, alu]);
         res.status(201).json({
-            msg: 'Curso creado exitosamente'
+            msg: 'Curso creado exitosamente',
+            idCurso: results.insertId
         });
     } catch (error) {
 
@@ -122,7 +126,7 @@ const deleteCurso = async (req, res) => {
             });
         }
 
-        res.json({
+        res.status(202).json({
             msg:'El curso se ha eliminado exitosamente'
         })
 
