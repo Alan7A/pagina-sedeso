@@ -11,7 +11,7 @@ const getHorario = async(req, res) => {
         
         if(hor){
 
-            res.json(hor);
+            res.status(202).json(hor);
         } else {
 
             res.status(404).json({
@@ -38,7 +38,8 @@ const getAllHorarios = async(req, res) => {
     try {
 
         const [results]= await db.query('CALL getAllHorarios(?)', [idcp]);
-        res.json(results);
+        const [horarios] = results.slice(0, results.length);
+        res.status(202).json(horarios);
     } catch (error) {
         
         console.error(error);

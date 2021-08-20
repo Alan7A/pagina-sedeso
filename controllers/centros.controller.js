@@ -11,7 +11,7 @@ const getCentroContigo = async(req, res) => {
 
         if(centro){
 
-            res.json(centro);
+            res.status(200).json(centro);
         }else{
 
             res.status(404).json({
@@ -36,8 +36,9 @@ const getAllCentros = async(req, res) => {
 
     try {
         
-        const [centros] = await db.query('CALL ListCentros()');
-        res.json(centros);
+        const [results] = await db.query('CALL ListCentros()');
+        const [centros] = results.slice(0, results.length);
+        res.status(202).json(centros);
 
     } catch (error) {
         
@@ -124,7 +125,7 @@ const deleteCentro = async(req, res) => {
             });
         }
 
-        res.json({
+        res.status(202).json({
             msg:'El Centro Contigo se ha eliminado exitosamente'
         })
     } catch (error) {

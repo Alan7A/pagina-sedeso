@@ -3,9 +3,12 @@ const db = require('../database/connection');
 
 const getUsers = async (req, res) => {
     try {
+
         const [results] = await db.query('CALL getUsers()');
-        res.json(results);
+        const [users] = results.slice(0, results.length);
+        res.status(202).json(users);
     } catch (error) {
+
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -18,7 +21,9 @@ const getUsers = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
+
     try {
+
         const { id } = req.params;
         const { email } = req.body;
         const [results] = await db.query('CALL getUser(?)', [email]);
@@ -26,13 +31,16 @@ const getUser = async (req, res) => {
         const usuario = results[0][0];
 
         if (usuario) {
-            res.json(usuario);
+
+            res.status(202).json(usuario);
         } else {
+
             res.status(404).json({
                 msg: 'Usuario no encontrado'
             });
         }
     } catch (error) {
+
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -134,7 +142,7 @@ const deleteUser = async (req, res) => {
             });
         }
 
-        res.json({
+        res.status(202).json({
             msg: 'Usuario eliminado correctamente'
         })
     } catch (error) {

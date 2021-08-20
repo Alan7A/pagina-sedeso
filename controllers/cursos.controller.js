@@ -6,7 +6,9 @@ const getCursosPorCentro = async (req, res) => {
 
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
-        res.json(results);
+        const [cursos] = results.slice(0, results.length);
+        res.status(202).json(cursos);
+
     } catch ( error ){
 
         console.error(error);
@@ -31,7 +33,7 @@ const getCurso = async (req, res) => {
 
         if(curso){
         
-            res.json(curso);
+            res.status(202).json(curso);
         } else {
 
             res.status(404).json({
@@ -122,7 +124,7 @@ const deleteCurso = async (req, res) => {
             });
         }
 
-        res.json({
+        res.status(202).json({
             msg:'El curso se ha eliminado exitosamente'
         })
 
