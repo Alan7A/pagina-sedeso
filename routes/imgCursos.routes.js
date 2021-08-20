@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const validarJwt = require('../middlewares/validar-jwt');
-const { createImgCurso, modifyImgCurso, getImgDeCurso, deleteImgCurso, getImgsPorCurso, updateImagenes } = require('../controllers/cursosImg.controller');
+const { createImgCurso, modifyImgCurso, getImgDeCurso, deleteImgCurso, getImgsPorCurso, updateImagenesCurso, createImagenesCurso } = require('../controllers/cursosImg.controller');
 
 const router = Router();
 
@@ -26,6 +26,8 @@ router.put('/editar/:idpc', validarJwt,
 
 router.delete('/eliminar/:id', validarJwt, deleteImgCurso);
 
-router.post('/actualizar/:idCurso', validarJwt, updateImagenes);
+router.post('/agregarImagenes/:idCurso', validarJwt, createImagenesCurso)
+
+router.post('/actualizar/:idCurso', validarJwt, updateImagenesCurso);
 
 module.exports = router;

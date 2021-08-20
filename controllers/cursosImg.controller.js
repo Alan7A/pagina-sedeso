@@ -128,7 +128,29 @@ const deleteImgCurso = async (req, res) => {
     }
 }
 
-const updateImagenes = async (req, res) => {
+const createImagenesCurso = async (req, res) => {
+    const { idCurso } = req.params;
+    const imagenes = req.body;
+
+    try {
+        await db.query('INSERT INTO ImagenesCurso(idCurso, imagen) VALUES ?', [imagenes]);
+
+        res.json({
+            msg: 'Imagenes del curso creadas correctamente',
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
+const updateImagenesCurso = async (req, res) => {
     const { idCurso } = req.params;
     const imagenes = req.body;
 
@@ -160,5 +182,6 @@ module.exports = {
     createImgCurso,
     modifyImgCurso,
     deleteImgCurso,
-    updateImagenes
+    createImagenesCurso,
+    updateImagenesCurso
 }

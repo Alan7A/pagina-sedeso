@@ -28,12 +28,13 @@ const getCurso = async (req, res) => {
     try {
         
         const { idcp } = req.params; 
-        const [results] = await db.query('CALL getCursoCompleto(?)', [idcp]);
-        const [horarios] = await db.query('SELECT * FROM Horarios WHERE idCurso = ?', [idcp]);
-        const [imagenes] = await db.query('SELECT * FROM ImagenesCurso WHERE idCurso = ?', [idcp]);
+        const [results] = await db.query('CALL getCurso(?)', [idcp]);
+        const [horarios] = await db.query('CALL getAllHorarios(?)', [idcp]);
+        const [imagenes] = await db.query('CALL ListImgCurso(?)', [idcp]);
+        
         const curso = results[0][0];
-        curso.horarios = horarios;
-        curso.imagenes = imagenes;
+        curso.horarios = horarios[0];
+        curso.imagenes = imagenes[0];
 
         if(curso){        
             res.status(202).json(curso);

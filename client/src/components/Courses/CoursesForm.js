@@ -33,12 +33,12 @@ function CoursesForm({ editar }) {
                     const response = await axios.get(`/cursos/${idCurso}`)
                     setFormValues({
                         idc: 2,
-                        nom: response.data.Actividad,
-                        lug: response.data.Lugar,
-                        alu: response.data.Alumnos
+                        nom: response.data.nombre,
+                        lug: response.data.lugar,
+                        alu: response.data.alumnos
                     });
 
-                    const horariosCurso = response.data.horarios.map((horario) => ({ d: horario.dia, h: horario.horas, idHorario: horario.idHorario }));
+                    const horariosCurso = response.data.horarios.map((horario) => ({ d: horario.Dia, h: horario.Horario }));
                     setHorarios(horariosCurso);
 
                     const imagenesCurso = response.data.imagenes.map(img => img.imagen)
@@ -73,6 +73,9 @@ function CoursesForm({ editar }) {
             try {
                 setIsLoading(true);
 
+                // Actualizar datos generales del curso
+                await axios.put(`/cursos/modificarCurso/${idCurso}`, formValues, headers);
+
                 // Actualizar horarios del curso (se borran y se vuelven a insertar)
                 const horariosConFormato = horarios.map((horario) => ({ dia: horario.d, horas: horario.h, idCurso }));
                 const nuevosHorarios = horariosConFormato.map(horario => (Object.values(horario)));
@@ -100,6 +103,12 @@ function CoursesForm({ editar }) {
                 horarios.forEach(async (horario) => {
                     await axios.post(`/horarios/agregar/${idCurso}`, horario, headers);
                 });
+
+                // Convertir files a base64 para poder subir a la bd
+                const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)))
+                // Insertar cada imagen a la tabla ImagenesCurso
+                const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ idCurso, imagen })))
+                await axios.post(`/imgCursos/agregarImagenes/${idCurso}`, nuevasImagenes, headers);
 
                 mostrarNotificacionSuccess('Curso creado correctamente');
                 history.push('/cursos');
@@ -161,6 +170,7 @@ function CoursesForm({ editar }) {
                                         margin='normal'
                                         required
                                         type='number'
+                                        min
                                     />
                                 </Grid>
                             </Grid>
@@ -189,7 +199,7 @@ function CoursesForm({ editar }) {
                                 }}
                             />
 
-                            {isLoading ? (<Loading texto='Actualizando información del curso' />) : (
+                            {isLoading ? (<Loading texto={editar ? 'Actualizando información del curso' : 'Creando el curso, por favor espere'} />) : (
                                 <div className='botones-modal' style={{ marginTop: 20 }}>
                                     <Button variant='contained' className='boton-cancelar' onClick={() => history.push('/cursos')} >
                                         Cancelar

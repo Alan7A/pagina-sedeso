@@ -32,17 +32,17 @@ function DaySelector({ horarios, setHorarios }) {
     }
 
     const agregarHorario = () => {
-        if(!isTimeValid(formValues.horaInicio, formValues.horaFin)) {
+        if (!isTimeValid(formValues.horaInicio, formValues.horaFin)) {
             setError('Revisa que las fechas sean correctas');
         } else {
             setError(null);
-            
+
             const nuevoHorario = {
                 d: formValues.dia,
                 h: `${formValues.horaInicio} a ${formValues.horaFin}`
             }
             console.log(nuevoHorario);
-    
+
             setHorarios([...horarios, nuevoHorario]);
         }
     }
@@ -102,6 +102,7 @@ function DaySelector({ horarios, setHorarios }) {
                     <Button
                         variant='contained'
                         color='primary'
+                        style={{ marginBottom: 15 }}
                         startIcon={<Add />}
                         onClick={() => agregarHorario()}
                     >

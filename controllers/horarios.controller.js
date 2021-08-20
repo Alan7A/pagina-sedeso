@@ -143,7 +143,7 @@ const updateHorarios = async (req, res) => {
 
     try {
         // Borrar todos los horarios de ese curso
-        await db.query('DELETE FROM Horarios WHERE idCurso = ?', [idCurso]);
+        await db.query('CALL deleteAllHorarios(?)', [idCurso]);
         // Insertar los nuevos horarios a la tabla horarios
         await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]);
         
