@@ -11,14 +11,14 @@
     font-size: 18px; 
     font-weight: 250; 
     text-align: center; 
-    background: #0738b4ef; 
+    background: #002a52; 
     margin: 0 0 25px; 
     overflow: hidden; 
     padding: 20px; 
     border-radius: 35px 0px 35px 0px; 
     -moz-border-radius: 35px 0px 35px 0px; 
     -webkit-border-radius: 35px 0px 35px 0px; 
-    border: 2px solid #1251f0;
+    border: 2px solid #0048ff;
   }
   .hero-text {
     text-align: center;
