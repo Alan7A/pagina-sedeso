@@ -49,7 +49,7 @@ const getCurso = async (req, res) => {
     try {
         
         const { idcp } = req.params; 
-        const [results] = await db.query('CALL getCurso(?)', [idcp]);
+        const [results]  = await db.query('CALL getCurso(?)', [idcp]);
         const [horarios] = await db.query('CALL getAllHorarios(?)', [idcp]);
         const [imagenes] = await db.query('CALL ListImgCurso(?)', [idcp]);
         
@@ -82,14 +82,33 @@ const getCurso = async (req, res) => {
 
 const createCurso = async(req, res) => {
 
-    const { idc, nom, lug, alu } = req.body;
+    let { idc, nom, lug, alu, horarios, imagenes } = req.body;
     
+
     try {
 
         const [results] = await db.query('INSERT INTO Cursos(idCentro, nombre, lugar, alumnos) VALUES (?,?,?,?)', [idc, nom, lug, alu]);
+        const idCurso=results.insertId;
+
+        //Agregar el idCurso a cada horario del arreglo
+        horarios = horarios.map( (horario)=> ([
+            ...horario, idCurso
+        ]) );
+
+        //Agregar el idCurso a cada imagen del arreglo
+        imagenes = imagenes.map( (imagen)=> ([
+            ...imagen, idCurso
+        ]) );
+
+        //Instertar los horarios
+        await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]); 
+        //Insertar las imágenes
+        await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+
         res.status(201).json({
             msg: 'Curso creado exitosamente',
-            idCurso: results.insertId
+            idCurso: results.insertId,
+            horarios, imagenes
         });
     } catch (error) {
 
@@ -107,7 +126,8 @@ const createCurso = async(req, res) => {
 const modifyCurso = async(req, res) => {
 
     const { idcp } = req.params;
-    const { idc, nom, lug, alu } = req.body; // idcp = idCurso, idc = idCentroCrecer
+    const { idc, nom, lug, alu, imagenes, horarios } = req.body; // idcp = idCurso, idc = idCentroCrecer
+
 
     try {
 
@@ -118,6 +138,17 @@ const modifyCurso = async(req, res) => {
                 msg: 'El curso a editar no existe'
             });
         }
+
+        // Borrar todos los horarios de ese curso
+        await db.query('CALL deleteAllHorarios(?)', [idcp]);
+        // Insertar los nuevos horarios a la tabla horarios
+        await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]);
+
+        // Borrar todas las imágenes de ese curso
+        await db.query('DELETE FROM ImagenesCurso WHERE idCurso = ?', [idcp]);
+        // Insertar las nuevas imágenes a la tabla ImagenesCurso
+        await db.query('INSERT INTO ImagenesCurso(idCurso, imagen) VALUES ?', [imagenes]);
+
 
         res.status(202).json({
             msg: 'El curso se ha editado correctamente',
