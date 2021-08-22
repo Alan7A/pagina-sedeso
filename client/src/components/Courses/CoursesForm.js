@@ -73,19 +73,22 @@ function CoursesForm({ editar }) {
             try {
                 setIsLoading(true);
 
-                // Actualizar datos generales del curso
-                await axios.put(`/cursos/modificarCurso/${idCurso}`, formValues, headers);
-
-                // Actualizar horarios del curso (se borran y se vuelven a insertar)
+                // Hacer que los horarios tengan el formato que acepta mysql
                 const horariosConFormato = horarios.map((horario) => ({ dia: horario.d, horas: horario.h, idCurso }));
                 const nuevosHorarios = horariosConFormato.map(horario => (Object.values(horario)));
-                await axios.post(`/horarios/actualizar/${idCurso}`, nuevosHorarios, headers);
 
                 // Convertir files a base64 para poder subir a la bd
                 const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)))
-                // Actualizar imágenes del curso (se borran y se vuelven a insertar)
+                // Hacer que las imágenes tengan el formato que acepta mysql
                 const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ idCurso, imagen })))
-                await axios.post(`/imgCursos/actualizar/${idCurso}`, nuevasImagenes, headers);
+
+                // Agregar los horarios y las imágenes al objeto que se manda en el body
+                let data = formValues;
+                data.horarios = nuevosHorarios;
+                data.imagenes = nuevasImagenes;
+
+                // Mandar petición para actualizar datos generales del curso
+                await axios.put(`/cursos/modificarCurso/${idCurso}`, data, headers);
 
                 mostrarNotificacionSuccess('Curso actualizado correctamente');
                 history.push('/cursos');
@@ -95,20 +98,23 @@ function CoursesForm({ editar }) {
         } else { // Peticiones para CREAR el curso
             try {
                 setIsLoading(true);
-                // Crear curso en la tabla cursos
-                const response = await axios.post('/cursos/crearCurso', formValues, headers);
-                const idCurso = response.data.idCurso
 
-                // Insertar cada horario de la lista a la tabla horarios
-                horarios.forEach(async (horario) => {
-                    await axios.post(`/horarios/agregar/${idCurso}`, horario, headers);
-                });
+                // Hacer que los horarios tengan el formato que acepta mysql
+                const horariosConFormato = horarios.map((horario) => ({ dia: horario.d, horas: horario.h }));
+                const nuevosHorarios = horariosConFormato.map(horario => (Object.values(horario)));
 
                 // Convertir files a base64 para poder subir a la bd
                 const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)))
-                // Insertar cada imagen a la tabla ImagenesCurso
-                const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ idCurso, imagen })))
-                await axios.post(`/imgCursos/agregarImagenes/${idCurso}`, nuevasImagenes, headers);
+                // Hacer que las imágenes tengan el formato que acepta mysql
+                const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ imagen })))
+
+                // Agregar los horarios y las imágenes al objeto que se manda en el body
+                let data = formValues;
+                data.horarios = nuevosHorarios;
+                data.imagenes = nuevasImagenes;
+
+                // Crear curso en la tabla cursos
+                await axios.post('/cursos/crearCurso', data, headers);
 
                 mostrarNotificacionSuccess('Curso creado correctamente');
                 history.push('/cursos');

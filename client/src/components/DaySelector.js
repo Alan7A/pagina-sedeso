@@ -41,7 +41,6 @@ function DaySelector({ horarios, setHorarios }) {
                 d: formValues.dia,
                 h: `${formValues.horaInicio} a ${formValues.horaFin}`
             }
-            console.log(nuevoHorario);
 
             setHorarios([...horarios, nuevoHorario]);
         }
