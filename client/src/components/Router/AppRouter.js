@@ -38,7 +38,7 @@ function AppRouter() {
             <ToastContainer />
             <Navbar />
 
-            <body className="app">
+            <div className="app">
                 <Switch>
                     <Route exact path='/'>
                         <HomepageScreen />
@@ -48,7 +48,7 @@ function AppRouter() {
                         <CentrosCrecerScreen />
                     </Route>
 
-                    <Route exact path='/centrosContigo/:centroContigo'>
+                    <Route exact path='/centrosContigo/:idCurso'>
                         <CentroCrecerScreen />
                     </Route>
 
@@ -82,7 +82,7 @@ function AppRouter() {
                         <UsersScreen />
                     </PrivateRoute>
                 </Switch>
-            </body>
+            </div>
 
             <Footer />
         </Router >

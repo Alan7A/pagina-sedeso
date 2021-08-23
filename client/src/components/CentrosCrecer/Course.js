@@ -3,7 +3,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Edit, Delete } from '@material-ui/icons';
 
-function Course({ course, centroContigo }) {
+function Course({ curso, centroContigo }) {
     const history = useHistory();
 
     return (
@@ -18,7 +18,7 @@ function Course({ course, centroContigo }) {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        {course.name}
+                        {curso.Curso}
                     </Typography>
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                         <Typography>Horarios: </Typography>
@@ -35,7 +35,7 @@ function Course({ course, centroContigo }) {
                     </div>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${course.name}`)}>
+                    <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${curso.Curso}`)}>
                         Ver Más
                     </Button>
                     <Button size="small" color="secondary" startIcon={<Edit />}>

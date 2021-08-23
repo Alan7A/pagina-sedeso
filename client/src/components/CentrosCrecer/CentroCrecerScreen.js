@@ -1,25 +1,29 @@
 import { Breadcrumbs, Card, CardActionArea, CardContent, Container, Grid, Link, Paper, Typography } from '@material-ui/core'
 import { AddCircle, LocationOn, Phone } from '@material-ui/icons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import Course from './Course'
+import axios from '../../utils/axios'
 import './styles.css'
+import { mostrarErrores } from '../../utils/funcionesUtiles'
 
 function CentroCrecerScreen() {
+    const [cursos, setCursos] = useState([]);
     const history = useHistory();
-    const { centroContigo } = useParams();
+    const { idCurso } = useParams();
 
-    const cursos = [
-        {
-            name: 'Cocina'
-        },
-        {
-            name: 'Danza Folkrórica'
-        },
-        {
-            name: 'Inglés'
+    useEffect(() => {
+        const getCursos = async () => {
+            try {
+                const response = await axios.get(`/cursos/Cursos/${idCurso}`);
+                console.log(response);
+                setCursos(response.data);
+            } catch (error) {
+                mostrarErrores(error);
+            }
         }
-    ]
+        getCursos();
+    }, [idCurso]);
 
     return (
         <Container maxWidth='lg' style={{ marginTop: 35 }}>
@@ -30,7 +34,7 @@ function CentroCrecerScreen() {
                     <Grid container>
                         <Grid item xs={6} className='leftPanel'>
                             <Typography variant='h4'>Centro contigo</Typography>
-                            <Typography variant='h4' style={{ fontWeight: 'bold' }}>{centroContigo}</Typography>
+                            <Typography variant='h4' style={{ fontWeight: 'bold' }}>sdf</Typography>
                         </Grid>
 
                         <Grid item xs={6} className='rightPanel' >
@@ -48,19 +52,19 @@ function CentroCrecerScreen() {
                 </Paper>
             </Container>
 
-            <Breadcrumbs style={{marginTop: 30}}>
+            <Breadcrumbs style={{ marginTop: 30 }}>
                 <Link color="inherit" href="/" onClick={() => history.push('/')}>
                     Inicio
                 </Link>
                 <Link color="inherit" href="/getting-started/installation/" onClick={() => history.push('/centrosContigo')}>
                     Centros Contigo
                 </Link>
-                <Typography color="textPrimary">{centroContigo}</Typography>
+                <Typography color="textPrimary">sdfsdf</Typography>
             </Breadcrumbs>
 
             <h2 className="subtitulo">Cursos</h2>
             <Grid container spacing={3}>
-                {cursos.map((course, i) => <Course course={course} centroContigo={centroContigo} key={i} />)}
+                {cursos.map((curso, i) => <Course curso={curso} centroContigo={curso.Curso} key={i} />)}
                 <Grid item xs={12} sm={6} md={4}>
                     <Card elevation={3} style={{ backgroundColor: '#4caf50', color: 'white' }}>
                         <CardActionArea>
