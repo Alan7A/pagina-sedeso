@@ -54,6 +54,27 @@ const getAllCentros = async(req, res) => {
 
 }
 
+const getCentrosSinUsuarios = async(req, res) => {
+
+    try {
+        
+        const [results] = await db.query('CALL getCentrosNoUsers()');
+        res.status(202).json(results[0]);
+    } catch (error) {
+
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+    
+
+}
+
 const createCentro = async(req, res) => {
 
     let { nom, ub, tel, imagenes } = req.body;
@@ -157,11 +178,13 @@ const deleteCentro = async(req, res) => {
 }
 
 
+
 module.exports = {
 
     getCentroContigo,
     createCentro,
     modifyCentro,
     deleteCentro,
-    getAllCentros
+    getAllCentros,
+    getCentrosSinUsuarios
 }

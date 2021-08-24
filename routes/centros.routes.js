@@ -2,12 +2,13 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const validarJwt = require('../middlewares/validar-jwt');
-const { createCentro, modifyCentro, deleteCentro, getCentroContigo, getAllCentros } = require('../controllers/centros.controller');
+const { createCentro, modifyCentro, deleteCentro, getCentroContigo, getAllCentros, getCentrosSinUsuarios } = require('../controllers/centros.controller');
 
 const router = Router();
 
-router.get('/:idp', getCentroContigo); // id del centro
+router.get('/noRegistrados', validarJwt ,getCentrosSinUsuarios);
 
+router.get('/:idp', getCentroContigo); // id del centro
 
 router.get('/', getAllCentros);
 
