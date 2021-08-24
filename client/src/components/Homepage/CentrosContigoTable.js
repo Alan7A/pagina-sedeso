@@ -1,36 +1,34 @@
 import { Paper, Table, TableContainer, TableHead, TableRow, TableBody, TableCell, withStyles } from '@material-ui/core'
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import axios from '../../utils/axios'
+import { mostrarErrores } from '../../utils/funcionesUtiles'
+import { useHistory, useParams } from 'react-router-dom'
 
 function CentrosContigoTable() {
+    const [centros, setCentros] = useState([]);
     const history = useHistory()
+    const { idCentro } = useParams();
 
-    const data = [
-        {
-            centroContigo: 'Constitución',
-            location: 'Art. 24 esquina con Art. 14, Col. Constitución'
-        },
-        {
-            centroContigo: 'Olivares Santana',
-            location: 'Benjamín de la Mora s/n, Fracc. Olivares Santana'
-        },
-        {
-            centroContigo: 'Insurgentes',
-            location: 'Mateo Almanza #202 Fracc. Insurgentes'
-        },
-        {
-            centroContigo: 'San Marcos',
-            location: 'Av. Aguascalientes #604, Col. San Marcos'
+    useEffect(() => {
+        const getCentros = async () => {
+            try {
+                const response = await axios.get(`/CentrosContigo/`);
+                console.log(response.data);
+                setCentros(response.data);
+            } catch (error) {
+                mostrarErrores(error);
+            }
         }
-    ]
+        getCentros();
+    }, [idCentro]);
 
     const handleClick = (centroContigo) => {
         history.push(`/centrosContigo/${centroContigo}`)
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Table>
+        <TableContainer component={Paper} style={{height: 480}}>
+            <Table stickyHeader>
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>Centro Contigo</StyledTableCell>
@@ -38,12 +36,18 @@ function CentrosContigoTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map(({ centroContigo, location }) => (
-                        <StyledTableRow key={centroContigo} onClick={() => handleClick(centroContigo)}>
-                            <StyledTableCell>{centroContigo}</StyledTableCell>
-                            <StyledTableCell>{location}</StyledTableCell>
+                    {/* {response.map(({ nombreCentro, telefono }) => (
+                        <StyledTableRow key={nombreCentro} onClick={() => handleClick(nombreCentro)}>
+                            <StyledTableCell>{nombreCentro}</StyledTableCell>
+                            <StyledTableCell>{telefono}</StyledTableCell>
                         </StyledTableRow>
-                    ))}
+                    ))} */}  
+                        {centros.map((centro, i) =>
+                            <StyledTableRow key={i} onClick={() => handleClick(centro.CentroContigo)}>
+                                <StyledTableCell>{centro.CentroContigo}</StyledTableCell>
+                                <StyledTableCell>{centro.Ubicación}</StyledTableCell>
+                            </StyledTableRow>
+                        )}
                 </TableBody>
             </Table>
         </TableContainer>

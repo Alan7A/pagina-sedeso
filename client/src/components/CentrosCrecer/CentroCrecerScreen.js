@@ -16,7 +16,6 @@ function CentroCrecerScreen() {
         const getCursos = async () => {
             try {
                 const response = await axios.get(`/cursos/Cursos/${idCurso}`);
-                console.log(response);
                 setCursos(response.data);
             } catch (error) {
                 mostrarErrores(error);
