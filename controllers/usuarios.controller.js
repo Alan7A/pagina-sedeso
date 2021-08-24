@@ -25,8 +25,8 @@ const getUser = async (req, res) => {
     try {
 
         const { id } = req.params;
-        const { email } = req.body;
-        const [results] = await db.query('CALL getUser(?)', [email]);
+        const { correo } = req.body;
+        const [results] = await db.query('CALL getUser(?)', [correo]);
 
         const usuario = results[0][0];
 
@@ -53,7 +53,7 @@ const getUser = async (req, res) => {
 }
 
 const createUser = async (req, res) => {
-    let { idCentro, coordinador, email, contra } = req.body;
+    let { idCentro, nombre, correo, contra } = req.body;
 
     try {
         // Encriptar contraseña
@@ -61,16 +61,16 @@ const createUser = async (req, res) => {
         contra = bcrypt.hashSync(contra, salt);
 
         // Insertar usuario a la DB
-        await db.query('CALL setUser(?, ?, ?, ?)', [idCentro, coordinador, email, contra]);
+        await db.query('CALL setUser(?, ?, ?, ?)', [idCentro, nombre, correo, contra]);
         res.status(201).json({
             msg: 'Usuario creado correctamente',
         })
     } catch (error) {
-        // Si el email ya existe, se manda el error
+        // Si el correo ya existe, se manda el error
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 errors: [{
-                    msg: 'Ese email ya está registrado'
+                    msg: 'Ese correo ya está registrado'
                 }]
             });
         }
@@ -88,14 +88,14 @@ const createUser = async (req, res) => {
 
 const modifyUser = async (req, res) => {
     const { id } = req.params;
-    let { idCentro, coordinador, email, contra } = req.body;
+    let {  nombre, correo, contra } = req.body;
 
     try {
         // Encriptar contraseña
         salt = bcrypt.genSaltSync();
         contra = bcrypt.hashSync(contra, salt);
 
-        const [results] = await db.query('CALL updateUser(?, ?, ?, ?)', [id, coordinador, email, contra]);
+        const [results] = await db.query('CALL updateUser(?, ?, ?, ?)', [id, nombre, correo, contra]);
 
         // Si no se modificó ninguna fila, significa que el usuario no existe
         if (results.affectedRows === 0) {
@@ -109,11 +109,11 @@ const modifyUser = async (req, res) => {
         })
 
     } catch (error) {
-        // Si el email ya existe, se manda el error
+        // Si el correo ya existe, se manda el error
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 errors: [{
-                    msg: 'Ese email ya está registrado'
+                    msg: 'Ese correo ya está registrado'
                 }]
             });
         }
