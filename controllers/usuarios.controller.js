@@ -95,7 +95,7 @@ const modifyUser = async (req, res) => {
         salt = bcrypt.genSaltSync();
         contra = bcrypt.hashSync(contra, salt);
 
-        const [results] = await db.query('CALL updateUser(?, ?, ?, ?, ?)', [id, idCentro, coordinador, email, contra]);
+        const [results] = await db.query('CALL updateUser(?, ?, ?, ?)', [id, coordinador, email, contra]);
 
         // Si no se modificó ninguna fila, significa que el usuario no existe
         if (results.affectedRows === 0) {
