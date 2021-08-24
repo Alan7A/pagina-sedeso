@@ -6,9 +6,9 @@ const validarCampos = require('../middlewares/validar-campos');
 
 const router = Router();
 
-router.get('/', getUsers);
+router.get('/todos', getUsers);
 
-router.get('/:id', getUser);
+router.get('/', getUser);
 
 router.post('/crearUsuario',
     [

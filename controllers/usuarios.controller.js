@@ -24,7 +24,6 @@ const getUser = async (req, res) => {
 
     try {
 
-        const { id } = req.params;
         const { correo } = req.body;
         const [results] = await db.query('CALL getUser(?)', [correo]);
 
