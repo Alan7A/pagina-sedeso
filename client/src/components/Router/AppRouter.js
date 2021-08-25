@@ -10,8 +10,8 @@ import AboutUsScreen from "../AboutUs/AboutUsScreen";
 import LoginScreen from "../Login/LoginScreen";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from './PrivateRoute'
+import { AdminRoute } from './AdminRoute'
 import { useDispatch, useSelector } from 'react-redux';
-import UsersScreen from '../Users/UsersScreen';
 import { useEffect } from 'react';
 import { renovarToken } from '../../redux/actions/auth';
 import Loading from '../Loading';
@@ -19,6 +19,7 @@ import UpdateCentroCrecerForm from '../CentrosCrecer/UpdateCentroCrecerForm';
 import CoursesScreen from '../Courses/CoursesScreen';
 import Footer from '../Footer/Footer';
 import CoursesForm from '../Courses/CoursesForm';
+import AdminScreen from '../Admin/AdminScreen';
 
 function AppRouter() {
     const dispatch = useDispatch();
@@ -78,9 +79,9 @@ function AppRouter() {
 
                     <PublicRoute exact path='/login' component={LoginScreen} isAuthenticated={!!usuario} />
 
-                    <PrivateRoute exact path='/usuarios' isAuthenticated={!!usuario} >
-                        <UsersScreen />
-                    </PrivateRoute>
+                    <AdminRoute exact path='/administrador' userId={usuario?.idUsuario} >
+                        <AdminScreen />
+                    </AdminRoute>
                 </Switch>
             </div>
 

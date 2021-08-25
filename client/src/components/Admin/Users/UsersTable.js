@@ -3,11 +3,11 @@ import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHe
 import { Edit, Delete } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import EditUserModal from './EditUserModal';
-import { openDeleteUserDialog, openEditUserModal } from '../../redux/actions/ui';
-import { setActiveUser } from '../../redux/actions/users';
+import { openDeleteUserDialog, openEditUserModal } from '../../../redux/actions/ui';
+import { setActiveUser } from '../../../redux/actions/users';
 
 function UsersTable({ usuarios }) {
-    
+
     const dispatch = useDispatch();
 
     const handleEdit = (user) => {
@@ -21,8 +21,8 @@ function UsersTable({ usuarios }) {
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Table style={{ minWidth: 650 }}>
+        <TableContainer component={Paper} style={{ maxHeight: 400 }}>
+            <Table stickyHeader style={{ minWidth: 650 }}>
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>Nombre</StyledTableCell>
@@ -32,9 +32,9 @@ function UsersTable({ usuarios }) {
                 </TableHead>
                 <TableBody>
                     {usuarios.map((usuario) => (
-                        <TableRow key={usuario.email}>
-                            <TableCell>{usuario.coordinador}</TableCell>
-                            <TableCell>{usuario.email}</TableCell>
+                        <TableRow key={usuario.Correo}>
+                            <TableCell>{usuario.Nombre}</TableCell>
+                            <TableCell>{usuario.Correo}</TableCell>
                             <TableCell>
                                 <Tooltip title='Editar' onClick={() => handleEdit(usuario)}>
                                     <IconButton color='secondary'>

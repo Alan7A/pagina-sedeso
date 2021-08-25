@@ -1,7 +1,7 @@
 import axios from '../../utils/axios';
 import { types } from "../types"
 import { closeCreateUserModal, closeDeleteUserDialog, closeEditUserModal } from './ui';
-import { mostrarErrores, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles';
+import { headers, mostrarErrores, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles';
 
 export const setActiveUser = (user) => ({
     type: types.setActiveUser,
@@ -13,7 +13,7 @@ export const loadUsers = () => {
         dispatch(startLoading());
 
         try {
-            const response = await axios.get('/usuarios', { headers: { 'x-token': localStorage.getItem('token') } });
+            const response = await axios.get('/usuarios/todos', headers);
             dispatch(usersLoaded(response.data));
         } catch (error) {
             console.log(error.response);
@@ -32,7 +32,7 @@ export const startCreatingUser = (user) => {
         dispatch(startLoading());
 
         try {
-            const response = await axios.post('/usuarios/crearUsuario', user, { headers: { 'x-token': localStorage.getItem('token') } });
+            const response = await axios.post('/usuarios/crearUsuario', user, headers);
             mostrarNotificacionSuccess(response.data.msg);
             dispatch(userCreated(user));
             // Cerrar el modal
@@ -54,7 +54,7 @@ export const updateUser = (user) => {
         dispatch(startLoading());
 
         try {
-            const response = await axios.put(`/usuarios/modificarUsuario/${user.idUsuario}`, user, { headers: { 'x-token': localStorage.getItem('token') } });
+            const response = await axios.put(`/usuarios/modificarUsuario/${user.idUsuario}`, user, headers);
             mostrarNotificacionSuccess(response.data.msg);
 
             dispatch(userUpdated(user));
@@ -77,7 +77,7 @@ export const deleteUser = (userId) => {
         dispatch(startLoading());
 
         try {
-            const response = await axios.delete(`/usuarios/eliminarUsuario/${userId}`, { headers: { 'x-token': localStorage.getItem('token') } });
+            const response = await axios.delete(`/usuarios/eliminarUsuario/${userId}`, headers);
             mostrarNotificacionSuccess(response.data.msg);
 
             dispatch(userDeleted());

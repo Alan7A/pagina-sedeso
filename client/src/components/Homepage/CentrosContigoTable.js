@@ -22,8 +22,8 @@ function CentrosContigoTable() {
         getCentros();
     }, [idCentro]);
 
-    const handleClick = (centroContigo) => {
-        history.push(`/centrosContigo/${centroContigo}`)
+    const handleClick = (id) => {
+        history.push(`/centrosContigo/${id}`)
     }
 
     return (
@@ -43,7 +43,7 @@ function CentrosContigoTable() {
                         </StyledTableRow>
                     ))} */}  
                         {centros.map((centro, i) =>
-                            <StyledTableRow key={i} onClick={() => handleClick(centro.CentroContigo)}>
+                            <StyledTableRow key={i} onClick={() => handleClick(centro.id)}>
                                 <StyledTableCell>{centro.CentroContigo}</StyledTableCell>
                                 <StyledTableCell>{centro.Ubicación}</StyledTableCell>
                             </StyledTableRow>

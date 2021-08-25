@@ -12,8 +12,8 @@ router.get('/', getUser);
 
 router.post('/crearUsuario',
     [
-        check('coordinador', 'El nombre no puede estar vacío').notEmpty(),
-        check('email', 'Email inválido').isEmail(),
+        check('Nombre', 'El nombre no puede estar vacío').notEmpty(),
+        check('Correo', 'Email inválido').isEmail(),
         check('contra', 'La contraseña no puede estar vacía').notEmpty(),
         validarCampos
     ],
@@ -21,9 +21,8 @@ router.post('/crearUsuario',
 
 router.put('/modificarUsuario/:id',
     [
-        check('coordinador', 'El nombre no puede estar vacío').notEmpty(),
-        check('email', 'Email inválido').isEmail(),
-        check('contra', 'La contraseña no puede estar vacía').notEmpty(),
+        check('Nombre', 'El nombre no puede estar vacío').notEmpty(),
+        check('Correo', 'Email inválido').isEmail(),
         validarCampos
     ],
     modifyUser);
