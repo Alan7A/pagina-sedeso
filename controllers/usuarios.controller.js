@@ -24,8 +24,8 @@ const getUser = async (req, res) => {
 
     try {
 
-        const { correo } = req.body;
-        const [results] = await db.query('CALL getUser(?)', [correo]);
+        const { Correo } = req.body;
+        const [results] = await db.query('CALL getUser(?)', [Correo]);
 
         const usuario = results[0][0];
 
@@ -65,11 +65,11 @@ const createUser = async (req, res) => {
             msg: 'Usuario creado correctamente',
         })
     } catch (error) {
-        // Si el correo ya existe, se manda el error
+        // Si el Correo ya existe, se manda el error
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 errors: [{
-                    msg: 'Ese correo ya está registrado'
+                    msg: 'Ese Correo ya está registrado'
                 }]
             });
         }
@@ -110,11 +110,11 @@ const modifyUser = async (req, res) => {
         })
 
     } catch (error) {
-        // Si el correo ya existe, se manda el error
+        // Si el Correo ya existe, se manda el error
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 errors: [{
-                    msg: 'Ese correo ya está registrado'
+                    msg: 'Ese Correo ya está registrado'
                 }]
             });
         }
