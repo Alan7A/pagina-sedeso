@@ -87,12 +87,14 @@ const createUser = async (req, res) => {
 
 const modifyUser = async (req, res) => {
     const { id } = req.params;
-    let {  Nombre, Correo, contra } = req.body;
+    let { Nombre, Correo, contra } = req.body;
 
     try {
-        // Encriptar contraseña
-        salt = bcrypt.genSaltSync();
-        contra = bcrypt.hashSync(contra, salt);
+        // Encriptar contraseña si contra no es null
+        if (contra) {
+            salt = bcrypt.genSaltSync();
+            contra = bcrypt.hashSync(contra, salt);
+        }
 
         const [results] = await db.query('CALL updateUser(?, ?, ?, ?)', [id, Nombre, Correo, contra]);
 
