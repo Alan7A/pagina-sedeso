@@ -81,7 +81,7 @@ const createCentro = async(req, res) => {
 
     try {
 
-        const [results] = await db.query('INSERT INTO CentroCrecer(nombreCentro, ubicacion ,telefono) VALUES ?', [nom, ub, tel]);
+        const [results] = await db.query('INSERT INTO CentroCrecer(nombreCentro, ubicacion ,telefono) VALUES (?, ?, ?)', [nom, ub, tel]);
         const idCentro = results.insertId;
 
         //Agregar el idCentro a cada imagen del arreglo
