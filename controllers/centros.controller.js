@@ -89,8 +89,10 @@ const createCentro = async(req, res) => {
             ...imagen, idCurso
         ]) );
 
+        if(imagenes.length>0){
         //Insertar las imágenes
         await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+        }
 
         res.status(201).json({
             msg:"Centro agregado exitosamente"
