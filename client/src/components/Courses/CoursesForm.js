@@ -64,7 +64,6 @@ function CoursesForm({ editar }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
         if (horarios.length === 0) {
             return mostrarNotificacionError('Agrega al menos un horario');
         }
@@ -78,7 +77,7 @@ function CoursesForm({ editar }) {
                 const nuevosHorarios = horariosConFormato.map(horario => (Object.values(horario)));
 
                 // Convertir files a base64 para poder subir a la bd
-                const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)))
+                const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)));
                 // Hacer que las imágenes tengan el formato que acepta mysql
                 const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ idCurso, imagen })))
 

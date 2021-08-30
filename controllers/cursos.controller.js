@@ -3,12 +3,12 @@ const db = require('../database/connection');
 const getCursosGeneral = async (req, res) => {
 
     try {
-        
+
         const [results] = await db.query('CALL ListCursosGeneral()');
         const [cursos] = results.slice(0, results.length);
         res.status(201).json(cursos);
     } catch (error) {
-        
+
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -23,14 +23,14 @@ const getCursosGeneral = async (req, res) => {
 
 const getCursosPorCentro = async (req, res) => {
 
-    try{
+    try {
 
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
         const [cursos] = results.slice(0, results.length);
         res.status(202).json(cursos);
 
-    } catch ( error ){
+    } catch (error) {
 
         console.error(error);
         return res.status(500).json({
@@ -47,22 +47,22 @@ const getCursosPorCentro = async (req, res) => {
 const getCurso = async (req, res) => {
 
     try {
-        
-        const { idcp } = req.params; 
-        const [results]  = await db.query('CALL getCurso(?)', [idcp]);
+
+        const { idcp } = req.params;
+        const [results] = await db.query('CALL getCurso(?)', [idcp]);
         const [horarios] = await db.query('CALL getAllHorarios(?)', [idcp]);
         const [imagenes] = await db.query('CALL ListImgCurso(?)', [idcp]);
-        
+
         const curso = results[0][0];
         curso.horarios = horarios[0];
         curso.imagenes = imagenes[0];
 
-        if(curso){        
+        if (curso) {
             res.status(202).json(curso);
         } else {
 
             res.status(404).json({
-                msg:'Curso no encontrado'
+                msg: 'Curso no encontrado'
             });
         }
 
@@ -76,32 +76,32 @@ const getCurso = async (req, res) => {
             query: error.sql,
             sqlMessage: error.sqlMessage
         });
-        
+
     }
 }
 
-const createCurso = async(req, res) => {
+const createCurso = async (req, res) => {
 
     let { idc, nom, lug, alu, horarios, imagenes } = req.body;
-    
+
 
     try {
 
         const [results] = await db.query('INSERT INTO Cursos(idCentro, nombre, lugar, alumnos) VALUES (?,?,?,?)', [idc, nom, lug, alu]);
-        const idCurso=results.insertId;
+        const idCurso = results.insertId;
 
         //Agregar el idCurso a cada horario del arreglo
-        horarios = horarios.map( (horario)=> ([
+        horarios = horarios.map((horario) => ([
             ...horario, idCurso
-        ]) );
+        ]));
 
         //Agregar el idCurso a cada imagen del arreglo
-        imagenes = imagenes.map( (imagen)=> ([
+        imagenes = imagenes.map((imagen) => ([
             ...imagen, idCurso
-        ]) );
+        ]));
 
         //Instertar los horarios
-        await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]); 
+        await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]);
         //Insertar las imágenes
         await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
 
@@ -120,10 +120,10 @@ const createCurso = async(req, res) => {
             query: error.sql,
             sqlMessage: error.sqlMessage
         });
-    } 
+    }
 }
 
-const modifyCurso = async(req, res) => {
+const modifyCurso = async (req, res) => {
 
     const { idcp } = req.params;
     const { idc, nom, lug, alu, imagenes, horarios } = req.body; // idcp = idCurso, idc = idCentroCrecer
@@ -155,7 +155,7 @@ const modifyCurso = async(req, res) => {
         })
 
     } catch (error) {
-        
+
         console.error(error);
         return res.status(500).json({
             errors: [{
@@ -182,7 +182,7 @@ const deleteCurso = async (req, res) => {
         }
 
         res.status(202).json({
-            msg:'El curso se ha eliminado exitosamente'
+            msg: 'El curso se ha eliminado exitosamente'
         })
 
     } catch (error) {

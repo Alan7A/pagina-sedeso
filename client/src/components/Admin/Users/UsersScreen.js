@@ -3,11 +3,11 @@ import React, { useEffect } from 'react'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { useDispatch, useSelector } from 'react-redux'
 import UsersTable from './UsersTable';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import CreateUserModal from './CreateUserModal';
-import { openCreateUserModal } from '../../redux/actions/ui';
+import { openCreateUserModal } from '../../../redux/actions/ui';
 import DeleteUserDialog from './DeleteUserDialog';
-import { loadUsers } from '../../redux/actions/users';
+import { loadUsers } from '../../../redux/actions/users';
 
 function UsersScreen() {
     const { isLoading, users } = useSelector(state => state.users);
@@ -18,8 +18,8 @@ function UsersScreen() {
     }, [dispatch])
 
     return (
-        <Container maxWidth='md'>
-            <Typography variant='h4' style={{ marginTop: 30, marginBottom: 20 }}>
+        <Container>
+            <Typography variant='h4'>
                 Usuarios
             </Typography>
 

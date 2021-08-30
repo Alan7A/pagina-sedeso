@@ -2,11 +2,9 @@ import React from "react";
 import { AppBar, Toolbar, Container, List, ListItem, ListItemText, Hidden, ListItemIcon, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import SideDrawer from "./SideDrawer";
-import { School, Home, ExitToApp, Event } from "@material-ui/icons";
+import { School, Home, ExitToApp, Event, AccountCircle } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/auth";
-
-
 
 const Navbar = () => {
     const classes = useStyles();
@@ -30,10 +28,14 @@ const Navbar = () => {
             icon: <Event />
         },
         {
+            title: [1,2,3].includes(usuario?.idUsuario) && 'Panel de administrador',
+            path: '/administrador',
+            icon: <AccountCircle />
+        },
+        {
             title: usuario && 'Cerrar Sesión',
             action: () => dispatch(logout()),
-            icon: usuario && <ExitToApp />
-
+            icon: <ExitToApp />
         }
     ];
 

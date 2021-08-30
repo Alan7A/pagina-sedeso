@@ -81,16 +81,18 @@ const createCentro = async(req, res) => {
 
     try {
 
-        const [results] = await db.query('INSERT INTO CentroCrecer(nombreCentro, ubicacion ,telefono)', [nom, ub, tel]);
+        const [results] = await db.query('INSERT INTO CentroCrecer(nombreCentro, ubicacion ,telefono) VALUES (?, ?, ?)', [nom, ub, tel]);
         const idCentro = results.insertId;
 
-        //Agregar el idCurso a cada imagen del arreglo
+        //Agregar el idCentro a cada imagen del arreglo
         imagenes = imagenes.map( (imagen)=> ([
-            ...imagen, idCurso
+            ...imagen, idCentro
         ]) );
 
+        if(imagenes.length>0){
         //Insertar las imágenes
-        await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+        await db.query('INSERT INTO ImagenesCentro(imagen, idCentro) VALUES ?', [imagenes]);
+        }
 
         res.status(201).json({
             msg:"Centro agregado exitosamente"

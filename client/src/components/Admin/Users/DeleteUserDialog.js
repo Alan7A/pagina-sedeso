@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeDeleteUserDialog } from '../../redux/actions/ui';
-import { deleteUser } from '../../redux/actions/users';
-import Loading from '../Loading';
+import { closeDeleteUserDialog } from '../../../redux/actions/ui';
+import { deleteUser } from '../../../redux/actions/users';
+import Loading from '../../Loading';
 
 
 export default function DeleteUserDialog() {
@@ -23,7 +23,7 @@ export default function DeleteUserDialog() {
             <DialogTitle>{"Eliminar usuario"}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    ¿Estás seguro que quieres eliminar el usuario de <b>{activeUser?.coordinador}</b>?
+                    ¿Estás seguro que quieres eliminar el usuario de <b>{activeUser?.Nombre}</b>?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

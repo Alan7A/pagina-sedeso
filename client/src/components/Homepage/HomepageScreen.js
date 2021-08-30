@@ -8,7 +8,7 @@ import './styles.css'
 
 function HomepageScreen() {
     return (
-        <div style={{backgroundColor:'#fafafa'}}>
+        <div style={{ backgroundColor: '#fafafa' }}>
             <HeroImage />
 
             <Container maxWidth='md'>

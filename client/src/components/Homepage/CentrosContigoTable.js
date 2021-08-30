@@ -41,6 +41,12 @@ function CentrosContigoTable() {
     // Extraer los valores
     const {nom, ub, tel} = crearCentro;
 
+    // Eliminar Centro
+    const onDeleteCentro = async (e) => {
+        await axios.delete(`/CentrosContigo/eliminar/${e}`, headers);
+    }
+    
+    // Agregar Centro
     const onSubmitCentro = async (e) => {
         e.preventDefault();
 
@@ -60,8 +66,6 @@ function CentrosContigoTable() {
 
             setError(false);
 
-            console.log(data);
-
             await axios.post(`/CentrosContigo/agregarCentro`, data, headers);
 
             abrirCerrarAdd();
@@ -78,7 +82,6 @@ function CentrosContigoTable() {
             try {
                 const response = await axios.get(`/CentrosContigo/`);
                 setCentros(response.data);
-                console.log(response.data);
             } catch (error) {
                 mostrarErrores(error);
             }
@@ -86,8 +89,8 @@ function CentrosContigoTable() {
         getCentros();
     }, [idCentro]);
 
-    const handleClick = (centroContigo) => {
-        history.push(`/centrosContigo/${centroContigo}`)
+    const handleClick = (id) => {
+        history.push(`/centrosContigo/${id}`)
     }
 
     const abrirCerrarAdd = () => {
@@ -212,17 +215,16 @@ function CentrosContigoTable() {
                 </TableHead>
                 <TableBody> 
                     {centros.map((centro, i) =>
-                        //  key={i} onClick={() => handleClick(centro.CentroContigo)}
                         <StyledTableRow key={i}>
-                            <StyledTableCell key={i} onClick={() => handleClick(centro.CentroContigo)}>{centro.CentroContigo}</StyledTableCell>
-                            <StyledTableCell>{centro.Ubicación}</StyledTableCell>
+                            <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.CentroContigo}</StyledTableCell>
+                            <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.Ubicación}</StyledTableCell>
                             <StyledTableCell>
                                 <Button variant="contained" color="primary" onClick={() => abrirCerrarEdit()}>
                                     <EditIcon></EditIcon>
                                 </Button>
                             </StyledTableCell>
                             <StyledTableCell>
-                                <Button variant="contained" color="primary">
+                                <Button variant="contained" color="primary" onClick={() => onDeleteCentro(centro.id)}>
                                     <DeleteIcon></DeleteIcon>
                                 </Button>
                             </StyledTableCell>
