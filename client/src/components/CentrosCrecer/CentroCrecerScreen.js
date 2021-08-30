@@ -78,7 +78,8 @@ function CentroCrecerScreen() {
             <Grid container spacing={3}>
                 {cursos.map((curso, i) => <Course curso={curso} centroContigo={curso.Curso} key={i} />)}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card elevation={3} style={{ backgroundColor: '#4caf50', color: 'white' }}>
+
+                    <Card elevation={3} style={{ backgroundColor: '#4caf50', color: 'white'}} onClick={() => history.push('/cursos/crearCurso')}>
                         <CardActionArea>
                             <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <AddCircle style={{ fontSize: 45, color: 'white', marginBottom: 10 }} />

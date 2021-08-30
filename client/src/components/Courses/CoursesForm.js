@@ -7,6 +7,7 @@ import './styles.css'
 import ListaHorarios from './ListaHorarios';
 import axios from '../../utils/axios';
 import { fileToBase64, headers, mostrarErrores, mostrarNotificacionError, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles';
+import { useSelector } from 'react-redux';
 
 const initialFormValues = {
     idc: 2,
@@ -21,6 +22,7 @@ function CoursesForm({ editar }) {
     const [imagenes, setImagenes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingInfo, setIsLoadingInfo] = useState(true);
+    const {usuario} = useSelector(state => state.auth);
 
     const history = useHistory();
     const { idCurso } = useParams();
@@ -32,7 +34,7 @@ function CoursesForm({ editar }) {
                 try {
                     const response = await axios.get(`/cursos/${idCurso}`)
                     setFormValues({
-                        idc: 2,
+                        idc: response.data.idCentro,
                         nom: response.data.nombre,
                         lug: response.data.lugar,
                         alu: response.data.alumnos
@@ -90,7 +92,7 @@ function CoursesForm({ editar }) {
                 await axios.put(`/cursos/modificarCurso/${idCurso}`, data, headers);
 
                 mostrarNotificacionSuccess('Curso actualizado correctamente');
-                history.push('/cursos');
+                history.push(`/centrosContigo/${data.idc}`);
             } catch (error) {
                 mostrarErrores(error);
             }
@@ -109,6 +111,7 @@ function CoursesForm({ editar }) {
 
                 // Agregar los horarios y las imágenes al objeto que se manda en el body
                 let data = formValues;
+                data.idc = usuario.idCentro;
                 data.horarios = nuevosHorarios;
                 data.imagenes = nuevasImagenes;
 
@@ -116,7 +119,7 @@ function CoursesForm({ editar }) {
                 await axios.post('/cursos/crearCurso', data, headers);
 
                 mostrarNotificacionSuccess('Curso creado correctamente');
-                history.push('/cursos');
+                history.push(`/centrosContigo/${data.idc}`);
             } catch (error) {
                 mostrarErrores(error);
             }
