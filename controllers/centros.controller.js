@@ -7,7 +7,11 @@ const getCentroContigo = async(req, res) => {
     try {
         
         const [results] = await db.query('CALL getCentro(?)', [idp]);
+        const [imagenes] = await db.query('CALL ListImgCentro(?)', [idp]);
+
         const centro = results[0][0];
+        centro.imagenes = imagenes[0];
+        
 
         if(centro){
 
