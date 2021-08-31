@@ -9,8 +9,10 @@ import './styles.css'
 function HomepageScreen() {
     return (
         <div style={{ backgroundColor: '#fafafa' }}>
-            <HeroImage />
-
+            <HeroImage /> 
+            {/* Aqui inicia la Imagen portada */}
+           
+            {/* Aqui termina la Imagen portada */}
             <Container maxWidth='md'>
                 <h2 className="subtitulo">Centros contigo</h2>
                 <CentrosContigoTable />
