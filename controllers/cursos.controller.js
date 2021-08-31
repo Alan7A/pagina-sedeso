@@ -102,11 +102,8 @@ const createCurso = async (req, res) => {
 
         //Instertar los horarios
         await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]);
-
-        if(imagenes.length>0){
-            //Insertar las imágenes
-            await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
-        }
+        //Insertar las imágenes
+        await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
 
         res.status(201).json({
             msg: 'Curso creado exitosamente',
