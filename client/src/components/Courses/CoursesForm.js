@@ -22,7 +22,7 @@ function CoursesForm({ editar }) {
     const [imagenes, setImagenes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingInfo, setIsLoadingInfo] = useState(true);
-    const {usuario} = useSelector(state => state.auth);
+    const { usuario } = useSelector(state => state.auth);
 
     const history = useHistory();
     const { idCurso } = useParams();
@@ -43,7 +43,7 @@ function CoursesForm({ editar }) {
                     const horariosCurso = response.data.horarios.map((horario) => ({ d: horario.Dia, h: horario.Horario }));
                     setHorarios(horariosCurso);
 
-                    const imagenesCurso = response.data.imagenes.map(img => img.imagen)
+                    const imagenesCurso = response.data.imagenes.map(img => img.imagen);
                     setImagenes(imagenesCurso);
                     setIsLoadingInfo(false);
                 } catch (error) {
@@ -53,7 +53,7 @@ function CoursesForm({ editar }) {
             }
             getDatosCurso();
         }
-    }, [idCurso, editar])
+    }, [idCurso, editar]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -91,7 +91,7 @@ function CoursesForm({ editar }) {
                 // Mandar petición para actualizar datos generales del curso
                 await axios.put(`/cursos/modificarCurso/${idCurso}`, data, headers);
 
-                mostrarNotificacionSuccess('Curso actualizado correctamente');
+                mostrarNotificacionSuccess('Curso actualizado correctamente.');
                 history.push(`/centrosContigo/${data.idc}`);
             } catch (error) {
                 mostrarErrores(error);
@@ -209,7 +209,7 @@ function CoursesForm({ editar }) {
 
                             {isLoading ? (<Loading texto={editar ? 'Actualizando información del curso' : 'Creando el curso, por favor espere'} />) : (
                                 <div className='botones-modal' style={{ marginTop: 20 }}>
-                                    <Button variant='contained' className='boton-cancelar' onClick={() => history.push('/cursos')} >
+                                    <Button variant='contained' className='boton-cancelar' onClick={() => history.push(`/centrosContigo/${usuario.idCentro}`)} >
                                         Cancelar
                                     </Button>
                                     <Button variant='contained' color='primary' type='submit'>
