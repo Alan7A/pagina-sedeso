@@ -134,7 +134,7 @@ const modifyCentro = async(req, res) => {
         // Borrar todas las imágenes de ese curso
         await db.query('DELETE FROM ImagenesCentro WHERE idCentro = ?', [idp]);
         // Insertar las nuevas imágenes a la tabla ImagenesCurso
-        await db.query('INSERT INTO ImagenesCentro(idCentro, imagen) VALUES ?', [imagenes]);
+        await db.query('INSERT INTO ImagenesCentro(imagen, idCentro) VALUES ?', [imagenes]);
 
         res.status(202).json({
             msg: 'El Centro Contigo se ha editado correctamente',
