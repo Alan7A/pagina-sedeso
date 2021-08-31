@@ -8,7 +8,6 @@ import Loading from '../../Loading';
 
 
 function ChangePicturesScreen() {
-    const [infoCentro, setInfoCentro] = useState({});
     const [imagenes, setImagenes] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const { usuario } = useSelector(state => state.auth);
@@ -16,10 +15,8 @@ function ChangePicturesScreen() {
     useEffect(() => {
         const getImages = async () => {
             try {
-                const response = await axios.get(`/CentrosContigo/${usuario.idCentro}`);
-                setInfoCentro(response.data);
-
-                const imagenesCurso = response.data.imagenes.map(img => img.imagen);
+                const response = await axios.get(`/imagenes`);
+                const imagenesCurso = response.data.map(img => img.imagen);
                 setImagenes(imagenesCurso);
             } catch (error) {
                 mostrarErrores(error);
@@ -30,21 +27,20 @@ function ChangePicturesScreen() {
     }, [usuario.idCentro]);
 
     const handleActualizarImagenes = async () => {
+        setIsLoading(true);
         try {
             // Convertir files a base64 para poder subir a la bd
             const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)));
             // Hacer que las imágenes tengan el formato que acepta mysql
             const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ imagen })));
+            const data = { imagenes: nuevasImagenes };
 
-            let data = infoCentro;
-            data.imagenes = nuevasImagenes;
-            console.log(data);
-
-            await axios.put(`/CentrosContigo/editar/${usuario.idCentro}`, data, headers);
+            await axios.put(`/imagenes/actualizarImagenes`, data, headers);
             mostrarNotificacionSuccess('Imágenes actualizadas correctamente.');
         } catch (error) {
             mostrarErrores(error)
         }
+        setIsLoading(false);
     }
 
     return (
@@ -53,40 +49,44 @@ function ChangePicturesScreen() {
                 Cambiar imágenes de la página de inicio
             </Typography>
 
-            {isLoading ? (<Loading />)
+            {isLoading ? (<Loading texto='Cargando...' />)
                 : (
-                    <DropzoneArea
-                        acceptedFiles={['image/*']}
-                        initialFiles={imagenes}
-                        dropzoneText={"Arrastra tus imágenes o da clic aquí para subir imágenes (máximo 9)"}
-                        onChange={(files) => setImagenes(files)}
-                        filesLimit={9}
-                        getFileLimitExceedMessage={(filesLimit) => `Solo se permiten ${filesLimit} imágenes como máximo`}
-                        getFileAddedMessage={(fileName) => `Imagen ${fileName} agregada`}
-                        getFileRemovedMessage={(fileName) => `Imagen ${fileName} eliminada`}
-                        getDropRejectMessage={(rejectedFile, acceptedFiles, maxFileSize) => {
-                            let message = `No Se pudo subir ${rejectedFile.name}. `;
-                            if (acceptedFiles.includes(rejectedFile.type)) {
-                                message += 'Solo puedes subir imagenes. ';
-                            }
-                            if (rejectedFile.size > maxFileSize) {
-                                message += 'La imagen es demasiado pesada, el tamaño máximo es 3MB.';
-                            }
-                            return message;
-                        }}
-                    />
+                    <>
+                        <DropzoneArea
+                            acceptedFiles={['image/*']}
+                            initialFiles={imagenes}
+                            dropzoneText={"Arrastra tus imágenes o da clic aquí para subir imágenes (máximo 9)"}
+                            onChange={(files) => setImagenes(files)}
+                            filesLimit={9}
+                            getFileLimitExceedMessage={(filesLimit) => `Solo se permiten ${filesLimit} imágenes como máximo`}
+                            getFileAddedMessage={(fileName) => `Imagen ${fileName} agregada`}
+                            getFileRemovedMessage={(fileName) => `Imagen ${fileName} eliminada`}
+                            getDropRejectMessage={(rejectedFile, acceptedFiles, maxFileSize) => {
+                                let message = `No Se pudo subir ${rejectedFile.name}. `;
+                                if (acceptedFiles.includes(rejectedFile.type)) {
+                                    message += 'Solo puedes subir imagenes. ';
+                                }
+                                if (rejectedFile.size > maxFileSize) {
+                                    message += 'La imagen es demasiado pesada, el tamaño máximo es 3MB.';
+                                }
+                                return message;
+                            }}
+                        />
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                style={{ marginTop: 15, marginLeft: 'auto' }}
+                                onClick={handleActualizarImagenes}
+                            >
+                                Actualizar imágenes
+                            </Button>
+                        </div>
+                    </>
                 )}
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    style={{ marginTop: 15, marginLeft: 'auto' }}
-                    onClick={handleActualizarImagenes}
-                >
-                    Actualizar imágenes
-                </Button>
-            </div>
+
         </Container>
     )
 }
