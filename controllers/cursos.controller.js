@@ -27,7 +27,30 @@ const getCursosPorCentro = async (req, res) => {
 
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
-        const [cursos] = results.slice(0, results.length);
+        let [cursos] = results.slice(0, results.length);
+        let nuevos = [];
+
+
+        cursos.forEach(async curso => {
+            
+            const [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
+            const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
+            nuevos = [...nuevos,  { ...curso, 
+                        hor: { dia:horarios[0].Dia, horario:horarios[0].Horarios},  // ¿Que pasá cuando son muchos horarios? : no se puede hacer esto
+                        horarios: horarios[0],
+                        //imagen: imagen[0] -> este ya funciona bien pero para hacer pruebas dejalo comentado para que no salga en consola la enrome cadena de texto
+                    } ]
+                         console.log(nuevos);
+        } );
+
+
+
+        // cursos = cursos.map((curso) => [
+        //     id=cursos[curso].idCurso;
+        //     const [horarios] = await db.query('CALL getAllHorarios(?)', [id]);
+        //     const imagen = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [id]);
+        // ]);
+        
         res.status(202).json(cursos);
 
     } catch (error) {

@@ -1,13 +1,14 @@
 import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button, Chip } from '@material-ui/core'
-import React from 'react'
+import React, {useState} from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Edit, Delete, LocationOn, Schedule } from '@material-ui/icons';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 
 function Course({ curso, centroContigo }) {
     const { usuario } = useSelector(state => state.auth);
     const { idCentro } = useParams();
     const history = useHistory();
+    const [openPopUp, setOpenPopUp] = useState(false);
 
     return (
         <Grid item xs={12} sm={6} md={4}>
@@ -43,7 +44,7 @@ function Course({ curso, centroContigo }) {
                             <Button size="small" color="secondary" onClick={() => history.push(`/cursos/modificarCurso/${curso.idCurso}`)} startIcon={<Edit />}>
                                 Editar
                             </Button>
-                            <Button size="small" style={{ color: 'red' }} startIcon={<Delete />}>
+                            <Button size="small" style={{ color: 'red' }} startIcon={<Delete />} >
                                 Eliminar
                             </Button>
 
