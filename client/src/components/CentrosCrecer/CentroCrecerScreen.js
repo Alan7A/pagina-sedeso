@@ -7,19 +7,20 @@ import axios from '../../utils/axios'
 import './styles.css'
 import { mostrarErrores } from '../../utils/funcionesUtiles'
 import EditIcon from '@material-ui/icons/Edit';
+import { useSelector } from 'react-redux'
 
 function CentroCrecerScreen() {
     const [cursos, setCursos] = useState([]);
     const [centro, setCentro] = useState([]);
     const history = useHistory();
-    const { idCurso } = useParams();
-    // const { usuario } = useSelector(state => state.auth);
+    const { idCentro } = useParams();
+    const { usuario } = useSelector(state => state.auth);
 
     useEffect(() => {
         const getCursos = async () => {
             try {
-                const response = await axios.get(`/cursos/Cursos/${idCurso}`);
-                const comprobarId = response.config.url.substr(15,3);
+                const response = await axios.get(`/cursos/Cursos/${idCentro}`);
+                const comprobarId = response.config.url.substr(15, 3);
                 const responseCentro = await axios.get(`/centrosContigo/${comprobarId}`);
                 setCursos(response.data);
                 setCentro(responseCentro.data);
@@ -28,16 +29,16 @@ function CentroCrecerScreen() {
             }
         }
         getCursos();
-    }, [idCurso]);
+    }, [idCentro]);
 
     return (
         <Container maxWidth='lg' style={{ marginTop: 35 }}>
-            
+
             <Breadcrumbs style={{ marginBottom: 30 }}>
                 <Link color="inherit" href="/" onClick={() => history.push('/')}>
                     Inicio
                 </Link>
-                <Link color="inherit" href="/getting-started/installation/" onClick={() => history.push('/centrosContigo')}>
+                <Link color="inherit" href="/getting-started/installation/" onClick={() => history.push('/')}>
                     Centros Contigo
                 </Link>
                 <Typography color="textPrimary">{centro.nombreCentro}</Typography>
@@ -52,10 +53,12 @@ function CentroCrecerScreen() {
                             <Typography variant='h4'>Centro Contigo</Typography>
                             <Typography variant='h4' style={{ fontWeight: 'bold' }}>{centro.nombreCentro}</Typography>
                             <div style={{ marginTop: 30 }}>
-                            <Button variant="contained" color="primary">
-                                <EditIcon></EditIcon>
-                            </Button>
-                                
+                                {idCentro == usuario.idCentro && (
+                                    <Button variant="contained" color="primary">
+                                        <EditIcon></EditIcon>
+                                    </Button>
+                                )}
+
                             </div>
                         </Grid>
 
@@ -77,17 +80,19 @@ function CentroCrecerScreen() {
             <h2 className="subtitulo">Cursos</h2>
             <Grid container spacing={3}>
                 {cursos.map((curso, i) => <Course curso={curso} centroContigo={curso.Curso} key={i} />)}
-                <Grid item xs={12} sm={6} md={4}>
 
-                    <Card elevation={3} style={{ backgroundColor: '#4caf50', color: 'white'}} onClick={() => history.push('/cursos/crearCurso')}>
-                        <CardActionArea>
-                            <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <AddCircle style={{ fontSize: 45, color: 'white', marginBottom: 10 }} />
-                                <Typography>Crear nuevo curso</Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
+                {idCentro == usuario.idCentro && (
+                    <Grid item xs={12} sm={6} md={4}>
+                        <Card elevation={3} style={{ backgroundColor: '#4caf50', color: 'white' }} onClick={() => history.push('/cursos/crearCurso')}>
+                            <CardActionArea>
+                                <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <AddCircle style={{ fontSize: 45, color: 'white', marginBottom: 10 }} />
+                                    <Typography>Crear nuevo curso</Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                )}
             </Grid>
         </Container>
     )
