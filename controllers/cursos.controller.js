@@ -28,30 +28,27 @@ const getCursosPorCentro = async (req, res) => {
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
         let [cursos] = results.slice(0, results.length);
-        let nuevos = [];
+        let nuevos =  [];
 
 
-        cursos.forEach(async curso => {
-            
-            const [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
-            const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
-            nuevos = [...nuevos,  { ...curso, 
-                        hor: { dia:horarios[0].Dia, horario:horarios[0].Horarios},  // ¿Que pasá cuando son muchos horarios? : no se puede hacer esto
-                        horarios: horarios[0],
-                        //imagen: imagen[0] -> este ya funciona bien pero para hacer pruebas dejalo comentado para que no salga en consola la enrome cadena de texto
-                    } ]
-                         console.log(nuevos);
-        } );
+         setTimeout( () => {
+            cursos.forEach(async curso => {
+                
+                let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
+                const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
+                //horarios = JSON.parse(JSON.stringify(horarios)); // con [ ] pasa de TEXTROW pasa a Object, con [[ ]] pasa al formato deseado
+                nuevos = [...nuevos,  { ...curso, 
+                            horarios: horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })),
+                            imagen: imagen[0]
+                        } ]
+                            
+            } )
+        } ,2000); 
 
-
-
-        // cursos = cursos.map((curso) => [
-        //     id=cursos[curso].idCurso;
-        //     const [horarios] = await db.query('CALL getAllHorarios(?)', [id]);
-        //     const imagen = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [id]);
-        // ]);
+        setTimeout(() => {
+            res.status(202).json(nuevos);
+        }, 3000); // forzamos a que lo haga despues de terminar el forEach
         
-        res.status(202).json(cursos);
 
     } catch (error) {
 
