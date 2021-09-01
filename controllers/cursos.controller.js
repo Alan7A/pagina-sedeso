@@ -27,10 +27,11 @@ const getCursosPorCentro = async (req, res) => {
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
         let [cursos] = results.slice(0, results.length);
-        let nuevos = [];
-        let contador = 0;
 
-        if(cursos.length > 0) {
+        if (cursos.length > 0) {
+            let nuevos = [];
+            let contador = 0;
+
             cursos.forEach(async (curso, i, array) => {
                 let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
                 const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
@@ -40,20 +41,20 @@ const getCursosPorCentro = async (req, res) => {
                     imagen: imagen[0].imagen
                 }]
                 contador++;
-    
-                
+
+
                 if (contador === array.length) {
                     const cursosOrdenados = nuevos.sort((a, b) => {
                         if (a.Curso > b.Curso) {
                             return 1;
-                          }
-                          if (a.Curso < b.Curso) {
+                        }
+                        if (a.Curso < b.Curso) {
                             return -1;
-                          }
-                          // a must be equal to b
-                          return 0;
+                        }
+                        // a must be equal to b
+                        return 0;
                     })
-    
+
                     res.status(202).json(cursosOrdenados);
                 }
             })
