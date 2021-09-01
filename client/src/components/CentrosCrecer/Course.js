@@ -8,7 +8,6 @@ function Course({ curso, centroContigo }) {
     const { usuario } = useSelector(state => state.auth);
     const { idCentro } = useParams();
     const history = useHistory();
-    const [openPopUp, setOpenPopUp] = useState(false);
 
     return (
         <Grid item xs={12} sm={6} md={4}>

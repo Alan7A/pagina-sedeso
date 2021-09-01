@@ -30,32 +30,36 @@ const getCursosPorCentro = async (req, res) => {
         let nuevos = [];
         let contador = 0;
 
-        cursos.forEach(async (curso, i, array) => {
-            let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
-            const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
-            nuevos = [...nuevos, {
-                ...curso,
-                horarios: horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })),
-                imagen: imagen[0].imagen
-            }]
-            contador++;
-
-            
-            if (contador === array.length) {
-                const cursosOrdenados = nuevos.sort((a, b) => {
-                    if (a.Curso > b.Curso) {
-                        return 1;
-                      }
-                      if (a.Curso < b.Curso) {
-                        return -1;
-                      }
-                      // a must be equal to b
-                      return 0;
-                })
-
-                res.status(202).json(cursosOrdenados);
-            }
-        })
+        if(cursos.length > 0) {
+            cursos.forEach(async (curso, i, array) => {
+                let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
+                const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
+                nuevos = [...nuevos, {
+                    ...curso,
+                    horarios: horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : [],
+                    imagen: imagen[0].imagen
+                }]
+                contador++;
+    
+                
+                if (contador === array.length) {
+                    const cursosOrdenados = nuevos.sort((a, b) => {
+                        if (a.Curso > b.Curso) {
+                            return 1;
+                          }
+                          if (a.Curso < b.Curso) {
+                            return -1;
+                          }
+                          // a must be equal to b
+                          return 0;
+                    })
+    
+                    res.status(202).json(cursosOrdenados);
+                }
+            })
+        } else {
+            res.json([])
+        }
 
     } catch (error) {
 
