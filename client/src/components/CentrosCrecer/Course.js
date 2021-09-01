@@ -17,7 +17,7 @@ function Course({ curso, centroContigo }) {
                     component="img"
                     alt="Contemplative Reptile"
                     height="140"
-                    image='https://material-ui.com/static/images/cards/contemplative-reptile.jpg'
+                    image={curso.imagen ? curso.imagen : 'https://lazona40.com/theme/image.php/mb2mcl/theme/1626807325/course-default'}
                     title="Contemplative Reptile"
                 />
                 <CardContent>
@@ -27,8 +27,9 @@ function Course({ curso, centroContigo }) {
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                         <Schedule style={{ marginRight: 10, color: '#f67f1c' }} />
                         <Typography>Horarios: </Typography>
-                        <Chip size='small' label='Lunes 7:00-10:00' style={{ marginLeft: 5 }} />
-                        <Chip size='small' label='Jueves 18:00-21:00' style={{ marginLeft: 5 }} />
+                        {curso.horarios.map((horario) => (
+                            <Chip size='small' label={`${horario.Dia} ${horario.Horario}`} style={{ marginLeft: 5, marginBottom:10 }} />
+                        ))}
                     </div>
                     <div style={{ display: 'flex' }}>
                         <LocationOn style={{ marginRight: 10, color: '#f67f1c' }} />

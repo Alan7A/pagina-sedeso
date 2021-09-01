@@ -32,13 +32,13 @@ function CentroCrecerScreen() {
     }, [idCentro]);
 
     return (
-        <Container maxWidth='lg' style={{ marginTop: 35 }}>
+        <Container maxWidth='lg' style={{ marginTop: 35, marginBottom:35 }}>
 
             <Breadcrumbs style={{ marginBottom: 30 }}>
-                <Link color="inherit" href="/" onClick={() => history.push('/')}>
+                <Link color="inherit" href="/" >
                     Inicio
                 </Link>
-                <Link color="inherit" href="/getting-started/installation/" onClick={() => history.push('/')}>
+                <Link color="inherit" href="/" >
                     Centros Contigo
                 </Link>
                 <Typography color="textPrimary">{centro.nombreCentro}</Typography>
