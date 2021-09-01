@@ -36,7 +36,7 @@ const getCursosPorCentro = async (req, res) => {
             nuevos = [...nuevos, {
                 ...curso,
                 horarios: horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })),
-                imagen: imagen[0]
+                imagen: imagen[0].imagen
             }]
             contador++;
 
