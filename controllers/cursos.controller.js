@@ -24,31 +24,38 @@ const getCursosGeneral = async (req, res) => {
 const getCursosPorCentro = async (req, res) => {
 
     try {
-
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
         let [cursos] = results.slice(0, results.length);
-        let nuevos =  [];
+        let nuevos = [];
+        let contador = 0;
 
+        cursos.forEach(async (curso, i, array) => {
+            let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
+            const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
+            nuevos = [...nuevos, {
+                ...curso,
+                horarios: horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })),
+                imagen: imagen[0]
+            }]
+            contador++;
 
-         setTimeout( () => {
-            cursos.forEach(async curso => {
-                
-                let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
-                const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
-                //horarios = JSON.parse(JSON.stringify(horarios)); // con [ ] pasa de TEXTROW pasa a Object, con [[ ]] pasa al formato deseado
-                nuevos = [...nuevos,  { ...curso, 
-                            horarios: horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })),
-                            imagen: imagen[0]
-                        } ]
-                            
-            } )
-        } ,2000); 
+            
+            if (contador === array.length) {
+                const cursosOrdenados = nuevos.sort((a, b) => {
+                    if (a.Curso > b.Curso) {
+                        return 1;
+                      }
+                      if (a.Curso < b.Curso) {
+                        return -1;
+                      }
+                      // a must be equal to b
+                      return 0;
+                })
 
-        setTimeout(() => {
-            res.status(202).json(nuevos);
-        }, 3000); // forzamos a que lo haga despues de terminar el forEach
-        
+                res.status(202).json(cursosOrdenados);
+            }
+        })
 
     } catch (error) {
 
