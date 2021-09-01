@@ -33,14 +33,24 @@ const getCursosPorCentro = async (req, res) => {
             let contador = 0;
 
             cursos.forEach(async (curso, i, array) => {
-                let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
-                const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
-                nuevos = [...nuevos, {
-                    ...curso,
-                    horarios: horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : [],
-                    imagen: imagen[0].imagen
-                }]
-                contador++;
+                try {
+                    let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
+                    const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
+                    // nuevos = [...nuevos, {
+                    //     ...curso,
+                    //     horarios: horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : [],
+                    //     imagen: imagen ? imagen[0].imagen : ''
+                    // }]
+
+                    let nuevoCurso = curso;
+                    nuevoCurso.horarios = horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : []                    
+                    if(imagen.length > 0) nuevoCurso.imagen = imagen[0].imagen
+                    nuevos.push(nuevoCurso)
+
+                    contador++;
+                } catch (error) {
+                    console.log(error);
+                }
 
 
                 if (contador === array.length) {
@@ -135,7 +145,9 @@ const createCurso = async (req, res) => {
         //Instertar los horarios
         await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]);
         //Insertar las imágenes
-        await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+        if (imagenes.length > 0) {
+            await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+        }
 
         res.status(201).json({
             msg: 'Curso creado exitosamente',

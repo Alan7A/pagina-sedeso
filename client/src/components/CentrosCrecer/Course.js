@@ -1,13 +1,20 @@
 import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button, Chip } from '@material-ui/core'
-import React, {useState} from 'react'
+import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Edit, Delete, LocationOn, Schedule } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 
-function Course({ curso, centroContigo }) {
+function Course({ curso, centroContigo, setActiveCourse, setOpen }) {
     const { usuario } = useSelector(state => state.auth);
     const { idCentro } = useParams();
     const history = useHistory();
+
+    const handleModalCourse = () => {
+
+        setActiveCourse(curso);
+        setOpen(true); //ESTE NO FUNCIONA AL PARECER
+        console.log('abrirrr');
+    }
 
     return (
         <Grid item xs={12} sm={6} md={4}>
@@ -27,7 +34,7 @@ function Course({ curso, centroContigo }) {
                         <Schedule style={{ marginRight: 10, color: '#f67f1c' }} />
                         <Typography>Horarios: </Typography>
                         {curso.horarios.map((horario) => (
-                            <Chip size='small' label={`${horario.Dia} ${horario.Horario}`} style={{ marginLeft: 5, marginBottom:10 }} />
+                            <Chip size='small' label={`${horario.Dia} ${horario.Horario}`} style={{ marginLeft: 5, marginBottom: 10 }} />
                         ))}
                     </div>
                     <div style={{ display: 'flex' }}>
@@ -44,7 +51,7 @@ function Course({ curso, centroContigo }) {
                             <Button size="small" color="secondary" onClick={() => history.push(`/cursos/modificarCurso/${curso.idCurso}`)} startIcon={<Edit />}>
                                 Editar
                             </Button>
-                            <Button size="small" style={{ color: 'red' }} startIcon={<Delete />} >
+                            <Button size="small" style={{ color: 'red' }} startIcon={<Delete />} onClick={handleModalCourse} >
                                 Eliminar
                             </Button>
 
