@@ -35,3 +35,18 @@
       margin: 0.4em auto;
     }
   }
+
+  .mensaje {
+    font-weight: 900;
+    font-size: 1rem;
+    padding: .5rem;
+    border-radius: .5rem;
+    cursor: pointer;
+    border: none;
+  }
+
+  .error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    
+}

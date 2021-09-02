@@ -7,7 +7,11 @@ const getCentroContigo = async(req, res) => {
     try {
         
         const [results] = await db.query('CALL getCentro(?)', [idp]);
+        const [imagenes] = await db.query('CALL ListImgCentro(?)', [idp]);
+
         const centro = results[0][0];
+        if (centro) centro.imagenes = imagenes[0];
+        
 
         if(centro){
 
@@ -81,16 +85,18 @@ const createCentro = async(req, res) => {
 
     try {
 
-        const [results] = await db.query('INSERT INTO CentroCrecer(nombreCentro, ubicacion ,telefono)', [nom, ub, tel]);
+        const [results] = await db.query('INSERT INTO CentroCrecer(nombreCentro, ubicacion ,telefono) VALUES (?, ?, ?)', [nom, ub, tel]);
         const idCentro = results.insertId;
 
-        //Agregar el idCurso a cada imagen del arreglo
+        //Agregar el idCentro a cada imagen del arreglo
         imagenes = imagenes.map( (imagen)=> ([
-            ...imagen, idCurso
+            ...imagen, idCentro
         ]) );
 
+        if(imagenes.length>0){
         //Insertar las imágenes
-        await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+        await db.query('INSERT INTO ImagenesCentro(imagen, idCentro) VALUES ?', [imagenes]);
+        }
 
         res.status(201).json({
             msg:"Centro agregado exitosamente"
@@ -128,7 +134,7 @@ const modifyCentro = async(req, res) => {
         // Borrar todas las imágenes de ese curso
         await db.query('DELETE FROM ImagenesCentro WHERE idCentro = ?', [idp]);
         // Insertar las nuevas imágenes a la tabla ImagenesCurso
-        await db.query('INSERT INTO ImagenesCentro(idCentro, imagen) VALUES ?', [imagenes]);
+        await db.query('INSERT INTO ImagenesCentro(imagen, idCentro) VALUES ?', [imagenes]);
 
         res.status(202).json({
             msg: 'El Centro Contigo se ha editado correctamente',

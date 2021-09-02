@@ -1,10 +1,20 @@
 import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button, Chip } from '@material-ui/core'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { Edit, Delete } from '@material-ui/icons';
+import { useHistory, useParams } from 'react-router-dom'
+import { Edit, Delete, LocationOn, Schedule } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
 
-function Course({ curso, centroContigo }) {
+function Course({ curso, centroContigo, setActiveCourse, setOpen }) {
+    const { usuario } = useSelector(state => state.auth);
+    const { idCentro } = useParams();
     const history = useHistory();
+
+    const handleModalCourse = () => {
+
+        setActiveCourse(curso);
+        setOpen(true); //ESTE NO FUNCIONA AL PARECER
+        console.log('abrirrr');
+    }
 
     return (
         <Grid item xs={12} sm={6} md={4}>
@@ -13,7 +23,7 @@ function Course({ curso, centroContigo }) {
                     component="img"
                     alt="Contemplative Reptile"
                     height="140"
-                    image='https://material-ui.com/static/images/cards/contemplative-reptile.jpg'
+                    image={curso.imagen ? curso.imagen : 'https://lazona40.com/theme/image.php/mb2mcl/theme/1626807325/course-default'}
                     title="Contemplative Reptile"
                 />
                 <CardContent>
@@ -21,29 +31,32 @@ function Course({ curso, centroContigo }) {
                         {curso.Curso}
                     </Typography>
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <Schedule style={{ marginRight: 10, color: '#f67f1c' }} />
                         <Typography>Horarios: </Typography>
-                        <Chip size='small' label='Lunes 7:00-10:00' style={{ marginLeft: 5 }} />
-                        <Chip size='small' label='Jueves 18:00-21:00' style={{ marginLeft: 5 }} />
+                        {curso.horarios.map((horario) => (
+                            <Chip size='small' label={`${horario.Dia} ${horario.Horario}`} style={{ marginLeft: 5, marginBottom: 10 }} />
+                        ))}
                     </div>
                     <div style={{ display: 'flex' }}>
-                        <Typography>Instructor: </Typography>
-                        <Typography >
-                            <span className="instructorName" onClick={() => console.log('Hola')}>
-                                Nombre del Instructor
-                            </span>
-                        </Typography>
+                        <LocationOn style={{ marginRight: 10, color: '#f67f1c' }} />
+                        <Typography>Lugar: {curso.Lugar}</Typography>
                     </div>
                 </CardContent>
                 <CardActions>
                     <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${curso.Curso}`)}>
                         Ver Más
                     </Button>
-                    <Button size="small" color="secondary" startIcon={<Edit />}>
-                        Editar
-                    </Button>
-                     <Button size="small" style={{ color: 'red' }} startIcon={<Delete />}>
-                        Eliminar
-                    </Button>
+                    {idCentro == usuario.idCentro && (
+                        <>
+                            <Button size="small" color="secondary" onClick={() => history.push(`/cursos/modificarCurso/${curso.idCurso}`)} startIcon={<Edit />}>
+                                Editar
+                            </Button>
+                            <Button size="small" style={{ color: 'red' }} startIcon={<Delete />} onClick={handleModalCourse} >
+                                Eliminar
+                            </Button>
+
+                        </>
+                    )}
                 </CardActions>
             </Card>
         </Grid>

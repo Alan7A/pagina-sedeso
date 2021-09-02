@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import CentrosCrecerScreen from "../CentrosCrecer/CentrosCrecerScreen";
 import CentroCrecerScreen from "../CentrosCrecer/CentroCrecerScreen";
 import CourseScreen from "../Courses/CourseScreen";
 import HomepageScreen from "../Homepage/HomepageScreen";
@@ -45,11 +44,7 @@ function AppRouter() {
                         <HomepageScreen />
                     </Route>
 
-                    <Route exact path='/centrosContigo'>
-                        <CentrosCrecerScreen />
-                    </Route>
-
-                    <Route exact path='/centrosContigo/:idCurso'>
+                    <Route exact path='/centrosContigo/:idCentro'>
                         <CentroCrecerScreen />
                     </Route>
 

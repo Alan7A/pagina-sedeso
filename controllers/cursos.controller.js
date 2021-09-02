@@ -24,11 +24,53 @@ const getCursosGeneral = async (req, res) => {
 const getCursosPorCentro = async (req, res) => {
 
     try {
-
         const { idc } = req.params; // idc = idCentroCrecer
         const [results] = await db.query('CALL ListCursosPorCentro(?)', [idc]);
-        const [cursos] = results.slice(0, results.length);
-        res.status(202).json(cursos);
+        let [cursos] = results.slice(0, results.length);
+
+        if (cursos.length > 0) {
+            let nuevos = [];
+            let contador = 0;
+
+            cursos.forEach(async (curso, i, array) => {
+                try {
+                    let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
+                    const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
+                    // nuevos = [...nuevos, {
+                    //     ...curso,
+                    //     horarios: horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : [],
+                    //     imagen: imagen ? imagen[0].imagen : ''
+                    // }]
+
+                    let nuevoCurso = curso;
+                    nuevoCurso.horarios = horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : []                    
+                    if(imagen.length > 0) nuevoCurso.imagen = imagen[0].imagen
+                    nuevos.push(nuevoCurso)
+
+                    contador++;
+                } catch (error) {
+                    console.log(error);
+                }
+
+
+                if (contador === array.length) {
+                    const cursosOrdenados = nuevos.sort((a, b) => {
+                        if (a.Curso > b.Curso) {
+                            return 1;
+                        }
+                        if (a.Curso < b.Curso) {
+                            return -1;
+                        }
+                        // a must be equal to b
+                        return 0;
+                    })
+
+                    res.status(202).json(cursosOrdenados);
+                }
+            })
+        } else {
+            res.json([])
+        }
 
     } catch (error) {
 
@@ -103,7 +145,9 @@ const createCurso = async (req, res) => {
         //Instertar los horarios
         await db.query('INSERT INTO Horarios(dia, horas, idCurso) VALUES ?', [horarios]);
         //Insertar las imágenes
-        await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+        if (imagenes.length > 0) {
+            await db.query('INSERT INTO ImagenesCurso(imagen, idCurso) VALUES ?', [imagenes]);
+        }
 
         res.status(201).json({
             msg: 'Curso creado exitosamente',
