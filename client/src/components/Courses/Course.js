@@ -16,35 +16,22 @@ function Course({ curso, centroContigo }) {
                     image='https://material-ui.com/static/images/cards/contemplative-reptile.jpg'
                     title="Contemplative Reptile"
                 />
+                
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                         {curso.Curso}
                     </Typography>
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <Typography>Horarios: </Typography>
-                        <Chip size='small' label='Lunes 7:00-10:00' style={{ marginLeft: 5 }} />
-                        <Chip size='small' label='Jueves 18:00-21:00' style={{ marginLeft: 5 }} />
+                        <Typography>Lugar: </Typography>
+                        <Chip size='small' label={curso.Lugar} style={{ marginLeft: 5 }} />
+                        
                     </div>
                     <div style={{ display: 'flex' }}>
-                        <Typography>Instructor: </Typography>
-                        <Typography >
-                            <span className="instructorName" onClick={() => console.log('Hola')}>
-                                Nombre del Instructor
-                            </span>
-                        </Typography>
+                        <Typography>Centro contigo: </Typography>
+                        <Chip size='small' label={curso.CentroContigo} style={{ marginLeft: 5 }} />
                     </div>
                 </CardContent>
-                <CardActions>
-                    <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${curso.Curso}`)}>
-                        Ver Más
-                    </Button>
-                    <Button size="small" color="secondary" startIcon={<Edit />}>
-                        Editar
-                    </Button>
-                     <Button size="small" style={{ color: 'red' }} startIcon={<Delete />}>
-                        Eliminar
-                    </Button>
-                </CardActions>
+
             </Card>
         </Grid>
     )
