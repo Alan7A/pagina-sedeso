@@ -2,7 +2,7 @@ const db = require('../database/connection');
 
 const getCentroContigo = async(req, res) => {
 
-    const { idp } = req.params; // idp = idCentro
+    const { idp } = req.params; // idp = idCentro 
 
     try {
         

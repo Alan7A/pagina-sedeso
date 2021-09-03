@@ -2,11 +2,60 @@ const db = require('../database/connection');
 
 const getCursosGeneral = async (req, res) => {
 
+    //TODO: Regresar la primer imagen de cada curso, regresar los horarios, y los nombres de todos los centros para el menú desplegable
     try {
 
         const [results] = await db.query('CALL ListCursosGeneral()');
         const [cursos] = results.slice(0, results.length);
-        res.status(201).json(cursos);
+        const [resu] = await db.query('CALL NombreCentros()');
+        const [centros] = resu.slice(0, resu.length); // regresa el nombre de los centros para poder tener el menú desplegable
+
+        if (cursos.length > 0) {
+            let nuevos = [];
+            let contador = 0;
+
+            cursos.forEach(async (curso, i, array) => {
+                try {
+                    let [horarios] = await db.query('CALL getAllHorarios(?)', [curso.idCurso]);
+                    const [imagen] = await db.query('SELECT imagen FROM ImagenesCurso WHERE idCurso=(?) limit 1', [curso.idCurso]);
+                    // nuevos = [...nuevos, {
+                    //     ...curso,
+                    //     horarios: horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : [],
+                    //     imagen: imagen ? imagen[0].imagen : ''
+                    // }]
+
+                    let nuevoCurso = curso;
+                    nuevoCurso.horarios = horarios ? horarios[0].map(horario => ({ Dia: horario.Dia, Horario: horario.Horario })) : []                    
+                    if(imagen.length > 0) nuevoCurso.imagen = imagen[0].imagen
+                    nuevos.push(nuevoCurso)
+
+                    contador++;
+                } catch (error) {
+                    console.log(error);
+                }
+
+
+                if (contador === array.length) {
+                    const cursosOrdenados = nuevos.sort((a, b) => {
+                        if (a.Curso > b.Curso) {
+                            return 1;
+                        }
+                        if (a.Curso < b.Curso) {
+                            return -1;
+                        }
+                        // a must be equal to b
+                        return 0;
+                    })
+                    
+                    cursosOrdenados.push(centros);
+                    res.status(202).json(cursosOrdenados);
+                }
+            })
+        } else {
+            res.json([])
+        }
+
+
     } catch (error) {
 
         console.error(error);
