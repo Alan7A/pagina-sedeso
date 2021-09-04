@@ -47,10 +47,20 @@ function CentroCrecerScreen() {
             try {
                 const response = await axios.get(`/centrosContigo/${idCentro}`);
                 setCentro(response.data);
+                console.log(response.data);
                 setIsCentroLoading(false);
                 setAreCoursesLoading(true)
                 const responseCursos = await axios.get(`/cursos/Cursos/${idCentro}`);
                 setCursos(responseCursos.data);
+
+                setEditarCentro({
+                    nom: response.data.nombreCentro,
+                    ub: response.data.ubicacion,
+                    tel: response.data.telefono
+                })
+
+                const imagenesCurso = response.data.imagenes.map(img => img.imagen);
+                setImagenes(imagenesCurso);
             } catch (error) {
                 mostrarErrores(error);
             }
@@ -83,11 +93,9 @@ function CentroCrecerScreen() {
         let data = editarCentro;
         data.imagenes = nuevasImagenes;
 
-        console.log(centro.idCentro);
+        console.log(data);
 
-        await axios.put(`/CentrosContigo/editar/${centro.idCentro}`, data, headers);
-
-        console.log('Vientos BRO2');
+        await axios.put(`/CentrosContigo/editar/${idCentro}`, data, headers);
 
         abrirCerrarEdit();
 
@@ -132,7 +140,7 @@ function CentroCrecerScreen() {
                 />
                 <br /> <br />
                 <div align="right">
-                    <Button variant="contained" color="primary" type="submit" onChange={onChangeCentro} className={styles.button}>
+                    <Button variant="contained" color="primary" type="submit"  onChange={onChangeCentro} className={styles.button}>
                         <SaveAltIcon></SaveAltIcon>
                     </Button>
                     <Button variant="contained" color="primary" className={styles.button} onClick={() => abrirCerrarEdit()}>
@@ -193,11 +201,11 @@ function CentroCrecerScreen() {
                                         <Typography variant='h4'>Centro Contigo</Typography>
                                         <Typography variant='h4' style={{ fontWeight: 'bold' }}>{centro.nombreCentro}</Typography>
                                         <div style={{ marginTop: 30 }}>
-                                            {idCentro == usuario?.idCentro && (
+                                            {/* {idCentro == usuario?.idCentro && ( */}
                                                 <Button variant="contained" color="primary" onClick={() => abrirCerrarEdit()}>
                                                     <EditIcon></EditIcon>
                                                 </Button>
-                                            )}
+                                            {/* // )} */}
 
                                         </div>
                                     </Grid>
