@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
-import("./styleforms.css");
+
 /*Aqui esta un formulario, faltan mas cosas esteticas por agregar entre ellas iconos y Posiblemente animaciones*/
 function Contact() {
     return (
