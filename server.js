@@ -19,8 +19,9 @@ app.use('/api/cursos',         require('./routes/cursos.routes'));
 app.use('/api/imgCursos',      require('./routes/imgCursos.routes'));
 app.use('/api/CentrosContigo', require('./routes/centros.routes'));
 app.use('/api/imgCentros', require('./routes/centrosImg.routes'));
-app.use('/api/horarios', require('./routes/horarios.routes'));
-app.use('/api/imagenes', require('./routes/mainImgs.routes'));
+app.use('/api/horarios',   require('./routes/horarios.routes'));
+app.use('/api/imagenes',   require('./routes/mainImgs.routes'));
+app.use('/api/eventos',    require('./routes/eventos.routes'));
 
 // Inicializar el servidor
 app.listen(PORT, () => {

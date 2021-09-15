@@ -2,7 +2,6 @@ const db = require('../database/connection');
 
 const getCursosGeneral = async (req, res) => {
 
-    //TODO: Regresar la primer imagen de cada curso, regresar los horarios, y los nombres de todos los centros para el menú desplegable
     try {
 
         const [results] = await db.query('CALL ListCursosGeneral()');
