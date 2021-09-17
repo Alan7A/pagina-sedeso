@@ -46,7 +46,7 @@ function Course({ curso, centroContigo, setActiveCourse, setOpen }) {
                     <Button size="small" color="primary" onClick={() => history.push(`/centrosContigo/${centroContigo}/cursos/${curso.Curso}`)}>
                         Ver Más
                     </Button>
-                    {idCentro == usuario.idCentro && (
+                    {idCentro == usuario?.idCentro && (
                         <>
                             <Button size="small" color="secondary" onClick={() => history.push(`/cursos/modificarCurso/${curso.idCurso}`)} startIcon={<Edit />}>
                                 Editar

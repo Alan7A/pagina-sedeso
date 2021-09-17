@@ -12,6 +12,7 @@ import { mostrarErrores, fileToBase64, headers } from '../../utils/funcionesUtil
 import { useHistory, useParams } from 'react-router-dom'
 import { DropzoneArea } from 'material-ui-dropzone'
 import './styles.css'
+import { useSelector } from 'react-redux';
 
 const initialFormValues = {
     nom: '',
@@ -28,6 +29,8 @@ function CentrosContigoTable() {
     const [error, setError] = useState(false);
     const [crearCentro, setCrearCentro] = useState(initialFormValues);
     const [imagenes, setImagenes] = useState([]);
+
+    const { usuario } = useSelector(state => state.auth);
 
     const onChangeCentro = e => {
         setCrearCentro({
@@ -189,17 +192,21 @@ function CentrosContigoTable() {
                             <StyledTableRow key={i}>
                                 <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.CentroContigo}</StyledTableCell>
                                 <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.Ubicación}</StyledTableCell>
-                                <StyledTableCell>
-                                    <Tooltip title='Eliminar' onClick={() => onDeleteCentro(centro.id)}>
-                                        <IconButton style={{ color: '#b00020' }}>
-                                            <Delete />
-                                        </IconButton>
-                                    </Tooltip>
-                                    {/* <Button variant="contained" color="primary" onClick={() => onDeleteCentro(centro.id)}>
-                                        <DeleteIcon></DeleteIcon>
-                                    </Button> */}
-                                </StyledTableCell>
-                            </StyledTableRow>
+
+                                
+                                    <StyledTableCell>
+                                    {usuario?.idCentro < 4 && ( 
+                                        <Tooltip title='Eliminar' onClick={() => onDeleteCentro(centro.id)}>
+                                            <IconButton style={{ color: '#b00020' }}>
+                                                <Delete />
+                                            </IconButton>
+                                        </Tooltip>
+                                    )}
+                                        {/* <Button variant="contained" color="primary" onClick={() => onDeleteCentro(centro.id)}>
+                                            <DeleteIcon></DeleteIcon>
+                                        </Button> */}
+                                    </StyledTableCell>
+                                </StyledTableRow>
                         )}
                     </TableBody>
                 </Table>
