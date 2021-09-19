@@ -8,11 +8,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import Fab from '@material-ui/core/Fab';
 import React, { Fragment, useEffect, useState } from 'react'
 import axios from '../../utils/axios'
-import { mostrarErrores, fileToBase64, headers } from '../../utils/funcionesUtiles'
+import { mostrarErrores, fileToBase64, headers, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles'
 import { useHistory, useParams } from 'react-router-dom'
 import { DropzoneArea } from 'material-ui-dropzone'
 import './styles.css'
 import { useSelector } from 'react-redux';
+import SpinnerKit from '../SpinnerKit';
 
 const initialFormValues = {
     nom: '',
@@ -22,15 +23,30 @@ const initialFormValues = {
 
 function CentrosContigoTable() {
     const [centros, setCentros] = useState([]);
-    const history = useHistory()
-    const { idCentro } = useParams();
-    const styles = useStyles();
     const [modalAdd, setModalAdd] = useState(false);
     const [error, setError] = useState(false);
     const [crearCentro, setCrearCentro] = useState(initialFormValues);
     const [imagenes, setImagenes] = useState([]);
+    const [isLoading, setIsLoading] = useState(true)
 
+    const { idCentro } = useParams();
     const { usuario } = useSelector(state => state.auth);
+
+    const styles = useStyles();
+    const history = useHistory();
+
+    useEffect(() => {
+        const getCentros = async () => {
+            try {
+                const response = await axios.get(`/CentrosContigo/`);
+                setCentros(response.data);
+            } catch (error) {
+                mostrarErrores(error);
+            }
+            setIsLoading(false);
+        }
+        getCentros();
+    }, [idCentro]);
 
     const onChangeCentro = e => {
         setCrearCentro({
@@ -45,6 +61,7 @@ function CentrosContigoTable() {
     // Eliminar Centro
     const onDeleteCentro = async (e) => {
         await axios.delete(`/CentrosContigo/eliminar/${e}`, headers);
+        mostrarNotificacionSuccess('El Centro Contigo se eliminó correctamente.')
     }
 
     // Agregar Centro
@@ -77,18 +94,6 @@ function CentrosContigoTable() {
             tel: ''
         })
     }
-
-    useEffect(() => {
-        const getCentros = async () => {
-            try {
-                const response = await axios.get(`/CentrosContigo/`);
-                setCentros(response.data);
-            } catch (error) {
-                mostrarErrores(error);
-            }
-        }
-        getCentros();
-    }, [idCentro]);
 
     const handleClick = (id) => {
         history.push(`/centrosContigo/${id}`)
@@ -174,44 +179,47 @@ function CentrosContigoTable() {
 
     return (
         <Fragment>
-            <TableContainer component={Paper} style={{ height: 480 }}>
-                <Table stickyHeader>
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>Centro Contigo</StyledTableCell>
-                            <StyledTableCell>Ubicación</StyledTableCell>
-                            <StyledTableCell>
-                                <Fab size="small" aria-label="add" className="" onClick={() => abrirCerrarAdd()}>
-                                    <AddIcon />
-                                </Fab>
-                            </StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {centros.map((centro, i) =>
-                            <StyledTableRow key={i}>
-                                <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.CentroContigo}</StyledTableCell>
-                                <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.Ubicación}</StyledTableCell>
-
-                                
+            {isLoading ? <SpinnerKit />
+                : (
+                    <TableContainer component={Paper} style={{ height: 480 }}>
+                        <Table stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <StyledTableCell>Centro Contigo</StyledTableCell>
+                                    <StyledTableCell>Ubicación</StyledTableCell>
                                     <StyledTableCell>
-                                    {usuario?.idCentro < 4 && ( 
-                                        <Tooltip title='Eliminar' onClick={() => onDeleteCentro(centro.id)}>
-                                            <IconButton style={{ color: '#b00020' }}>
-                                                <Delete />
-                                            </IconButton>
-                                        </Tooltip>
-                                    )}
-                                        {/* <Button variant="contained" color="primary" onClick={() => onDeleteCentro(centro.id)}>
+                                        <Fab size="small" aria-label="add" className="" onClick={() => abrirCerrarAdd()}>
+                                            <AddIcon />
+                                        </Fab>
+                                    </StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {centros.map((centro, i) =>
+                                    <StyledTableRow key={i}>
+                                        <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.CentroContigo}</StyledTableCell>
+                                        <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.Ubicación}</StyledTableCell>
+
+
+                                        <StyledTableCell>
+                                            {usuario?.idCentro < 4 && (
+                                                <Tooltip title='Eliminar' onClick={() => onDeleteCentro(centro.id)}>
+                                                    <IconButton style={{ color: '#b00020' }}>
+                                                        <Delete />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            )}
+                                            {/* <Button variant="contained" color="primary" onClick={() => onDeleteCentro(centro.id)}>
                                             <DeleteIcon></DeleteIcon>
                                         </Button> */}
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                        )}
-                    </TableBody>
-                </Table>
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
 
-            </TableContainer>
             <Modal
                 open={modalAdd}
                 onClose={abrirCerrarAdd}>

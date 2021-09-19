@@ -3,13 +3,10 @@ import Loading from '../Loading';
 import React, { useState } from 'react';
 import axios from '../../utils/axios';
 import { headers, mostrarErrores, mostrarNotificacionSuccess } from '../../utils/funcionesUtiles';
-import { useHistory } from 'react-router-dom';
-
 
 function DialogDeleteCourse( {open, setOpen, curso} ) {
 
     const [isLoading, setisLoading] = useState(false);
-    const history = useHistory();
 
     const handleDelete = async (e) => {
         setisLoading(true);

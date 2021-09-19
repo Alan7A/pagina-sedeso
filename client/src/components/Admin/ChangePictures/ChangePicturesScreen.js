@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Container, Typography } from '@material-ui/core'
 import { DropzoneArea } from 'material-ui-dropzone';
 import axios from '../../../utils/axios'
-import { fileToBase64, headers, mostrarErrores, mostrarNotificacionSuccess } from '../../../utils/funcionesUtiles';
+import { fileToBase64, headers, mostrarErrores, mostrarNotificacionError, mostrarNotificacionSuccess } from '../../../utils/funcionesUtiles';
 import { useSelector } from 'react-redux';
 import Loading from '../../Loading';
 
@@ -27,20 +27,24 @@ function ChangePicturesScreen() {
     }, [usuario.idCentro]);
 
     const handleActualizarImagenes = async () => {
-        setIsLoading(true);
-        try {
-            // Convertir files a base64 para poder subir a la bd
-            const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)));
-            // Hacer que las imágenes tengan el formato que acepta mysql
-            const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ imagen })));
-            const data = { imagenes: nuevasImagenes };
+        if (imagenes.length === 0) {
+            mostrarNotificacionError('Tienes que agregar al menos una imagen.')
+        } else {
+            setIsLoading(true);
+            try {
+                // Convertir files a base64 para poder subir a la bd
+                const imagenesBase64 = await Promise.all(imagenes.map(async (imagen) => await fileToBase64(imagen)));
+                // Hacer que las imágenes tengan el formato que acepta mysql
+                const nuevasImagenes = imagenesBase64.map((imagen) => (Object.values({ imagen })));
+                const data = { imagenes: nuevasImagenes };
 
-            await axios.put(`/imagenes/actualizarImagenes`, data, headers);
-            mostrarNotificacionSuccess('Imágenes actualizadas correctamente.');
-        } catch (error) {
-            mostrarErrores(error)
+                await axios.put(`/imagenes/actualizarImagenes`, data, headers);
+                mostrarNotificacionSuccess('Imágenes actualizadas correctamente.');
+            } catch (error) {
+                mostrarErrores(error)
+            }
+            setIsLoading(false);
         }
-        setIsLoading(false);
     }
 
     return (
