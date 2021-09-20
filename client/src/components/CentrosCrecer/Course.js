@@ -12,7 +12,7 @@ function Course({ curso, centroContigo, setActiveCourse, setOpen }) {
     const handleModalCourse = () => {
 
         setActiveCourse(curso);
-        setOpen(true); //ESTE NO FUNCIONA AL PARECER
+        setOpen(true);
         console.log('abrirrr');
     }
 

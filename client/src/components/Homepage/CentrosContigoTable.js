@@ -14,6 +14,7 @@ import { DropzoneArea } from 'material-ui-dropzone'
 import './styles.css'
 import { useSelector } from 'react-redux';
 import SpinnerKit from '../SpinnerKit';
+import DialogDeleteCentro from "./DialogDeleteCentro";
 
 const initialFormValues = {
     nom: '',
@@ -27,13 +28,26 @@ function CentrosContigoTable() {
     const [error, setError] = useState(false);
     const [crearCentro, setCrearCentro] = useState(initialFormValues);
     const [imagenes, setImagenes] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Dialog eliminar curso
+    const [open, setOpen] = useState(false);
+    const [activeCentro, setActiveCentro] = useState({});
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { idCentro } = useParams();
     const { usuario } = useSelector(state => state.auth);
 
     const styles = useStyles();
     const history = useHistory();
+
+    const handleDeleteDialog = (centro) => {
+
+        setActiveCentro(centro);
+        setOpen(true);
+        console.log(centro);
+    }
 
     useEffect(() => {
         const getCentros = async () => {
@@ -63,6 +77,8 @@ function CentrosContigoTable() {
         await axios.delete(`/CentrosContigo/eliminar/${e}`, headers);
         mostrarNotificacionSuccess('El Centro Contigo se eliminó correctamente.')
     }
+
+
 
     // Agregar Centro
     const onSubmitCentro = async (e) => {
@@ -198,14 +214,14 @@ function CentrosContigoTable() {
                             </TableHead>
                             <TableBody>
                                 {centros.map((centro, i) =>
-                                    <StyledTableRow key={i}>
+                                    <StyledTableRow key={i} >
                                         <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.CentroContigo}</StyledTableCell>
                                         <StyledTableCell onClick={() => handleClick(centro.id)}>{centro.Ubicación}</StyledTableCell>
 
 
                                         <StyledTableCell>
                                             {usuario?.idCentro < 4 && (
-                                                <Tooltip title='Eliminar' onClick={() => onDeleteCentro(centro.id)}>
+                                                <Tooltip title='Eliminar' onClick={() => handleDeleteDialog(centro) }>
                                                     <IconButton style={{ color: '#b00020' }}>
                                                         <Delete />
                                                     </IconButton>
@@ -227,6 +243,7 @@ function CentrosContigoTable() {
                 onClose={abrirCerrarAdd}>
                 {ModalAdd}
             </Modal>
+            <DialogDeleteCentro open={open} setOpen={setOpen} centro={activeCentro} ></DialogDeleteCentro>
         </Fragment>
     )
 }

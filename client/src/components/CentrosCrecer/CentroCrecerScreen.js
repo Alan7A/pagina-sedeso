@@ -200,14 +200,13 @@ function CentroCrecerScreen() {
                                     <Grid item xs={6} className='leftPanel'>
                                         <Typography variant='h4'>Centro Contigo</Typography>
                                         <Typography variant='h4' style={{ fontWeight: 'bold' }}>{centro.nombreCentro}</Typography>
-                                        <div style={{ marginTop: 30 }}>
-                                            {/* {idCentro == usuario?.idCentro && ( */}
+                                        {/* <div style={{ marginTop: 30 }}>
+                                            {idCentro == usuario?.idCentro && (
                                                 <Button variant="contained" color="primary" onClick={() => abrirCerrarEdit()}>
                                                     <EditIcon></EditIcon>
                                                 </Button>
-                                            {/* // )} */}
-
-                                        </div>
+                                              )} 
+                                        </div> */}
                                     </Grid>
 
                                     <Grid item xs={6} className='rightPanel' >
@@ -216,9 +215,17 @@ function CentroCrecerScreen() {
                                             <p>{centro.ubicacion}</p>
                                         </div>
 
-                                        <div className='info'>
+                                        <div className='info' style={{ marginTop: 30 }}>
                                             <Phone className='icon' />
                                             <p>{centro.telefono}</p>
+                                        </div>
+
+                                        <div style={{ marginTop: 30, marginLeft:350 }}>
+                                            {idCentro == usuario?.idCentro && (
+                                                <Button variant="contained" color="primary" onClick={() => abrirCerrarEdit()}>
+                                                    <EditIcon></EditIcon>
+                                                </Button>
+                                              )} 
                                         </div>
                                     </Grid>
                                 </Grid>
