@@ -188,9 +188,11 @@ function CentrosContigoTable() {
                                     <StyledTableCell>Centro Contigo</StyledTableCell>
                                     <StyledTableCell>Ubicación</StyledTableCell>
                                     <StyledTableCell>
-                                        <Fab size="small" aria-label="add" className="" onClick={() => abrirCerrarAdd()}>
-                                            <AddIcon />
-                                        </Fab>
+                                        {usuario?.idCentro < 4 && (
+                                            <Fab size="small" aria-label="add" className="" onClick={() => abrirCerrarAdd()}>
+                                                <AddIcon />
+                                            </Fab>
+                                        )}
                                     </StyledTableCell>
                                 </TableRow>
                             </TableHead>
