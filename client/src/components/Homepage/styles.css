@@ -5,7 +5,18 @@
     background-size: cover;
     position: relative;
   }
-
+h6{
+  border-radius: 60px 60px 60px 60px;
+  -moz-border-radius: 60px 60px 60px 60px;
+  -webkit-border-radius: 60px 60px 60px 60px;
+  border: 7px solid #063a5e;
+  margin-top:5px;
+  margin-right: 80px;
+  margin-left: 80px;
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom:10px
+}
   *{
     margin: 0px;
     padding: 0px;
