@@ -5,7 +5,7 @@
     background-size: cover;
     position: relative;
   }
-h6{
+.contenedor-Contact {
   border-radius: 60px 60px 60px 60px;
   -moz-border-radius: 60px 60px 60px 60px;
   -webkit-border-radius: 60px 60px 60px 60px;
