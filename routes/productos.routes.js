@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const { createProducto,    deleteProducto,    modifyProducto,
-        createResponsable, deleteResponsable, modifyResponsable, getResponsables } = require('../controllers/productos.controller');
+createResponsable, deleteResponsable, modifyResponsable, getResponsables } = require('../controllers/productos.controller');
 
 const router = Router();
 
@@ -36,3 +36,6 @@ router.put('/editarResponsable/:idResponsable',
     ], modifyResponsable );
 
 router.get('/responsables/:idEntregado', getResponsables);
+
+
+module.exports = router;
