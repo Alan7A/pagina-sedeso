@@ -98,6 +98,51 @@ const deleteProducto = async(req,res) => {
     }
 }
 
+const getProducto = async(req, res) => {
+
+    const { idProducto } = req.params;
+
+    try {
+        
+        const [results] = await db.query('CALL getProducto(?)', [idProducto]);
+        const [productos] = results.slice(0, results.length);
+        res.status(201).json(productos);
+
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+
+}
+
+const ListProductos = async(req, res) => {
+
+    try {
+        
+        const [results] = await db.query('CALL ListProductos()');
+        const [productos] = results.slice(0, results.length);
+        res.status(201).json(productos);
+
+    } catch (error) {
+        
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
 const createResponsable = async(req,res) => {
 
     const { idEntregado } = req.params;
@@ -220,7 +265,7 @@ module.exports = {
     createResponsable,
     modifyResponsable,
     deleteResponsable,
-    getResponsables
-    
-
+    getResponsables,
+    getProducto,
+    ListProductos
 }

@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const { createProducto,    deleteProducto,    modifyProducto,
-createResponsable, deleteResponsable, modifyResponsable, getResponsables } = require('../controllers/productos.controller');
+createResponsable, deleteResponsable, modifyResponsable, getResponsables, getProducto, ListProductos } = require('../controllers/productos.controller');
 
 const router = Router();
 
@@ -19,6 +19,10 @@ router.put('/editar/:idProducto',
         check('producto', 'Debe de tener nombre el producto' ).notEmpty(),
         validarCampos  
     ], modifyProducto);
+
+router.get('/producto/:idProducto', getProducto);
+
+router.get('/todos', ListProductos);
 
 
 router.post('/agregarResponsable/:idEntregado',

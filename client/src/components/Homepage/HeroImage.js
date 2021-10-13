@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-import { Typography } from '@material-ui/core';
-import portada from './portada.jpg'
-import ImageGallery from 'react-image-gallery';
-import axios from '../../utils/axios';
-import React, { useEffect, useState } from 'react';
-=======
 //import portada from "./portada.jpg";
 import axios from "../../utils/axios";
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-carousel-minimal";
->>>>>>> fc438b90289e8e798b6335a5b0cd54165ffb769d
 
 function HeroImage() {
   const captionStyle = {
