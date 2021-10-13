@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react";
 
-function SpinnerKit({style}) {
-    return (
-        <div class="sk-folding-cube" style={style}>
-            <div class="sk-cube1 sk-cube"></div>
-            <div class="sk-cube2 sk-cube"></div>
-            <div class="sk-cube4 sk-cube"></div>
-            <div class="sk-cube3 sk-cube"></div>
-        </div>
-    )
+function SpinnerKit({ style }) {
+  return (
+    <div className="sk-folding-cube" style={style}>
+      <div className="sk-cube1 sk-cube"></div>
+      <div className="sk-cube2 sk-cube"></div>
+      <div className="sk-cube4 sk-cube"></div>
+      <div className="sk-cube3 sk-cube"></div>
+    </div>
+  );
 }
 
-export default SpinnerKit
+export default SpinnerKit;
