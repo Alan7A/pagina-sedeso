@@ -4,12 +4,6 @@ import ImageGallery from 'react-image-gallery';
 import axios from '../../utils/axios';
 import React, { useEffect, useState } from 'react';
 
-// import {Carousel} from '3d-react-carousal'  No borrar att: Gabriel;
-
-
-
-
-
 function HeroImage() {
   const [imagenes, setImg] = useState([]);
 
