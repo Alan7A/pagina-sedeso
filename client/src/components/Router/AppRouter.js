@@ -19,6 +19,7 @@ import CoursesScreen from '../Courses/CoursesScreen';
 import Footer from '../Footer/Footer';
 import CoursesForm from '../Courses/CoursesForm';
 import AdminScreen from '../Admin/AdminScreen';
+import CentroCrecerEvents from '../Event/CentroCrecerEvents';
 
 function AppRouter() {
     const dispatch = useDispatch();
@@ -63,6 +64,10 @@ function AppRouter() {
                     <PrivateRoute exact path='/cursos/modificarCurso/:idCurso' isAuthenticated={!!usuario} >
                         <CoursesForm editar />
                     </PrivateRoute>
+
+                    <Route exact path='/eventos'>
+                        <CentroCrecerEvents />
+                    </Route>
 
                     <Route exact path='/sobreNosotros'>
                         <AboutUsScreen />
