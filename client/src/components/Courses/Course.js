@@ -6,6 +6,7 @@ import { Edit, Delete } from '@material-ui/icons';
 function Course({ curso, centroContigo }) {
     const history = useHistory();
 
+    
     return (
         <Grid item xs={12} sm={6} md={4}>
             <Card>

@@ -16,6 +16,7 @@ function Events({ curso, centroContigo, setActiveCourse, setOpen }) {
         console.log('abrirrr');
         console.log(usuario);
     }
+    
 
     return (
         <Grid item xs={12} sm={6} md={4}>

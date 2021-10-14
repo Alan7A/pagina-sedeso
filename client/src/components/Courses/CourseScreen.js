@@ -24,6 +24,7 @@ function CourseScreen() {
                 <Typography color="textPrimary">{course}</Typography>
             </Breadcrumbs>
 
+
             <Grid container style={{marginTop:50}}>
                 <Grid item xs={6}>
                     <b>Información del curso y horarios</b>
