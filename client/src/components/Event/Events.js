@@ -17,7 +17,6 @@ function Events({ curso, centroContigo, setActiveCourse, setOpen }) {
         console.log(usuario);
     }
     
-
     return (
         <Grid item xs={12} sm={6} md={4}>
             <Card class={`eventos`} variant="outlined" style={{ padding: 10 }}>

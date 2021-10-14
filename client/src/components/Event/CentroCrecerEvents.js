@@ -27,7 +27,6 @@ const initialFormValues = {
     tel: ''
 }
 
-
 var centros
 const top100Films = [
     {title: "Asientos"},

@@ -10,7 +10,6 @@ function DialogDeleteCourse( {open, setOpen, curso} ) {
 
     const handleDelete = async (e) => {
         setisLoading(true);
-        
         try {
             
             const response = await axios.delete(`/eventos/eliminarEvento/${curso.idCurso}`, headers);
