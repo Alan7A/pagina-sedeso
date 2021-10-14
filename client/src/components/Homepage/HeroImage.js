@@ -1,45 +1,51 @@
-import { Typography } from '@material-ui/core';
-import portada from './portada.jpg'
-import ImageGallery from 'react-image-gallery';
-import axios from '../../utils/axios';
-import React, { useEffect, useState } from 'react';
-
-// import {Carousel} from '3d-react-carousal'  No borrar att: Gabriel;
-
-
-
-
+//import portada from "./portada.jpg";
+import axios from "../../utils/axios";
+import React, { useEffect, useState } from "react";
+import { Carousel } from "react-carousel-minimal";
 
 function HeroImage() {
-  const [imagenes, setImg] = useState([]);
+  const captionStyle = {
+    fontSize: "2em",
+    fontfamily: "Roboto",
+  };
 
+  const [imagenes, setImg] = useState([]);
   useEffect(() => {
     const getImagenes = async () => {
-        try {
-            const response = await axios.get(`/imagenes/`);
-            setImg(response.data);
-            console.log("AQUI DEBERIA DE IR EL ARRAY DE IMAGENES");
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+      try {
+        const response = await axios.get(`/imagenes/`);
+        const images2 = response.data.map((imagenes) => {
+          return {
+            image: imagenes.imagen,
+            caption: "Secretaría de Desarrollo Social",
+          };
+        });
+        setImg(images2);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getImagenes();
   }, []);
 
-  
-    return (
-      <div style={image} className='hero-image'>
-
-    
-            <div className='hero-text'>
-                <Typography variant='h4' component='h1'>Secretaría de Desarrollo Social</Typography>
-            </div>
-        </div>
-  
-    )
+  return (
+    <div>
+      <Carousel
+        data={
+          imagenes.length > 0
+            ? imagenes
+            : [
+                {
+                  image:
+                    "https://us.123rf.com/450wm/lishchyshyn/lishchyshyn1904/lishchyshyn190403199/132862735-icono-de-carga-de-vector-dise%C3%B1o-de-progreso-futurista.jpg?ver=6%27%7D",
+                },
+              ]
+        }
+        captionPosition="center"
+        width="100%"
+        captionStyle={captionStyle}
+      />
+    </div>
+  );
 }
-const image = {
-  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${portada})`,
-}
-export default HeroImage
+export default HeroImage;
