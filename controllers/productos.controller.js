@@ -104,7 +104,7 @@ const getProducto = async(req, res) => {
 
     try {
         
-        const [results] = await db.query('CALL getProducto(?)', [idProducto]);
+        const [results] = await db.query('CALL getProductAct(?)', [idProducto]);
         const [productos] = results.slice(0, results.length);
         res.status(201).json(productos);
 

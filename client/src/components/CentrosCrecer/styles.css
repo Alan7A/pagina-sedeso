@@ -1,4 +1,4 @@
-/* .leftPanel {
+.leftPanel {
     background: rgb(38, 115, 176);
     background: linear-gradient(90deg, rgba(38, 115, 176, 1) 35%, rgba(83, 169, 200, 1) 100%);    padding: 20px;
     color: white;
@@ -24,4 +24,4 @@
     cursor: pointer;
     font-weight: bold;
     margin-left: 5px;
-} */
+}
