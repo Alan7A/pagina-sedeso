@@ -44,7 +44,7 @@ const modifyProducto = async(req, res) => {
         if (results.affectedRows === 0) {
 
             return res.status(400).json({
-                msg: 'El mes del producto a editar no existe'
+                msg: 'El producto a editar no existe'
             });
         }
 
@@ -68,6 +68,72 @@ const modifyProducto = async(req, res) => {
         });
     }
 
+}
+
+const modifyMesEntregado = async(req, res) => {
+
+    const { idProducto } = req.params;
+    const { idMes, cantidad } = req.body;
+
+    try{
+
+        const [results] = await db.query('CALL modifyMesEntregado(?, ?, ?)', [idProducto, idMes, cantidad]);
+        if (results.affectedRows === 0) {
+
+            return res.status(400).json({
+                msg: 'El mes a editar no existe'
+            });
+        }
+
+        res.status(202).json({
+            msg:`Se ha editado la cantidad del mes ${idMes} exitosamente`
+        })
+
+
+    } catch (error) {
+
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
+}
+
+const modifyMesProgramado = async(req, res) => {
+
+    const { idProducto } = req.params;
+    const { idMes, cantidad } = req.body;
+
+    try{
+
+        const [results] = await db.query('CALL modifyMesProgramado(?, ?, ?)', [idProducto, idMes, cantidad]);
+        if (results.affectedRows === 0) {
+
+            return res.status(400).json({
+                msg: 'El mes a editar no existe'
+            });
+        }
+
+        res.status(202).json({
+            msg:`Se ha editado la cantidad del mes ${idMes} exitosamente`
+        })
+
+
+    } catch (error) {
+
+        console.error(error);
+        return res.status(500).json({
+            errors: [{
+                msg: 'Error con la base de datos o el servidor'
+            }],
+            query: error.sql,
+            sqlMessage: error.sqlMessage
+        });
+    }
 }
 
 const deleteProducto = async(req,res) => {
@@ -271,5 +337,7 @@ module.exports = {
     deleteResponsable,
     getResponsables,
     getProducto,
-    ListProductos
+    ListProductos,
+    modifyMesEntregado,
+    modifyMesProgramado
 }

@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
 const { createProducto,    deleteProducto,    modifyProducto,
-createResponsable, deleteResponsable, modifyResponsable, getResponsables, getProducto, ListProductos } = require('../controllers/productos.controller');
+createResponsable, deleteResponsable, modifyResponsable, getResponsables, getProducto, ListProductos, modifyMesEntregado, modifyMesProgramado } = require('../controllers/productos.controller');
 
 const router = Router();
 
@@ -20,7 +20,21 @@ router.put('/editar/:idProducto',
         validarCampos  
     ], modifyProducto);
 
-router.get('/producto/:idProducto', getProducto);
+router.put('/entregado/:idProducto', 
+    [
+        check('idMes', 'Debes de agregar el número del mes a editar').notEmpty().isNumeric(),
+        check('cantidad', 'Debes de agregar la cantidad').notEmpty().isNumeric(),
+        validarCampos
+    ], modifyMesEntregado);
+
+    router.put('/programado/:idProducto', 
+    [
+        check('idMes', 'Debes de agregar el número del mes a editar').notEmpty().isNumeric(),
+        check('cantidad', 'Debes de agregar la cantidad').notEmpty().isNumeric(),
+        validarCampos
+    ], modifyMesProgramado);
+
+router.get('/:idProducto', getProducto);
 
 router.get('/todos', ListProductos);
 
