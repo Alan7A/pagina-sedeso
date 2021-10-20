@@ -48,8 +48,12 @@ const modifyProducto = async(req, res) => {
             });
         }
 
+        const [resul] = await db.query('CALL getProductAct(?)', [idProducto]);
+        const [product] = resul.slice(0, resul.length);
+
         res.status(202).json({
-            msg: 'La cantidad del mes se ha editado correctamente',
+            msg: `El producto: ${producto} se ha editado exitosamente`,
+            product
         })
 
     } catch (error) {
