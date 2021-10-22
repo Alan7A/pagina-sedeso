@@ -7,7 +7,7 @@ const initialState = {
     error: null
 }
 
-export const usersReducer = (state=initialState, action) => {
+export const usersReducer = (state = initialState, action) => {
     switch (action.type) {
         case types.setActiveUser:
             return {
@@ -60,8 +60,8 @@ export const usersReducer = (state=initialState, action) => {
                 isLoading: false,
                 error: action.payload
             }
-    
+
         default:
             return state
     }
-} 
+}

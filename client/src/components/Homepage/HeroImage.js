@@ -4,12 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Carousel } from "react-carousel-minimal";
 
 function HeroImage() {
-  const captionStyle = {
-    fontSize: "2em",
-    fontfamily: "Roboto",
-  };
-
   const [imagenes, setImg] = useState([]);
+  
   useEffect(() => {
     const getImagenes = async () => {
       try {
@@ -28,22 +24,21 @@ function HeroImage() {
     getImagenes();
   }, []);
 
+  const captionStyle = {
+    fontSize: "2em",
+    fontfamily: "Roboto",
+  };
+
   return (
     <div>
       <Carousel
-        data={
-          imagenes.length > 0
-            ? imagenes
-            : [
-                {
-                  image:
-                    "https://us.123rf.com/450wm/lishchyshyn/lishchyshyn1904/lishchyshyn190403199/132862735-icono-de-carga-de-vector-dise%C3%B1o-de-progreso-futurista.jpg?ver=6%27%7D",
-                },
-              ]
-        }
+        data={imagenes}
         captionPosition="center"
         width="100%"
         captionStyle={captionStyle}
+        time={8000}
+        automatic={true}
+        dots={true}
       />
     </div>
   );

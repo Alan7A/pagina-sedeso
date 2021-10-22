@@ -14,7 +14,7 @@ function UsersScreen() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(loadUsers())
+        dispatch(loadUsers());
     }, [dispatch])
 
     return (

@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { authReducer } from './reducers/authReducer';
+import { productsReducer } from './reducers/productsReducer';
 import { uiReducer } from './reducers/uiReducer';
 import { usersReducer } from './reducers/usersReducer';
 
@@ -8,7 +9,8 @@ import { usersReducer } from './reducers/usersReducer';
 const reducers = combineReducers({
     auth: authReducer,
     ui: uiReducer,
-    users: usersReducer
+    users: usersReducer,
+    products: productsReducer
 });
 
 // Para tener los middlewares de Redux DevTools y Thunk 

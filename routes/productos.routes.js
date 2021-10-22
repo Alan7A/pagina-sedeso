@@ -34,10 +34,9 @@ router.put('/entregado/:idProducto',
         validarCampos
     ], modifyMesProgramado);
 
-router.get('/:idProducto', getProducto);
-
 router.get('/todos', ListProductos);
 
+router.get('/:idProducto', getProducto);
 
 router.post('/agregarResponsable/:idEntregado',
     [

@@ -31,7 +31,7 @@ export default function CreateUserModal() {
 
     const handleCancelButton = () => {
         setFormValues({ ...formValues, idCentro: '' })
-        dispatch(closeCreateUserModal())
+        dispatch(closeCreateUserModal());
     }
 
     const handleSubmit = async (e) => {

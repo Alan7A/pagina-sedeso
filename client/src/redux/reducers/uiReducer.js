@@ -3,7 +3,10 @@ import { types } from "../types";
 const initialState = {
     isCreateUserModalOpen: false,
     isEditUserModalOpen: false,
-    isDeleteUserDialogOpen: false
+    isDeleteUserDialogOpen: false,
+    isCreateProductModalOpen: false,
+    isEditProductModalOpen: false,
+    isDeleteProductDialogOpen: false
 }
 
 export const uiReducer = (state = initialState, action) => {
@@ -42,6 +45,42 @@ export const uiReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isDeleteUserDialogOpen: false
+            }
+
+        case types.openCreateProductModal:
+            return {
+                ...state,
+                isCreateProductModalOpen: true
+            }
+
+        case types.closeCreateProductModal:
+            return {
+                ...state,
+                isCreateProductModalOpen: false
+            }
+
+        case types.openEditProductModal:
+            return {
+                ...state,
+                isEditProductModalOpen: true
+            }
+
+        case types.closeEditProductModal:
+            return {
+                ...state,
+                isEditProductModalOpen: false
+            }
+
+        case types.openDeleteProductDialog:
+            return {
+                ...state,
+                isDeleteProductDialogOpen: true
+            }
+
+        case types.closeDeleteProductDialog:
+            return {
+                ...state,
+                isDeleteProductDialogOpen: false
             }
 
         default:

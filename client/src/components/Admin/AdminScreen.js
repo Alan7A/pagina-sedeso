@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Typography, AppBar, Tabs, Tab, Box, Container, Paper } from "@material-ui/core";
-import { Group, PhotoLibrary } from "@material-ui/icons";
+import { Group, PhotoLibrary, EventAvailable } from "@material-ui/icons";
 import UsersScreen from './Users/UsersScreen';
 import ChangePicturesScreen from './ChangePictures/ChangePicturesScreen';
+import POAScreen from './POA/POAScreen';
 
 function AdminScreen() {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -19,6 +20,7 @@ function AdminScreen() {
                 <Tabs value={selectedTab} onChange={handleTabChange} variant='scrollable' scrollButtons='auto' >
                     <Tab label="Cambiar Imágenes" icon={<PhotoLibrary />} {...a11yProps(0)} />
                     <Tab label="Administrar Usuarios" icon={<Group />} {...a11yProps(1)} />
+                    <Tab label="POA" icon={<EventAvailable />} {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
 
@@ -28,6 +30,10 @@ function AdminScreen() {
 
             <TabPanel value={selectedTab} index={1}>
                 <UsersScreen />
+            </TabPanel>
+
+            <TabPanel value={selectedTab} index={2}>
+                <POAScreen />
             </TabPanel>
         </Container>
     )

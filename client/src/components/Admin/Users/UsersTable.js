@@ -12,12 +12,12 @@ function UsersTable({ usuarios }) {
 
     const handleEdit = (user) => {
         dispatch(setActiveUser(user));
-        dispatch(openEditUserModal())
+        dispatch(openEditUserModal());
     }
 
     const handleDelete = (user) => {
         dispatch(setActiveUser(user));
-        dispatch(openDeleteUserDialog())
+        dispatch(openDeleteUserDialog());
     }
 
     return (
