@@ -13,16 +13,67 @@
     margin-bottom:10px
 }
 
-.contenedor-Contact {
- 
-  margin-top:5px;
-  margin-right: 20px;
-  margin-left: -200px;
-  text-align: left;
-  font-size: 1rem;
-  margin-bottom:15px
-  
-}
+.dbox {
+    width: 100%;
+    margin-bottom: 10px; }
+    @media (max-width: 767.98px) {
+      .dbox {
+        margin-bottom: 25px !important;
+        padding: 0 20px; } }
+    .dbox p {
+      margin-bottom: 0; }
+      .dbox p span {
+        font-weight: 500;
+        color: #000; }
+      .dbox p a {
+        color: #063a5e; }
+    .dbox .icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #063a5e;
+      margin: 0 auto;
+      margin-bottom: 20px; }
+      .dbox .icon span {
+        font-size: 20px;
+        color: #fff; }
+    .dbox .text {
+      width: 100%; }
+      .dbox {
+        width: 100%;
+        margin-bottom: 25px; }
+        @media (max-width: 767.98px) {
+          .dbox {
+            margin-bottom: 25px !important;
+            padding: 0 20px; } }
+        .dbox p {
+          margin-bottom: 0; }
+          .dbox p span {
+            font-weight: 500;
+            color: #000; }
+          .dbox p a {
+            color: #063a5e; }
+        .dbox .icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: #063a5e;
+          margin: 0 auto;
+          margin-bottom: 20px; }
+          .dbox .icon span {
+            font-size: 20px;
+            color: #fff; }
+        .dbox .text {
+          width: 100%; }
+          *::before,
+          *::after {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box; }
+          
+          div { /*Si existe problema eliminar */
+              display: block;
+          }
+          
   *{
     margin: 0px;
     padding: 0px;
