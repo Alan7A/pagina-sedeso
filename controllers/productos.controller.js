@@ -175,7 +175,9 @@ const getProducto = async(req, res) => {
     try {
         
         const [results] = await db.query('CALL getProductAct(?)', [idProducto]);
-        const [productos] = results.slice(0, results.length);
+        const [nombreProducto] = await db.query('SELECT producto FROM Productos WHERE idProducto = ?', [idProducto]);
+        let [productos] = results.slice(0, results.length);
+        productos.unshift(nombreProducto[0].producto); // Agregar el nombre del producto como primer elemento del array
         res.status(201).json(productos);
 
     } catch (error) {

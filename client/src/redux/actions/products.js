@@ -14,7 +14,6 @@ export const loadProducts = () => {
 
         try {
             const response = await axios.get('/productos/todos', headers);
-            console.log(response.data);
             dispatch(productsLoaded(response.data));
         } catch (error) {
             mostrarErrores(error);

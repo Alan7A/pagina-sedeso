@@ -20,6 +20,7 @@ import Footer from '../Footer/Footer';
 import CoursesForm from '../Courses/CoursesForm';
 import AdminScreen from '../Admin/AdminScreen';
 import CentroCrecerEvents from '../Event/CentroCrecerEvents';
+import { ProductScreen } from '../Admin/POA/ProductScreen';
 
 function AppRouter() {
     const dispatch = useDispatch();
@@ -81,6 +82,10 @@ function AppRouter() {
 
                     <AdminRoute exact path='/administrador' userId={usuario?.idUsuario} >
                         <AdminScreen />
+                    </AdminRoute>
+
+                    <AdminRoute exact path='/administrador/producto/:idProducto' userId={usuario?.idUsuario} >
+                        <ProductScreen />
                     </AdminRoute>
                 </Switch>
             </div>

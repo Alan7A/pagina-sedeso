@@ -2,12 +2,14 @@ import React from 'react'
 import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, withStyles, Paper, Typography } from '@material-ui/core';
 import { Edit, Delete } from '@material-ui/icons';
 import { EditProductModal } from './EditProductModal';
+import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux';
 import { setSelectedProduct } from '../../../redux/actions/products';
 import { openDeleteProductDialog, openEditProductModal } from '../../../redux/actions/ui';
 
 function POATable({ products }) {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const handleEdit = (product) => {
         dispatch(setSelectedProduct(product));
@@ -17,6 +19,10 @@ function POATable({ products }) {
     const handleDelete = (product) => {
         dispatch(setSelectedProduct(product));
         dispatch(openDeleteProductDialog());
+    }
+
+    const handleClick = (idProducto) => {
+        history.push('/administrador/producto/' + idProducto);
     }
 
     return (
@@ -32,22 +38,22 @@ function POATable({ products }) {
                 <TableBody>
                     {products.map((product) => (
                         <StyledTableRow key={product.idProducto} >
-                            <TableCell>{product.Producto}</TableCell>
-                            <StyledTableCell align='center'>{product.Enero}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Febrero}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Marzo}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Abril}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Mayo}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Junio}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Julio}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Agosto}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Septiembre}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Octubre}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Noviembre}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Diciembre}</StyledTableCell>
-                            <StyledTableCell align='center'>{product.Total}</StyledTableCell>
-                            <StyledTableCell align='center'>{product['Meta Anual']}</StyledTableCell>
-                            <StyledTableCell>{product.Observaciones ? product.Observaciones : '-'}</StyledTableCell>
+                            <TableCell onClick={() => handleClick(product.idProducto)}>{product.Producto}</TableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Enero}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Febrero}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Marzo}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Abril}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Mayo}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Junio}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Julio}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Agosto}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Septiembre}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Octubre}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Noviembre}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Diciembre}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product.Total}</StyledTableCell>
+                            <StyledTableCell align='center' onClick={() => handleClick(product.idProducto)}>{product['Meta Anual']}</StyledTableCell>
+                            <StyledTableCell onClick={() => handleClick(product.idProducto)}>{product.Observaciones ? product.Observaciones : '-'}</StyledTableCell>
                             <StyledTableCell>
                                 <Tooltip title='Editar' onClick={() => handleEdit(product)}>
                                     <IconButton color='secondary'>
@@ -77,7 +83,7 @@ function POATable({ products }) {
 }
 
 const columns = [
-    'Artículo', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', 'Meta Anual', 'Total', 'Observaciones', 'Acciones'
+    'Artículo', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', 'Total', 'Meta Anual', 'Observaciones', 'Acciones'
 ]
 
 const StyledTableCell = withStyles((theme) => ({

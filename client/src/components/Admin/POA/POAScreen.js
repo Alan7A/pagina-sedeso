@@ -53,6 +53,7 @@ function POAScreen() {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <TextField
                             variant='outlined'
+                            color='secondary'
                             label='Año'
                             select
                             margin='dense'
